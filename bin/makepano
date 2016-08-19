@@ -1,0 +1,23 @@
+#!/bin/sh
+
+width=10000
+height=5000
+lat=51.7492388888889
+lon=-1.28194166666667
+
+exiftool \
+    -xmp:ProjectionType=equirectangular \
+    -xmp:UsePanoramaViewer=True \
+    -xmp:CroppedAreaImageWidthPixels="$width" \
+    -xmp:CroppedAreaImageHeightPixels="$height" \
+    -xmp:FullPanoWidthPixels="$width" \
+    -xmp:FullPanoHeightPixels=$height \
+    -xmp:CroppedAreaLeftPixels=0 -xmp:CroppedAreaTopPixels=0 \
+    -xmp:PoseHeadingDegrees=0.0 \
+    -xmp:InitialViewHeadingDegrees=0 \
+    -xmp:InitialViewPitchDegrees=0 \
+    -xmp:InitialViewRollDegrees=0 \
+    -xmp:InitialHorizontalFOVDegrees=90.0 \
+    -xmp:gpslatitude="$lat" \
+    -xmp:gpslongitude="$lon" \
+    "$1"
