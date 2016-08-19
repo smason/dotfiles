@@ -1,0 +1,103 @@
+set realname = 'Sam Mason'
+
+set imap_idle
+set imap_keepalive = 900
+set folder = 'imaps://imap.gmail.com:993/'
+set smtp_authenticators = 'gssapi:login'
+
+macro index gc '<sync-mailbox><enter-command>source ~/.mutt/concon<enter><change-folder>!<enter>'
+macro index gm '<sync-mailbox><enter-command>source ~/.mutt/home<enter><change-folder>!<enter>'
+source ~/.mutt/concon
+
+bind index G imap-fetch-mail
+
+bind index a group-reply
+
+bind editor <space> noop
+macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index ga "<change-folder>=[Gmail]/All Mail<enter>" "Go to All Mail"
+
+
+# REMOTE GMAIL FOLDERS
+set spoolfile = '+INBOX'
+set postponed = '+[Gmail]/Drafts'
+set copy = no
+# set any_label = '+[Gmail]/any_label'
+# set trash     = '+[Gmail]/Trash'
+
+# LOCAL FOLDERS FOR CACHED HEADERS AND CERTIFICATES
+set header_cache     = ~/.mutt/cache/headers
+set message_cachedir = ~/.mutt/cache/bodies
+set certificate_file = ~/.mutt/certificates
+
+# SECURING
+set move = no  #Stop asking to move read messages to mbox!
+
+# Goobook https://pypi.python.org/pypi/goobook/ -----
+source ~/.mutt/aliases
+set alias_file=~/.mutt/aliases
+set query_command = "goobook query '%s'"
+
+unset help
+set editor = 'emacsclient'
+
+# from: http://inodes.org/2008/04/14/sorting-in-mutt/
+set sort = threads
+set sort_aux = last-date-received
+
+
+source "~/.mutt/gpg.rc"
+
+
+# taken from: https://github.com/bubbl/bubb-confs/blob/master/mutt/.mutt/general
+# Compose View Options -------------------------
+set envelope_from                        # which from?
+set edit_headers    = yes                # show headers when composing
+set fast_reply                           # skip to compose when replying
+unset reply_self
+set reply_to                             # reply to Reply to: field
+set askcc                                # ask for CC:
+set fcc_attach                           # save attachments with the body
+set mime_forward    = ask-no             # ask to forward attachments as part of body
+set mime_forward_rest                    # forwarding multiple attachments of a MIME message from the recvattach menu
+set forward_format  = "Fwd: %s"          # format of subject when forwarding
+set forward_decode                       # decode when forwarding
+set attribution     = "%n wrote:" # format of quoting header
+set reverse_name                         # reply as whomever it was to
+# unset include                            # include message in replies
+unset forward_quote                        # include message in forwards
+set postpone        = ask-yes            # controls whether or not messages are saved in the 'postponed'
+
+# from https://github.com/altercation/mutt-colors-solarized/
+
+# basic colors ---------------------------------------------------------
+color normal        brightblue      default         
+color error         red             default         
+color tilde         white           default         
+color message       cyan            default         
+color markers       red             black           
+color attachment    black           default         
+color search        brightmagenta   default         
+#color status        J_black         J_status        
+color status        brightblue      white           
+color indicator     brightwhite     yellow          
+color tree          yellow          default                                     # arrow in threads
+
+# message headers ------------------------------------------------------
+#color header        brightcyan      default         "^"
+color hdrdefault    brightcyan      default         
+color header        brightblue      default         "^(From)"
+color header        blue            default         "^(Subject)"
+
+# body -----------------------------------------------------------------
+color quoted        blue            default         
+color quoted1       cyan            default         
+color quoted2       yellow          default         
+color quoted3       red             default         
+color quoted4       brightred       default         
+
+color signature     brightcyan      default         
+color bold          white           default         
+color underline     white           default         
+color normal        default         default         
