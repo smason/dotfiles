@@ -1,1 +1,6 @@
-../Syncthing/home-bin/o
+#!/bin/sh
+
+#client="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+client="/usr/local/bin/emacsclient"
+
+exec "$client" -n "$@"

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# tool for comparing two MS Word documents, wanted support for .doc and .docx
+# internally uses pandoc, so actually supports much more
+#
+# run as:
+#   docdiff file1.doc file2.doc
+# and you'll get "Unified Diff" style output
+
+f="$1"
+g="$2"
+
+if [ ! -f "$f" -o ! -f "$g" ]; then
+    echo "Error expecting two filenames" 1>&2
+    exit 1
+fi
+
+exec diff -u <(pandoc -t markdown "$f") <(pandoc -t markdown "$g")

@@ -1,1 +1,3 @@
-../Syncthing/home-bin/eject
+#!/bin/sh
+
+exec hdiutil eject "$@"

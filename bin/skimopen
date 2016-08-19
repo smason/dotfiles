@@ -1,1 +1,20 @@
-../Syncthing/home-bin/skimopen
+#!/bin/bash
+
+unset DYLD_LIBRARY_PATH
+
+file="$1"
+[ "${file:0:1}" == "/" ] || file=${PWD}/${file}
+
+exec osascript - "${file}" <<EOF
+on run argv
+  set f to item 1 of argv
+  tell application "Skim"
+    set d to (documents whose path is f)
+    if (count items of d) > 0 then
+      revert d
+    else
+      open f
+    end if
+  end tell
+end run
+EOF
