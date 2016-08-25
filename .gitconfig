@@ -1,0 +1,8 @@
+# This is Git's per-user configuration file.
+[user]
+name = Sam Mason
+email = sam@samason.uk
+[push]
+	default = simple
+[credential]
+	helper = osxkeychain
