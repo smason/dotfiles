@@ -1,3 +1,4 @@
+(menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
@@ -10,6 +11,7 @@
 (require 'package)
 (setq package-archives
       `(("gnu" . "http://elpa.gnu.org/packages/")
+	("melpa" . "http://melpa.org/packages/")
 	("marmalade" . "https://marmalade-repo.org/packages/")))
 
 ; (when (memq window-system '(mac ns))
@@ -23,17 +25,12 @@
   version-control t)
 
 (if window-system
-    (set-default-font	
+    (set-default-font
      (if (> (x-display-pixel-width) 2000)
-	 "Menlo 12" ;; Cinema Display
+	 "Fira Code 10" ;; Cinema Display
        "Fira Code")))
 
-(mac-auto-operator-composition-mode)
-
-; (set-default-font "Menlo 12")
-
-(add-to-list 'load-path "~/Library/Emacs")
-(add-to-list 'load-path "~/Library/Emacs/ess-13.05/lisp")
+; (mac-auto-operator-composition-mode)
 
 ;;;###Autoload
 (autoload 'cuda-mode      "cuda-mode")
@@ -57,8 +54,8 @@
 (setq org-agenda-files '("~/Sync/org"))
 (setq org-log-done t)
 
-(add-to-list 'custom-theme-load-path "~/Library/emacs/color-theme-solarized")
-(load-theme 'solarized-light t)
+; (add-to-list 'custom-theme-load-path "~/Library/emacs/color-theme-solarized")
+(load-theme 'solarized-dark t)
 
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
