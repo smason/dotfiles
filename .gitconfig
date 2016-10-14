@@ -2,7 +2,6 @@
 [user]
 name = Sam Mason
 email = sam@samason.uk
+
 [push]
-	default = simple
-[credential]
-	helper = osxkeychain
+default = simple
