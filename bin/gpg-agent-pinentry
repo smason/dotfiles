@@ -1,0 +1,14 @@
+#!/bin/sh
+
+for path in \
+    /usr/bin/pinentry-gtk-2 \
+    /usr/local/MacGPG2/libexec/pinentry-mac.app/Contents/MacOS/pinentry-mac
+do
+    if [ -x "$path" ]; then
+	exec "$path"
+    fi
+done
+
+>&2 echo "No GPG Pinentry found!"
+
+exit 1
