@@ -47,9 +47,12 @@ bindsym $mod+Escape exec xautolock -locknow
 
 # password manager stuff
 exec 1password
-bindsym $mod+p       [title="1Password( for ConsultantConnect)? - Chromium"] move window to workspace current
-bindsym $mod+Shift+p [title="1Password( for ConsultantConnect)? - Chromium"] move window to workspace 1pass
-for_window [title="1Password - Chromium"] floating enable, move container to workspace 1pass
+exec pwsafe
+bindsym $mod+p       [title="^(Safe Combination Entry|PasswordSafe - .*|1Password - Chromium)$"] move window to workspace current
+bindsym $mod+Shift+p [title="^(Safe Combination Entry|PasswordSafe - .*|1Password - Chromium)$"] move window to workspace 1pass
+for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Password - Chromium)$"] floating enable #, move container to workspace pass
+
+for_window [title="^Chromium$"] floating enable
 
 # change focus
 bindsym $mod+j focus left

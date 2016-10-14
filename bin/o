@@ -1,6 +1,7 @@
 #!/bin/sh
 
 #client="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-client="/usr/local/bin/emacsclient"
+# client="/usr/local/bin/emacsclient"
+client=emacsclient
 
 exec "$client" -n "$@"
