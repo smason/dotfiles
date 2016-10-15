@@ -1,7 +1,11 @@
 #!/bin/sh
 
+setxkbmap -model pc105 \
+	  -layout gb \
+	  -option ctrl:nocaps \
+	  -option terminate:ctrl_alt_bksp
+
 [ -f ~/.Xresources ] && xrdb ~/.Xresources
-[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 
 # disable capslock
 xkbset nullify lock

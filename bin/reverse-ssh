@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while true; do
+    ssh -v -R 2022:localhost:22 jumpingstick "while date ; do sleep 60; done"
+    sleep 60
+done
