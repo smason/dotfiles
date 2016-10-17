@@ -13,6 +13,8 @@ xkbset nullify lock
 # set screen resolution nicely
 xrandr --dpi 120
 
+xsetroot -cursor_name left_ptr -solid royalblue
+
 # all other programs run from i3 config
 
 exec i3

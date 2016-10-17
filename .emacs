@@ -45,6 +45,7 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'"       . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 
 (setq inferior-julia-program-name "julia")
 
@@ -60,14 +61,15 @@
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
 
-(setq-default ispell-program-name "hunspell")
-(setq ispell-dictionary "british"
-      ispell-local-dictionary-alist '(("british"
-				       "[[:alpha:]]"
-				       "[^[:alpha:]]"
-				       "['’]" t ("-d" "en_GB") nil utf-8)))
+(with-eval-after-load "ispell"
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "en_GB")
+  (add-to-list 'ispell-dictionary-alist
+	       '("en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" t
+		 ("-d" "en_GB-large")
+		 nil utf-8)))
 
-(setq sql-postgres-program "/usr/local/bin/psql")
+; (setq sql-postgres-program "/usr/local/bin/psql")
 (setq sql-postgres-options '("-P" "pager=off"
                              "-P" "title= "
                              "-n"
@@ -106,6 +108,8 @@
 	    (setq web-mode-code-indent-offset 4)
 	    (setq web-mode-css-indent-offset 2)
 	    (setq web-mode-markup-indent-offset 2)))
+
+(setq typescript-indent-level 2)
 
 ;; get flyspell working with web-mode
 (defun web-mode-flyspefll-verify ()
@@ -176,3 +180,17 @@
 
 ; don't want to open this any more, I'm using Wunderlist instead
 ; (find-file "~/Sync/todo.txt")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (rw-ispell rw-language-and-country-codes rw-hunspell ws-butler tss solarized-theme markdown-mode ess))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

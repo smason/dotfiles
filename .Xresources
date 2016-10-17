@@ -20,7 +20,7 @@ URxvt.font: xft:Noto Mono:size=10
 URxvt.depth:                32
 URxvt.transparent:          false
 URxvt.fading:               0
-URxvt.saveLines:            50
+URxvt.saveLines:            20000
 URxvt.internalBorder:       3
 URxvt.lineSpace:            0
 

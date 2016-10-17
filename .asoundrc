@@ -1,0 +1,5 @@
+pcm.usb { type hw; card DragonFly; }
+ctl.usb { type hw; card DragonFly; }
+
+pcm.!default pcm.usb
+ctl.!default ctl.usb
