@@ -52,7 +52,14 @@ bindsym $mod+p       [title="^(Safe Combination Entry|PasswordSafe - .*|1Passwor
 bindsym $mod+Shift+p [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] move window to workspace security
 for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] floating enable #, move container to workspace pass
 
-for_window [title="^Chromium$"] floating enable
+for_window [title="(^Chromium)|Oracle VM VirtualBox( Manager)?$"] floating enable
+
+
+# Sound
+bindsym $mod+minus exec amixer set PCM 2dB-
+bindsym $mod+equal exec amixer set PCM 2dB+
+# would be good to get some way of triggering a play/pause
+
 
 # change focus
 bindsym $mod+j focus left
@@ -65,6 +72,9 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
+
+bindsym $mod+Prior exec ~/.virtualenvs/py35/bin/python ~/bin/i3_tab_switch -1
+bindsym $mod+Next  exec ~/.virtualenvs/py35/bin/python ~/bin/i3_tab_switch +1
 
 # move focused window
 bindsym $mod+Shift+j move left

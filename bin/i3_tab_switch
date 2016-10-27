@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+import i3
+
+def focus_num(offset):
+    cur_id = i3.filter(focused=True)[0]['id']
+    parent = i3.parent(cur_id)
+
+    # is this the correct sort of container
+    if not parent['layout'] in ['tabbed','stacked']:
+        return
+
+    # get the children
+    node_ids = [n['id'] for n in parent['nodes']]
+
+    # find the "next" item, as defined by `offset`
+    node_id = node_ids[(node_ids.index(cur_id) + offset) % len(node_ids)]
+
+    # focus it
+    i3.focus(con_id=node_id)
+    while i3.focus('child')[0]:
+        pass
+
+if __name__ == "__main__":
+    import sys
+    offset = int(sys.argv[1])
+    focus_num(offset)
