@@ -1,0 +1,12 @@
+[Unit]
+Description=Reverse SSH Access
+IgnoreOnIsolate=true
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/smason/bin/reverse-ssh
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

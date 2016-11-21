@@ -1,5 +1,7 @@
 set -gx fish_greeting ''
 
+set -gx PAGER less
+
 # various path changes
 if [ -d "$HOME/android-sdk" ]
   set -gx ANDROID_HOME "$HOME/android-sdk"

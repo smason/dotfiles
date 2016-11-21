@@ -47,6 +47,29 @@
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+
+;(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+;; format options
+(setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
+
+
 (setq inferior-julia-program-name "julia")
 
 (require 'org)
@@ -76,6 +99,9 @@
                              "-v" "PROMPT1=> "
                              "-v" "PROMPT2=+ "
                              "-v" "PROMPT3=C+ "))
+
+(with-eval-after-load "sql"
+  (add-to-list 'sql-postgres-login-params '(port :default 5432)))
 
 (defun insert-dateiso ()
   "Insert string for today's date nicely formatted in ISO 8601 style"
@@ -187,7 +213,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (rw-ispell rw-language-and-country-codes rw-hunspell ws-butler tss solarized-theme markdown-mode ess))))
+    (company tide web-mode rw-ispell rw-language-and-country-codes rw-hunspell ws-butler solarized-theme markdown-mode ess))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

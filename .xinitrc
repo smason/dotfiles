@@ -1,9 +1,10 @@
 #!/bin/sh
 
-setxkbmap -model pc105 \
+setxkbmap -model dell101 \
 	  -layout gb \
 	  -option ctrl:nocaps \
-	  -option terminate:ctrl_alt_bksp
+	  -option terminate:ctrl_alt_bksp \
+	  -option compose:ralt
 
 [ -f ~/.Xresources ] && xrdb ~/.Xresources
 
@@ -11,7 +12,7 @@ setxkbmap -model pc105 \
 xkbset nullify lock
 
 # set screen resolution nicely
-xrandr --dpi 120
+xrandr --dpi 110
 
 xsetroot -cursor_name left_ptr -solid royalblue
 

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+path="/tmp/`date +%F_%H%M%S_%N`.png"
+
+import -window "$(xdotool getwindowfocus -f)" "$path"
+
+exec sxiv "$path"
