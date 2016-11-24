@@ -130,12 +130,14 @@
 ;; get web-mode setup nicely
 (add-hook 'web-mode-hook
 	  (lambda ()
-	    (setq indent-tabs-mode nil)
 	    (setq web-mode-code-indent-offset 4)
 	    (setq web-mode-css-indent-offset 2)
-	    (setq web-mode-markup-indent-offset 2)))
+            (setq web-mode-markup-indent-offset 2)
+            (setq require-final-newline 'ask)
+            (setq mode-require-final-newline 'ask)))
 
-(setq typescript-indent-level 2)
+(setq-default indent-tabs-mode nil)
+(setq-default typescript-indent-level 2)
 
 ;; get flyspell working with web-mode
 (defun web-mode-flyspefll-verify ()
@@ -158,10 +160,6 @@
 (add-hook 'tex-mode-hook
 	  (lambda ()
 	    (fset 'tex-font-lock-suscript 'ignore)))
-
-(add-hook 'js-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode nil)))
 
 (require 'server)
 (unless (server-running-p)
@@ -189,7 +187,7 @@
 
 ; ask whether to append a newline to the end of the file, options are
 ; t, nil, or "anything else"
-(setq require-final-newline 'ask)
+(setq-default require-final-newline 'ask)
 
 (defun mutt-mail-mode-hook ()
   ; (flush-lines "^\\(> \n\\)*> -- \n\\(\n?> .*\\)*") ; kill quoted sigs
