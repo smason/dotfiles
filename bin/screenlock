@@ -4,7 +4,15 @@ revert() {
     xset dpms 0 0 0
 }
 
+png="$HOME/tmp/background.png"
+
+# if the file isn't recent enough, regenerate it
+if [ -z "$(find "$png" -mmin +120)"]; then
+    orig="$(find "$HOME/pictures/backgrounds/" -type f | shuf -n 1)"
+    convert -quality 1 -background black -resize 3840x2160 -gravity center -extent 3840x2160 "$orig" "$png"
+fi
+
 trap revert SIGHUP SIGINT SIGTERM
-xset +dpms dpms 5 5 5
-i3lock -c 4169e1 -n
+xset +dpms dpms 15 15 15
+i3lock -c 000000 -i "$png" -n
 revert
