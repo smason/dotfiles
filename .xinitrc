@@ -17,5 +17,4 @@ xrandr --dpi 110
 xsetroot -cursor_name left_ptr -solid royalblue
 
 # all other programs run from i3 config
-
-exec i3
+exec i3 2>&1 > ~/log/i3.log

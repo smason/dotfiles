@@ -1,7 +1,2 @@
-#
-# ~/.bash_profile
-#
-
-PAGER=less
-
+[[ -f ~/.profile ]] && . ~/.profile
 [[ -f ~/.bashrc ]] && . ~/.bashrc

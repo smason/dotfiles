@@ -4,6 +4,8 @@ Xft.rgba:                   rgb
 Xft.hinting:                true
 Xft.hintstyle:              hintslight
 
+Xcursor.size: 32
+
 
 ! do not scroll with output
 URxvt*scrollTtyOutput: false

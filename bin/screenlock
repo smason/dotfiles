@@ -7,7 +7,7 @@ revert() {
 png="$HOME/tmp/background.png"
 
 # if the file isn't recent enough, regenerate it
-if [ -z "$(find "$png" -mmin +120)" ]; then
+if [ -z "$(find "$png" -mmin -120 2>/dev/null)" ]; then
     orig="$(find "$HOME/pictures/backgrounds/" -type f | shuf -n 1)"
     convert -quality 1 -background black -resize 3840x2160 -gravity center -extent 3840x2160 "$orig" "$png"
 fi
