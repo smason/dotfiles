@@ -46,11 +46,10 @@ exec xautolock -time 7 -locker screenlock
 bindsym $mod+Escape exec xautolock -locknow
 
 # password manager stuff
-exec 1password
-exec pwsafe
 bindsym $mod+p       [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] move window to workspace current
 bindsym $mod+Shift+p [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] move window to workspace security
-for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] floating enable #, move container to workspace pass
+for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] floating enable
+#, move container to workspace pass
 
 for_window [title="(^Chromium)|Oracle VM VirtualBox( Manager)?$"] floating enable
 
@@ -176,3 +175,5 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
 }
+
+exec "~/.config/i3/startup"

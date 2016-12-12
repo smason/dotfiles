@@ -1,0 +1,52 @@
+{ "layout": "splith", "nodes": [
+    {
+        "layout": "splitv",
+        "percent": 0.25,
+        "nodes": [
+            {
+                "percent": 0.3,
+                "layout": "tabbed",
+                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$" }]}]
+            },
+            {
+                "percent": 0.3,
+                "layout": "tabbed",
+                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$" }]}]
+            },
+            {
+                "percent": 0.4,
+                "layout": "tabbed",
+                "nodes": [
+                    { "name": "Slack",  "swallows": [{ "class": "^Slack$", "instance": "slack" }]},
+                    { "name": "Signal", "swallows": [{ "class": "^Chromium$",
+                                                       "instance": "^crx_bikioccmkafdpakkkcpdbppfkghcmihk$" }]}
+                ]
+            }
+        ]},
+    {
+        "layout": "splitv",
+        "percent": 0.45,
+        "nodes": [
+            { "name": "Emacs", "swallows": [{ "class": "^Emacs$" }] }
+        ]
+    },
+    {
+        "layout": "splitv",
+        "percent": 0.3,
+        "nodes": [
+            {
+                "layout": "splitv",
+                "percent": 0.75,
+                "nodes": [{ "name": "browser", "swallows": [{ "class": "^Chromium$", "instance": "^chromium$" }]}]
+            },
+            {
+                "layout": "tabbed",
+                "percent": 0.25,
+                "nodes": [
+                    { "name": "shell", "swallows": [{ "class": "^URxvt$" }] },
+                    { "name": "shell", "swallows": [{ "class": "^URxvt$" }] }
+                ]
+            }
+        ]
+    }
+]}
