@@ -7,6 +7,8 @@ else if test -x /usr/bin/python3
   eval (/usr/bin/python3 -m virtualfish)
 end
 
+set -x __fish_git_prompt_showdirtystate 1
+
 # for GPG Agent
 set -x GPG_TTY (tty)
 # Refresh gpg-agent tty in case user switches into an X session

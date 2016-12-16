@@ -19,10 +19,12 @@ function fish_prompt --description 'Write out the prompt'
             set suffix '>'
     end
 
+    set -l git_status (set_color cyan)(__fish_git_prompt '[%s] ')
+
     set -l virtualfish
     if set -q VIRTUAL_ENV
-      set virtualfish (set_color magenta) (basename "$VIRTUAL_ENV") " "
+      set virtualfish (set_color magenta)(basename "$VIRTUAL_ENV")' '
     end
-    
-    echo -n -s "$USER" @ "$__fish_prompt_hostname" ' ' $virtualfish (set_color $color_cwd) (prompt_pwd) (set_color normal) "$suffix "
+
+    echo -n -s "$USER@$__fish_prompt_hostname $virtualfish$git_status" (set_color $color_cwd)(prompt_pwd) (set_color normal)"$suffix "
 end
