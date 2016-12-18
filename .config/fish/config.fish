@@ -9,10 +9,11 @@ end
 
 set -x __fish_git_prompt_showdirtystate 1
 
-# for GPG Agent
-set -x GPG_TTY (tty)
 # Refresh gpg-agent tty in case user switches into an X session
-gpg-connect-agent updatestartuptty /bye >/dev/null
+if command -s gpg-connect-agent >/dev/null
+   set -x GPG_TTY (tty)
+   gpg-connect-agent updatestartuptty /bye >/dev/null
+end
 
 # iTerm2 shell integration
 # https://iterm2.com/documentation-shell-integration.html
