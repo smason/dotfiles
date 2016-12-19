@@ -3,4 +3,4 @@
 export GIT_DIR="$HOME/.myconf"
 export GIT_WORK_TREE="$HOME"
 
-exec git "$@"
+exec git-crypt "$@"
