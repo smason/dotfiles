@@ -1,5 +1,9 @@
 export PAGER=less
 
+# see ~/.pam_environment
+# via https://wiki.archlinux.org/index.php/GnuPG
+unset SSH_AGENT_PID
+
 # various path changes
 if [ -d "$HOME/android-sdk" ]; then
   export ANDROID_HOME="$HOME/android-sdk"
