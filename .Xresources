@@ -16,7 +16,7 @@ URxvt*scrollWithBuffer: true
 ! scroll back to the bottom on keypress
 URxvt*scrollTtyKeypress: true
 
-URxvt.font: xft:Noto Mono:size=10
+URxvt.font: xft:Inconsolata:size=11
 
 ! Colours lifted from Solarized (http://ethanschoonover.com/solarized)
 URxvt.depth:                32
