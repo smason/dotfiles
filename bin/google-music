@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# probably located in ~/.local/share/applications will initially be
+# named something like:
+#   chrome-fahmaaghhglfmonjliepjlchgpgfmobi-Default.desktop
+exec gtk-launch google-music-chrome.desktop

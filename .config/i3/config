@@ -46,12 +46,11 @@ exec xautolock -time 7 -locker screenlock
 bindsym $mod+Escape exec xautolock -locknow
 
 # password manager stuff
-bindsym $mod+p       [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] move window to workspace current
-bindsym $mod+Shift+p [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] move window to workspace security
-for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)? - Chromium)$"] floating enable
-#, move container to workspace pass
+bindsym $mod+p       [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)?|Google Play Music)$"] move window to workspace current
+bindsym $mod+Shift+p [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)?|Google Play Music)$"] move window to workspace security
+for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)?|Google Play Music)$"] floating enable
 
-for_window [title="(^Chromium)|Oracle VM VirtualBox( Manager)?$"] floating enable
+for_window [title="Oracle VM VirtualBox( Manager)?$"] floating enable
 
 
 # Sound
