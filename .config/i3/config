@@ -72,8 +72,8 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-bindsym $mod+Prior exec ~/.virtualenvs/py35/bin/python ~/bin/i3_tab_switch -1
-bindsym $mod+Next  exec ~/.virtualenvs/py35/bin/python ~/bin/i3_tab_switch +1
+bindsym $mod+Prior exec ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch -1
+bindsym $mod+Next  exec ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch +1
 
 # move focused window
 bindsym $mod+Shift+j move left

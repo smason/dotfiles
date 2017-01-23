@@ -14,9 +14,4 @@ chromium  --profile-directory='Profile 1' &
 
 # GUI tools
 slack &
-# Signal
-gtk-launch chrome-bikioccmkafdpakkkcpdbppfkghcmihk-Default.desktop &
-
-# just run these as needed now
-# 1password
-# pwsafe
+signal &
