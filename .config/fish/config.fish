@@ -11,7 +11,8 @@ set -x __fish_git_prompt_showdirtystate 1
 
 # Refresh gpg-agent tty in case user switches into an X session
 if command -s gpg-connect-agent >/dev/null
-   set -x SSH_AUTH_SOCK "$HOME/.gnupg/S.gpg-agent.ssh"
+   set SSH_AUTH_SOCK "$HOME/.gnupg/S.gpg-agent.ssh"
+   test -f "$SSH_AUTH_SOCK"; and set -x SSH_AUTH_SOCK
    set -x GPG_TTY (tty)
    gpg-connect-agent updatestartuptty /bye >/dev/null
 end
