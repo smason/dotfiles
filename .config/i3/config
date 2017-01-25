@@ -54,10 +54,20 @@ for_window [title="Oracle VM VirtualBox( Manager)?$"] floating enable
 
 
 # Sound
-bindsym $mod+minus exec amixer set PCM 2dB-
-bindsym $mod+equal exec amixer set PCM 2dB+
-# would be good to get some way of triggering a play/pause
+bindsym $mod+minus exec --no-startup-id amixer set PCM 2dB-
+bindsym $mod+equal exec --no-startup-id amixer set PCM 2dB+
 
+# not quite sure why I need the `sleep 0.1` but:
+#   xdotool key --clearmodifiers
+# doesn't appear to work without it, basic recipe stolen from
+#   https://github.com/enricobacis/.dotfiles/blob/master/i3/.i3/config
+bindsym $mod+KP_4     exec --no-startup-id sleep 0.1 && google-music prev
+bindsym $mod+KP_5     exec --no-startup-id sleep 0.1 && google-music playpause
+bindsym $mod+KP_6     exec --no-startup-id sleep 0.1 && google-music next
+
+bindsym $mod+KP_Left  exec --no-startup-id sleep 0.1 && google-music prev
+bindsym $mod+KP_Begin exec --no-startup-id sleep 0.1 && google-music playpause
+bindsym $mod+KP_Right exec --no-startup-id sleep 0.1 && google-music next
 
 # change focus
 bindsym $mod+j focus left
@@ -71,8 +81,8 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-bindsym $mod+Prior exec ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch -1
-bindsym $mod+Next  exec ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch +1
+bindsym $mod+Prior exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch -1
+bindsym $mod+Next  exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch +1
 
 # move focused window
 bindsym $mod+Shift+j move left

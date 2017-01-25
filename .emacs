@@ -211,7 +211,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yaml-mode company tide web-mode rw-ispell rw-language-and-country-codes rw-hunspell ws-butler solarized-theme markdown-mode ess))))
+    (yaml-mode company tide web-mode rw-ispell rw-language-and-country-codes rw-hunspell ws-butler solarized-theme markdown-mode ess)))
+ '(safe-local-variable-values (quote ((eval web-mode-set-engine "django")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

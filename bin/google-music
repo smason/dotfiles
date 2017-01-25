@@ -1,6 +1,33 @@
 #!/bin/sh
 
-# probably located in ~/.local/share/applications will initially be
-# named something like:
+# probably located in ~/.local/share/applications will initially/
+# originally be named something like:
 #   chrome-fahmaaghhglfmonjliepjlchgpgfmobi-Default.desktop
-exec gtk-launch google-music-chrome.desktop
+app="$HOME/.local/share/applications/google-music-chrome.desktop"
+
+function sendkeys {
+    class="$(sed -rne 's/^.*--app-id=([a-zA-Z0-9]+).*/crx_\1/p' $app)"
+    gm="$(xdotool search --all --classname $class)"
+
+    [ -z "$gm" ] && exit 1
+
+    cur="$(xdotool getactivewindow)"
+
+    xdotool \
+        windowactivate "$gm" \
+        windowfocus "$gm" \
+        key --window "$gm" --clearmodifiers "$@" \
+        windowactivate "$cur" \
+        windowfocus "$cur"
+}
+
+case "$1" in
+    playpause) sendkeys space;;
+    prev) sendkeys Left;;
+    next) sendkeys Right;;
+    '')
+        gtk-launch google-music-chrome.desktop;;
+    *)
+        echo "unknown command '$1'" 1>&2
+        exit 1;;
+esac
