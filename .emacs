@@ -137,7 +137,7 @@
             (setq mode-require-final-newline 'ask)))
 
 (setq-default indent-tabs-mode nil)
-(setq-default typescript-indent-level 2)
+(setq-default tab-width 2)
 
 ;; get flyspell working with web-mode
 (defun web-mode-flyspefll-verify ()
@@ -211,7 +211,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yaml-mode company tide web-mode rw-ispell rw-language-and-country-codes rw-hunspell ws-butler solarized-theme markdown-mode ess)))
+    (fish-mode yaml-mode company tide web-mode rw-ispell rw-language-and-country-codes rw-hunspell ws-butler solarized-theme markdown-mode ess)))
  '(safe-local-variable-values (quote ((eval web-mode-set-engine "django")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
