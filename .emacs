@@ -28,7 +28,7 @@
     (set-default-font
      (if (> (x-display-pixel-width) 2000)
          "Inconsolata 11" ;; Cinema Display
-       "Fira Code R")))
+       "Fira Code")))
 
 ; (mac-auto-operator-composition-mode)
 
