@@ -59,13 +59,11 @@ bindsym $mod+KP_Add      exec --no-startup-id amixer set PCM 2dB+
 #   xdotool key --clearmodifiers
 # doesn't appear to work without it, basic recipe stolen from
 #   https://github.com/enricobacis/.dotfiles/blob/master/i3/.i3/config
-bindsym $mod+KP_4     exec --no-startup-id sleep 0.1 && google-music prev
-bindsym $mod+KP_5     exec --no-startup-id sleep 0.1 && google-music playpause
-bindsym $mod+KP_6     exec --no-startup-id sleep 0.1 && google-music next
+bindcode $mod+83  exec --no-startup-id sleep 0.1 && google-music prev
+bindcode $mod+84  exec --no-startup-id sleep 0.1 && google-music playpause
+bindcode $mod+85  exec --no-startup-id sleep 0.1 && google-music next
 
-bindsym $mod+KP_Left  exec --no-startup-id sleep 0.1 && google-music prev
-bindsym $mod+KP_Begin exec --no-startup-id sleep 0.1 && google-music playpause
-bindsym $mod+KP_Right exec --no-startup-id sleep 0.1 && google-music next
+# doing bindsym $mod+KP_Left appears to depend on the numlock being set
 
 # change focus
 bindsym $mod+j focus left
