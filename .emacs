@@ -66,6 +66,13 @@
 
 ;(add-hook 'typescript-mode-hook #'setup-tide-mode)
 
+;; Pull from PRIMARY (same as middle mouse click)
+(defun get-primary ()
+  (interactive)
+  (insert
+   (gui-get-primary-selection)))
+(global-set-key "\C-c\C-y" 'get-primary)
+
 ;; format options
 (setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
 
