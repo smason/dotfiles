@@ -7,7 +7,8 @@ else if test -x /usr/bin/python3
   eval (/usr/bin/python3 -m virtualfish)
 end
 
-set -x __fish_git_prompt_showdirtystate 1
+set -g __fish_git_prompt_showdirtystate 1
+# set -g fish_prompt_pwd_dir_length 2
 
 # useful:
 #  https://wiki.archlinux.org/index.php/GnuPG
