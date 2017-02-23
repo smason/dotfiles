@@ -1,11 +1,13 @@
 #!/bin/sh
 
-# restore the
+# restore the workspace
 i3-msg 'workspace 1; append_layout ~/.config/i3/workspace-1.json'
 
-# some shells
-urxvt &
-urxvt &
+# notification events
+dunst &
+
+# start some shells
+for i in $(seq 3); do urxvt & done
 
 emacs &
 

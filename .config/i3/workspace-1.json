@@ -43,7 +43,6 @@
                 "layout": "tabbed",
                 "percent": 0.25,
                 "nodes": [
-                    { "name": "shell", "swallows": [{ "class": "^URxvt$" }] },
                     { "name": "shell", "swallows": [{ "class": "^URxvt$" }] }
                 ]
             }
