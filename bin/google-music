@@ -1,9 +1,6 @@
 #!/bin/sh
 
-# probably located in ~/.local/share/applications will initially/
-# originally be named something like:
-#   chrome-fahmaaghhglfmonjliepjlchgpgfmobi-Default.desktop
-app="$HOME/.local/share/applications/google-music-chrome.desktop"
+app="$HOME/.local/share/applications/chrome-fahmaaghhglfmonjliepjlchgpgfmobi-Default.desktop"
 
 function sendkeys {
     class="$(sed -rne 's/^.*--app-id=([a-zA-Z0-9]+).*/crx_\1/p' $app)"
