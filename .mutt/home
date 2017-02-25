@@ -1,9 +1,10 @@
 set from = 'sam@samason.uk'
 alternates 'sam@samason\.me\.uk'
 
-set my_pass="`security find-internet-password -wa assumetrue@google.com -s google.com`"
+set my_pass="`pass google/assumetrue/mutt`"
 
 # Accounts
 set imap_user = "assumetrue@gmail.com"
 set imap_pass = "$my_pass"
 set smtp_url  = "smtp://assumetrue@smtp.gmail.com:587/"
+set smtp_pass = "$my_pass"
