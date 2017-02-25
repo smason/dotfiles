@@ -1,7 +1,7 @@
 set from = 'sam.mason@consultantconnect.org.uk'
 alternates 'dev@consultantconnect\.org\.uk'
 
-set my_pass="`security find-internet-password -wa sam.mason@consultantconnect.org.uk -s google.com`"
+set my_pass="`pass work/google.com/mutt`"
 
 # Accounts
 set imap_user = 'sam.mason@consultantconnect.org.uk'
