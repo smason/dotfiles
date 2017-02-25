@@ -182,4 +182,4 @@ bar {
         status_command i3status
 }
 
-exec "~/.config/i3/startup"
+exec --no-startup-id "~/.config/i3/startup"
