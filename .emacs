@@ -85,7 +85,7 @@
 (setq org-agenda-files '("~/Sync/org"))
 (setq org-log-done t)
 
-(load-theme 'sanityinc-tomorrow-day t)
+(load-theme 'sanityinc-tomorrow-night t)
 
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
