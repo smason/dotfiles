@@ -2,6 +2,11 @@
 [user]
 name = Sam Mason
 email = sam@samason.uk
+signingkey = 0x5B78591285BB94DF
+
+[sendemail]
+aliasesfile=/home/smason/.mutt/aliases
+aliasfiletype=mutt
 
 [push]
 default = simple
