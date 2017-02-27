@@ -85,8 +85,7 @@
 (setq org-agenda-files '("~/Sync/org"))
 (setq org-log-done t)
 
-; (add-to-list 'custom-theme-load-path "~/Library/emacs/color-theme-solarized")
-(load-theme 'solarized-dark t)
+(load-theme ''sanityinc-tomorrow-day t)
 
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
