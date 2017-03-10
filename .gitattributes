@@ -1,2 +1,3 @@
 .ngrok2/ngrok.yml filter=git-crypt diff=git-crypt
 bin/watch-usage.py filter=git-crypt diff=git-crypt
+bin/aws-env filter=git-crypt diff=git-crypt

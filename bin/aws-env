@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export AWS_ACCESS_KEY_ID="AKIAJB37YF4BRBAGO7XQ"
+export AWS_SECRET_ACCESS_KEY="`pass work/aws-token/$AWS_ACCESS_KEY_ID`"
+
+exec "$@"
