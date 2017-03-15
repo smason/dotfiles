@@ -7,7 +7,7 @@ dumb)
     return
     ;;
 rxvt-unicode-256color)
-    TERM=xterm
+    # TERM=xterm
     ;;
 esac
 
