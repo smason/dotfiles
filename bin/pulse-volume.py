@@ -15,7 +15,7 @@ with Pulse('volume-changer') as pulse:
         if 'bluez.path' in sink.proplist:
             args = [
                 'dbus-send', '--system', '--print-reply',
-                '--dest=org.bluez', bluez_path['bluez.path'],
+                '--dest=org.bluez', sink.proplist['bluez.path'],
                 'org.bluez.MediaControl1.Volume{}'.format(
                     'Down' if diff < 0 else 'Up'),
             ]
