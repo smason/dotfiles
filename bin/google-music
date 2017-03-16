@@ -1,12 +1,16 @@
 #!/bin/sh
 
-app="$HOME/.local/share/applications/chrome-fahmaaghhglfmonjliepjlchgpgfmobi-Default.desktop"
+app="chrome-fahmaaghhglfmonjliepjlchgpgfmobi-Default.desktop"
+path="$HOME/.local/share/applications/$app"
 
 function sendkeys {
-    class="$(sed -rne 's/^.*--app-id=([a-zA-Z0-9]+).*/crx_\1/p' $app)"
+    class="$(sed -rne 's/^.*--app-id=([a-zA-Z0-9]+).*/crx_\1/p' $path)"
     gm="$(xdotool search --all --classname $class)"
 
-    [ -z "$gm" ] && exit 1
+    if [ -z "$gm" ]; then
+        echo "Unable to locate Google Music window" 1>&2
+        exit 1
+    fi
 
     cur="$(xdotool getactivewindow)"
 
@@ -23,7 +27,7 @@ case "$1" in
     prev) sendkeys Left;;
     next) sendkeys Right;;
     '')
-        gtk-launch google-music-chrome.desktop;;
+        gtk-launch "$app";;
     *)
         echo "unknown command '$1'" 1>&2
         exit 1;;

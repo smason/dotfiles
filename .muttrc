@@ -37,7 +37,9 @@ set move = no  #Stop asking to move read messages to mbox!
 # Goobook https://pypi.python.org/pypi/goobook/ -----
 source ~/.mutt/aliases
 set alias_file=~/.mutt/aliases
-set query_command = "goobook query '%s'"
+set query_command = "~/.virtualenvs/sys/bin/goobook query '%s'"
+
+set recall=no
 
 unset help
 set editor = 'emacsclient'
