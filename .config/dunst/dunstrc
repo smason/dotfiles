@@ -1,0 +1,42 @@
+[global]
+    font = Libertinus Sans 16
+    allow_markup = yes
+    format = "<b>%s %p</b>\n%b\n"
+    # Sort messages by urgency.
+    sort = yes
+    # Show how many messages are currently hidden (because of geometry).
+    indicate_hidden = yes
+    alignment = center
+    show_age_threshold = -1
+    word_wrap = yes
+    ignore_newline = no
+    geometry = "400x5-1300+45"
+    shrink = no
+    idle_threshold = 120
+    show_indicators = yes
+    separator_height = 2
+    padding = 12
+    horizontal_padding = 4
+    separator_color = frame
+    browser = /usr/bin/chromium
+
+[frame]
+    width = 5
+    color = "#3c87dc"
+
+[urgency_low]
+    # IMPORTANT: colors have to be defined in quotation marks.
+    # Otherwise the "#" and following would be interpreted as a comment.
+    background = "#24292e"
+    foreground = "#bed2e6"
+    timeout = 10
+
+[urgency_normal]
+    background = "#ffffff"
+    foreground = "#24292e"
+    timeout = 10
+
+[urgency_critical]
+    background = "#dae6f3"
+    foreground = "#8e193d"
+    timeout = 0

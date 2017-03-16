@@ -46,7 +46,6 @@ set editor = 'emacsclient'
 set sort = threads
 set sort_aux = last-date-received
 
-
 source "~/.mutt/gpg.rc"
 
 

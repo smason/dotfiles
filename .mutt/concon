@@ -8,3 +8,5 @@ set imap_user = 'sam.mason@consultantconnect.org.uk'
 set imap_pass = "$my_pass"
 set smtp_url  = "smtp://sam.mason@consultantconnect.org.uk@smtp.gmail.com:587/"
 set smtp_pass = "$my_pass"
+
+set new_mail_command="notify-send 'ConCon Email in Inbox' '%n new messages, %u unread.' &"
