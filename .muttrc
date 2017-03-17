@@ -42,7 +42,7 @@ set query_command = "~/.virtualenvs/sys/bin/goobook query '%s'"
 set recall=no
 
 unset help
-set editor = 'emacsclient'
+set editor = 'editor'
 
 # from: http://inodes.org/2008/04/14/sorting-in-mutt/
 set sort = threads

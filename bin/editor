@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# open the file(s)
+if emacsclient "$@"; then
+    # switch focus back to terminal here when file is closed
+    xdotool windowactivate "$WINDOWID" windowfocus "$WINDOWID"
+fi
