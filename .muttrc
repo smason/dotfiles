@@ -66,8 +66,8 @@ set forward_format  = "Fwd: %s"          # format of subject when forwarding
 set forward_decode                       # decode when forwarding
 set attribution     = "%n wrote:" # format of quoting header
 set reverse_name                         # reply as whomever it was to
-# unset include                            # include message in replies
-unset forward_quote                        # include message in forwards
+set include         = yes                # include message in replies
+unset forward_quote                      # include message in forwards
 set postpone        = ask-yes            # controls whether or not messages are saved in the 'postponed'
 
 # from https://github.com/altercation/mutt-colors-solarized/
