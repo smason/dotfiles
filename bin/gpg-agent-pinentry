@@ -2,10 +2,11 @@
 
 for path in \
     /usr/bin/pinentry-gtk-2 \
+    /usr/local/bin/pinentry-mac \
     /usr/local/MacGPG2/libexec/pinentry-mac.app/Contents/MacOS/pinentry-mac
 do
     if [ -x "$path" ]; then
-	exec "$path"
+        exec "$path"
     fi
 done
 
