@@ -38,6 +38,7 @@
 (autoload 'ws-butler-mode "ws-butler")
 (autoload 'julia-mode     "julia-mode")
 
+(add-to-list 'auto-mode-alist '("/tmp/mutt-" . mail-mode))
 (add-to-list 'auto-mode-alist '("\\.cu$"   . cuda-mode))
 (add-to-list 'auto-mode-alist '("\\.m$"    . octave-mode))
 (add-to-list 'auto-mode-alist '("\\.chpl$" . chpl-mode))

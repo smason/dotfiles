@@ -37,15 +37,16 @@ set move = no  #Stop asking to move read messages to mbox!
 # Goobook https://pypi.python.org/pypi/goobook/ -----
 source ~/.mutt/aliases
 set alias_file=~/.mutt/aliases
-set query_command = "goobook query '%s'"
+set query_command = "~/.virtualenvs/sys/bin/goobook query '%s'"
+
+set recall=no
 
 unset help
-set editor = 'emacsclient'
+set editor = 'editor'
 
 # from: http://inodes.org/2008/04/14/sorting-in-mutt/
 set sort = threads
 set sort_aux = last-date-received
-
 
 source "~/.mutt/gpg.rc"
 
@@ -65,8 +66,8 @@ set forward_format  = "Fwd: %s"          # format of subject when forwarding
 set forward_decode                       # decode when forwarding
 set attribution     = "%n wrote:" # format of quoting header
 set reverse_name                         # reply as whomever it was to
-# unset include                            # include message in replies
-unset forward_quote                        # include message in forwards
+set include         = yes                # include message in replies
+unset forward_quote                      # include message in forwards
 set postpone        = ask-yes            # controls whether or not messages are saved in the 'postponed'
 
 # from https://github.com/altercation/mutt-colors-solarized/

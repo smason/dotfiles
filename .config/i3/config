@@ -53,8 +53,8 @@ for_window [title="Oracle VM VirtualBox( Manager)?$"] floating enable
 
 
 # Sound
-bindsym $mod+KP_Subtract exec --no-startup-id amixer set PCM 2dB-
-bindsym $mod+KP_Add      exec --no-startup-id amixer set PCM 2dB+
+bindsym $mod+KP_Subtract exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py -0.1
+bindsym $mod+KP_Add      exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py +0.1
 
 # not quite sure why I need the `sleep 0.1` but:
 #   xdotool key --clearmodifiers

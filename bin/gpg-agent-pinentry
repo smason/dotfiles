@@ -1,11 +1,26 @@
 #!/bin/sh
 
+# if we're running under X make sure focus goes back to the right
+# place
+if [ "$1" = "--display" ]; then
+    export DISPLAY="$2"
+    winid="$(xdotool getactivewindow)"
+fi
+
 for path in \
     /usr/bin/pinentry-gtk-2 \
+    /usr/local/bin/pinentry-mac \
     /usr/local/MacGPG2/libexec/pinentry-mac.app/Contents/MacOS/pinentry-mac
 do
     if [ -x "$path" ]; then
-	exec "$path"
+        "$path"
+        status="$?"
+        if [ -n "$winid" ]; then
+            xdotool \
+                windowactivate "$winid" \
+                windowfocus "$winid"
+        fi
+        exit "$status"
     fi
 done
 

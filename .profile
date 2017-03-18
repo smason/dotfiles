@@ -7,8 +7,12 @@ if [ -d "$HOME/android-sdk" ]; then
 fi
 
 # node
-if [ -d "$HOME/.npm-packages" ]; then
+if [ -d "$HOME/.npm-packages/bin" ]; then
    export PATH="$HOME/.npm-packages/bin:$PATH"
+fi
+
+if [ -d "/usr/local/opt/gnupg@2.1/bin" ]; then
+   export PATH="/usr/local/opt/gnupg@2.1/bin:$PATH"
 fi
 
 # final fiddling with path
