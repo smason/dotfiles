@@ -91,12 +91,15 @@
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
 
+; dictionary from http://wordlist.aspell.net/dicts/ not much point in
+; getting "large" version as it has multiple variants of each word,
+; better to pick one version and stick with it
 (with-eval-after-load "ispell"
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "en_GB")
   (add-to-list 'ispell-dictionary-alist
 	       '("en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" t
-		 ("-d" "en_GB-large")
+		 ("-d" "en_GB")
 		 nil utf-8)))
 
 ; (setq sql-postgres-program "/usr/local/bin/psql")
