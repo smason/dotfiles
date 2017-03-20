@@ -40,6 +40,7 @@ bindsym $mod+d exec --no-startup-id dmenu_run
 bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+i exec --no-startup-id passmenu
 bindsym $mod+Shift+i exec --no-startup-id passmenu --type
+bindsym $mod+Shift+u exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/passmenu.py
 
 exec xautolock -time 7 -locker screenlock
 bindsym $mod+Escape exec xautolock -locknow
