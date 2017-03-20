@@ -8,9 +8,15 @@ from pathlib import Path
 class PasswordStoreError(Exception):
     pass
 
-regex_username = re.compile(
-    r'^(?:\s*user(name)|email):?\s*(\S+)\s*$',
-    re.IGNORECASE)
+regex_username = re.compile(r"""
+^\s*
+(?:user(?:name)?|
+   email|
+   account
+):?\s*
+(?P<username>\S+)
+\s*$
+""", re.IGNORECASE | re.VERBOSE)
 
 class PasswordEntry(object):
     def __init__(self, store, key, value):
@@ -22,11 +28,11 @@ class PasswordEntry(object):
     # take a guess at the username
     def guess_username(self):
         # look for a username or email field
-        for l in self.value.splitlines():
+        for l in self.value.splitlines()[1:]:
             m = regex_username.match(l)
             # OK, found something
             if m:
-                return m.group(1)
+                return m.group('username')
 
         # assume the last element in the key (i.e. the name of the file) is the username
         return Path(self.key).name
