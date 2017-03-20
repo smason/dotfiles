@@ -17,6 +17,7 @@
                 "percent": 0.4,
                 "layout": "tabbed",
                 "nodes": [
+                    { "name": "Mutt",   "swallows": [{ "class": "^URxvt$", "instance": "email" }]},
                     { "name": "Slack",  "swallows": [{ "class": "^Slack$", "instance": "slack" }]},
                     { "name": "Signal", "swallows": [{ "class": "^Chromium$",
                                                        "instance": "^crx_bikioccmkafdpakkkcpdbppfkghcmihk$" }]}
