@@ -1,34 +1,5 @@
 #!/bin/sh
 
-app="chrome-fahmaaghhglfmonjliepjlchgpgfmobi-Default.desktop"
-path="$HOME/.local/share/applications/$app"
+export GPMDP_AUTHTOKEN="f19a7086-3692-4462-af15-bb8cc0f2c4fe"
 
-function sendkeys {
-    class="$(sed -rne 's/^.*--app-id=([a-zA-Z0-9]+).*/crx_\1/p' $path)"
-    gm="$(xdotool search --all --classname $class)"
-
-    if [ -z "$gm" ]; then
-        echo "Unable to locate Google Music window" 1>&2
-        exit 1
-    fi
-
-    cur="$(xdotool getactivewindow)"
-
-    xdotool \
-        windowactivate "$gm" \
-        windowfocus "$gm" \
-        key --window "$gm" --clearmodifiers "$@" \
-        windowactivate "$cur" \
-        windowfocus "$cur"
-}
-
-case "$1" in
-    playpause) sendkeys space;;
-    prev) sendkeys Left;;
-    next) sendkeys Right;;
-    '')
-        gtk-launch "$app";;
-    *)
-        echo "unknown command '$1'" 1>&2
-        exit 1;;
-esac
+exec ~/.virtualenvs/py36/bin/python ~/bin/google-music.py "$@"

@@ -28,7 +28,8 @@ def default_arg_parser():
                         default=default_url, metavar='URL')
     parser.add_argument('--verbose', help="Enable verbose output",
                         action='store_true')
-    parser.add_argument('--auth', help="Specify authentication token")
+    parser.add_argument('--auth', help="Specify authentication token",
+                        default=os.environ.get('GPMDP_AUTHTOKEN'))
     return parser
 
 if __name__ == '__main__':

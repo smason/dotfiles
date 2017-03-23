@@ -20,3 +20,4 @@ chromium  --profile-directory='Profile 1' &
 # GUI tools
 slack &
 signal &
+gpmdp &

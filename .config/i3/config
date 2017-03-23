@@ -52,18 +52,13 @@ for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Passwor
 
 for_window [title="Oracle VM VirtualBox( Manager)?$"] floating enable
 
-
 # Sound
 bindsym $mod+KP_Subtract exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py -0.1
 bindsym $mod+KP_Add      exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py +0.1
 
-# not quite sure why I need the `sleep 0.1` but:
-#   xdotool key --clearmodifiers
-# doesn't appear to work without it, basic recipe stolen from
-#   https://github.com/enricobacis/.dotfiles/blob/master/i3/.i3/config
-bindcode $mod+83  exec --no-startup-id sleep 0.1 && google-music prev
-bindcode $mod+84  exec --no-startup-id sleep 0.1 && google-music playpause
-bindcode $mod+85  exec --no-startup-id sleep 0.1 && google-music next
+bindcode $mod+83  exec --no-startup-id ~/bin/google-music rewind
+bindcode $mod+84  exec --no-startup-id ~/bin/google-music playPause
+bindcode $mod+85  exec --no-startup-id ~/bin/google-music forward
 
 # doing bindsym $mod+KP_Left appears to depend on the numlock being set
 
