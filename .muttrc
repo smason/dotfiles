@@ -44,6 +44,10 @@ set recall=no
 unset help
 set editor = 'editor'
 
+alternative_order text/plain text/html
+auto_view text/html
+
+
 # from: http://inodes.org/2008/04/14/sorting-in-mutt/
 set sort = threads
 set sort_aux = last-date-received

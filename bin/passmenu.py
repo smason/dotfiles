@@ -108,19 +108,26 @@ def default_arg_parser():
                         action='store_true')
     return parser
 
-def xdotool_stdin(lines, sep_key, term_key):
-    dokey = "key --clearmodifiers {}\n"
-    dotype = "type --clearmodifiers {}\n"
+def xdotool_stdin(windowid, lines, sep_key, term_key):
+    dokey = "key --window {} --clearmodifiers {}\n"
+    dotype = "type --window {} --clearmodifiers {}\n"
 
     lsep = ''
     if sep_key:
-        lsep = dokey.format(sep_key)
+        lsep = dokey.format(windowid, sep_key)
     lterm = ''
     if term_key:
-        lterm = dokey.format(term_key)
+        lterm = dokey.format(windowid, term_key)
 
     return '{ops}{term}'.format(
-        ops=lsep.join(dotype.format(l) for l in lines), term=lterm)
+        ops=lsep.join(dotype.format(windowid, l) for l in lines), term=lterm)
+
+def xdotool_getactivewindow():
+    proc = subprocess.run(
+        ["xdotool", "getactivewindow"], universal_newlines=True,
+        stdout=subprocess.PIPE)
+    proc.check_returncode()
+    return int(proc.stdout)
 
 if __name__ == '__main__':
     import sys
@@ -129,6 +136,8 @@ if __name__ == '__main__':
     import dmenu
 
     args = default_arg_parser().parse_args()
+
+    cur_windowid = xdotool_getactivewindow()
 
     store = PasswordStore(args.store)
 
@@ -152,7 +161,7 @@ if __name__ == '__main__':
 
     proc = subprocess.run(
         ["xdotool", "-"], universal_newlines=True,
-        input=xdotool_stdin(lines, args.separator, args.terminator))
+        input=xdotool_stdin(cur_windowid, lines, args.separator, args.terminator))
 
     # check all is OK
     proc.check_returncode()
