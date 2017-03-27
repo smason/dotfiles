@@ -13,18 +13,38 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 10
+font pango:Roboto Mono Regular 11
 
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
+## Base16 Tomorrow Night
+# Author: Chris Kempson (http://chriskempson.com)
+#
+# You can use these variables anywhere in the i3 configuration file.
 
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
+set $base00 #1d1f21
+set $base01 #282a2e
+set $base02 #373b41
+set $base03 #969896
+set $base04 #b4b7b4
+set $base05 #c5c8c6
+set $base06 #e0e0e0
+set $base07 #ffffff
+set $base08 #cc6666
+set $base09 #de935f
+set $base0A #f0c674
+set $base0B #b5bd68
+set $base0C #8abeb7
+set $base0D #81a2be
+set $base0E #b294bb
+set $base0F #a3685a
+
+# Basic color configuration using the Base16 variables for windows and borders.
+# Property Name         Border  BG      Text    Indicator Child Border
+client.focused          $base05 $base05 $base02 $base08 $base02
+client.focused_inactive $base02 $base02 $base03 $base02 $base02
+client.unfocused        $base01 $base01 $base03 $base01 $base01
+client.urgent           $base08 $base08 $base00 $base08 $base08
+client.placeholder      $base00 $base00 $base03 $base00 $base00
+client.background       $base00
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -99,7 +119,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# bindsym $mod+s layout stacking # disable stacking, basically unused
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -115,7 +135,18 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
+# better config for multi monitors
+mouse_warping none
+workspace_auto_back_and_forth yes
+workspace "hdmi" output HDMI-0
+workspace 1 output DP-0
+workspace 2 output DP-0
+workspace 3 output DP-0
+workspace 4 output DP-0
+workspace 5 output DP-0
+
 # switch to workspace
+bindsym $mod+grave workspace "hdmi"
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -128,6 +159,7 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
+bindsym $mod+Shift+grave move container to workspace "hdmi"
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
 bindsym $mod+Shift+3 move container to workspace 3
@@ -175,7 +207,41 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+  output DP-0
+  status_command i3status
+  font pango:Roboto Mono Regular 12
+
+  colors {
+    background $base00
+    separator  $base00
+    statusline $base03
+
+    # State             Border  BG      Text
+    focused_workspace   $base05 $base05 $base02
+    active_workspace    $base05 $base05 $base02
+    inactive_workspace  $base02 $base02 $base03
+    urgent_workspace    $base08 $base08 $base00
+    binding_mode        $base00 $base0A $base00
+  }
+}
+
+bar {
+  output HDMI-0
+  font pango:Roboto Mono Regular 10
+  tray_output none
+
+  colors {
+    background $base00
+    separator  $base00
+    statusline $base03
+
+    # State             Border  BG      Text
+    focused_workspace   $base05 $base05 $base02
+    active_workspace    $base05 $base05 $base02
+    inactive_workspace  $base02 $base02 $base03
+    urgent_workspace    $base08 $base08 $base00
+    binding_mode        $base00 $base0A $base00
+  }
 }
 
 exec --no-startup-id "~/.config/i3/startup"

@@ -27,7 +27,7 @@
 (if window-system
     (set-default-font
      (if (> (x-display-pixel-width) 2000)
-         "Inconsolata 11" ;; Cinema Display
+         "Roboto Mono Light 9" ;; Cinema Display
        "Fira Code R")))
 
 ; (mac-auto-operator-composition-mode)
@@ -85,7 +85,7 @@
 (setq org-agenda-files '("~/Sync/org"))
 (setq org-log-done t)
 
-(load-theme 'sanityinc-tomorrow-night t)
+(load-theme 'base16-tomorrow-night t)
 
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
@@ -208,20 +208,5 @@
 ; my todo file
 (setq inhibit-startup-message t)
 
-; don't want to open this any more, I'm using Wunderlist instead
-; (find-file "~/Sync/todo.txt")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (color-theme-sanityinc-tomorrow fish-mode yaml-mode company tide web-mode rw-ispell rw-language-and-country-codes rw-hunspell ws-butler solarized-theme markdown-mode ess)))
- '(safe-local-variable-values (quote ((eval web-mode-set-engine "django")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
