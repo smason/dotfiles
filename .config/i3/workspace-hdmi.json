@@ -1,0 +1,18 @@
+{
+    "layout": "tabbed",
+    "percent": 0.4,
+    "nodes": [
+        { "name": "Mutt", "swallows": [{ "class": "^URxvt$", "instance": "^email$" }] }
+    ]
+}
+
+{
+    "layout": "tabbed",
+    "percent": 0.6,
+    "nodes": [
+        { "name": "Slack",  "swallows": [{ "class": "^Slack$", "instance": "^slack$" }] },
+        { "name": "Music",  "swallows": [{ "class": "^Google Play Music Desktop Player$" }] },
+        { "name": "Signal", "swallows": [{ "class": "^Chromium$",
+                                           "instance": "^crx_bikioccmkafdpakkkcpdbppfkghcmihk$" }] }
+    ]
+}

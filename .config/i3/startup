@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # restore the workspace
-i3-msg 'workspace 1; append_layout ~/.config/i3/workspace-1.json'
+i3-msg 'workspace hdmi; append_layout ~/.config/i3/workspace-hdmi.json'
+i3-msg 'workspace 1; append_layout ~/.config/i3/workspace.json'
 
 # notification events
 dunst &

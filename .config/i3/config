@@ -39,10 +39,10 @@ set $base0F #a3685a
 
 # Basic color configuration using the Base16 variables for windows and borders.
 # Property Name         Border  BG      Text    Indicator Child Border
-client.focused          $base05 $base05 $base02 $base08 $base02
-client.focused_inactive $base02 $base02 $base03 $base02 $base02
+client.focused          $base02 $base02 $base06 $base08 $base02
+client.focused_inactive $base01 $base01 $base03 $base02 $base01
 client.unfocused        $base01 $base01 $base03 $base01 $base01
-client.urgent           $base08 $base08 $base00 $base08 $base08
+client.urgent           $base08 $base08 $base07 $base08 $base07
 client.placeholder      $base00 $base00 $base03 $base00 $base00
 client.background       $base00
 
@@ -71,6 +71,7 @@ bindsym $mod+Shift+p [title="^(Safe Combination Entry|PasswordSafe - .*|1Passwor
 for_window           [title="^(Safe Combination Entry|PasswordSafe - .*|1Password( for ConsultantConnect)?|Google Play Music)$"] floating enable
 
 for_window [title="Oracle VM VirtualBox( Manager)?$"] floating enable
+for_window [class="^Pinentry-gtk-2$"] border pixel 32, floating enable
 
 # Sound
 bindsym $mod+KP_Subtract exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py -0.1
