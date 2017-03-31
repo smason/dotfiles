@@ -3,6 +3,9 @@ import time
 import argparse
 import subprocess
 
+# Uses the pulsectl package for device and sink enumeration.  I.e. if
+# the import below fails run the following command
+#    pip install -U pulsectl
 from pulsectl import Pulse, PulseVolumeInfo
 
 def default_arg_parser():
@@ -25,14 +28,20 @@ def pulse_send_logchange(sink, log_diff):
 
     # perceived-volume is a logarithmic quantity
     mul = 2 ** log_diff
-    new = [v * mul for v in old.values]
+    new = PulseVolumeInfo([v * mul for v in old.values])
 
-    pulse.volume_set(sink, PulseVolumeInfo(new))
+    pulse.volume_set(sink, new)
 
     return (old,new)
 
+def formatVolumeInfo(volumeinfo):
+    return "[{}]".format(', '.join(
+        '{:.2g}'.format(v) for v in volumeinfo.values))
+
 def send_volchange(sink, change):
     if 'bluez.path' in sink.proplist:
+        # ask the bluetooth device to change its internal amplifier.
+        # doing anything within the local volume seems wrong!
         dbus_send_bluez_message(
             sink.proplist['bluez.path'],
             'org.bluez.MediaControl1.Volume{}'.format(
@@ -44,28 +53,24 @@ def send_volchange(sink, change):
 
     # display something nice
     print("volume changed: {old} => {new}".format(
-        old=formatVolume(old), new=formatVolume(new)))
+        old=formatVolumeInfo(old), new=formatVolumeInfo(new)))
 
 def send_reset(sink):
+    off = None
     a2dp = None
-    head = None
     for profile in card.profile_list:
-        if profile.name == 'headset_head_unit':
-            head = profile
+        if profile.name == 'off':
+            off = profile
         elif profile.name == 'a2dp_sink':
             a2dp = profile
 
     # implicitly checks that this is a bluetooth device
     #   (other card types won't have the profile names)
-    if head and a2dp:
-        pulse.card_profile_set(card, head)
+    if off and a2dp:
+        pulse.card_profile_set(card, off)
         # TODO: why do I need a pause in here, changing too quickly breaks the device!
-        time.sleep(0.3)
+        time.sleep(0.05)
         pulse.card_profile_set(card, a2dp)
-
-def formatVolume(values):
-    return "[{}]".format(', '.join(
-        '{:.2g}'.format(v) for v in values))
 
 if __name__ == '__main__':
     args = default_arg_parser().parse_args()
