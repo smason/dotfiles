@@ -76,6 +76,7 @@ for_window [class="^Pinentry-gtk-2$"] border pixel 32, floating enable
 # Sound
 bindsym $mod+KP_Subtract exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py -0.1
 bindsym $mod+KP_Add      exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py +0.1
+bindsym $mod+KP_Enter    exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py --reset
 
 bindcode $mod+83  exec --no-startup-id ~/bin/google-music rewind
 bindcode $mod+84  exec --no-startup-id ~/bin/google-music playPause
