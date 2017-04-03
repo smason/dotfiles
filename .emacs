@@ -27,8 +27,8 @@
 (if window-system
     (set-default-font
      (if (> (x-display-pixel-width) 2000)
-         "Inconsolata 11" ;; Cinema Display
-       "Fira Code")))
+         "Roboto Mono Light 9" ;; Cinema Display
+       "Fira Code R")))
 
 ; (mac-auto-operator-composition-mode)
 
@@ -40,7 +40,6 @@
 
 (add-to-list 'auto-mode-alist '("/tmp/mutt-" . mail-mode))
 (add-to-list 'auto-mode-alist '("\\.cu$"   . cuda-mode))
-(add-to-list 'auto-mode-alist '("\\.m$"    . octave-mode))
 (add-to-list 'auto-mode-alist '("\\.chpl$" . chpl-mode))
 (add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'"       . markdown-mode))
@@ -86,21 +85,17 @@
 (setq org-agenda-files '("~/Sync/org"))
 (setq org-log-done t)
 
-; (add-to-list 'custom-theme-load-path "~/Library/emacs/color-theme-solarized")
-(load-theme 'sanityinc-tomorrow-day t)
+(load-theme 'base16-tomorrow-night t)
 
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
 
-; dictionary from http://wordlist.aspell.net/dicts/ not much point in
-; getting "large" version as it has multiple variants of each word,
-; better to pick one version and stick with it
 (with-eval-after-load "ispell"
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "en_GB")
   (add-to-list 'ispell-dictionary-alist
 	       '("en_GB" "[[:alpha:]]" "[^[:alpha:]]" "[']" t
-		 ("-d" "en_GB")
+		 ("-d" "en_GB-large")
 		 nil utf-8)))
 
 ; (setq sql-postgres-program "/usr/local/bin/psql")
@@ -213,23 +208,5 @@
 ; my todo file
 (setq inhibit-startup-message t)
 
-; don't want to open this any more, I'm using Wunderlist instead
-; (find-file "~/Sync/todo.txt")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" default)))
- '(package-selected-packages
-   (quote
-    (color-theme-sanityinc-tomorrow fish-mode yaml-mode company tide web-mode rw-ispell rw-language-and-country-codes rw-hunspell ws-butler solarized-theme markdown-mode ess)))
- '(safe-local-variable-values (quote ((eval web-mode-set-engine "django")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)

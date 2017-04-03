@@ -1,0 +1,41 @@
+{ "layout": "splith", "nodes": [
+    {
+        "layout": "splitv",
+        "percent": 0.25,
+        "nodes": [
+            {
+                "layout": "tabbed",
+                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
+            },
+            {
+                "layout": "tabbed",
+                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
+            },
+            {
+                "layout": "tabbed",
+                "nodes": [{ "name": "Mutt",  "swallows": [{ "class": "^URxvt$", "instance": "^email$" }] }]
+            }
+        ]
+    },
+    {
+        "layout": "splitv",
+        "percent": 0.45,
+        "nodes": [{ "name": "Emacs", "swallows": [{ "class": "^Emacs$" }] }]
+    },
+    {
+        "layout": "splitv",
+        "percent": 0.3,
+        "nodes": [
+            {
+                "layout": "splitv",
+                "percent": 0.75,
+                "nodes": [{ "name": "browser", "swallows": [{ "class": "^Chromium$", "instance": "^chromium$" }] }]
+            },
+            {
+                "layout": "tabbed",
+                "percent": 0.25,
+                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
+            }
+        ]
+    }
+]}

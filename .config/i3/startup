@@ -1,13 +1,17 @@
 #!/bin/sh
 
 # restore the workspace
-i3-msg 'workspace 1; append_layout ~/.config/i3/workspace-1.json'
+i3-msg 'workspace hdmi; append_layout ~/.config/i3/workspace-hdmi.json'
+i3-msg 'workspace 1; append_layout ~/.config/i3/workspace.json'
 
 # notification events
 dunst &
 
 # start some shells
-for i in $(seq 3); do urxvt & done
+for i in $(seq 5); do urxvt & done
+
+# email
+urxvt -name email -e mutt -e 'set quit=ask-no' &
 
 emacs &
 
@@ -17,3 +21,4 @@ chromium  --profile-directory='Profile 1' &
 # GUI tools
 slack &
 signal &
+gpmdp &

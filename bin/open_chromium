@@ -1,0 +1,5 @@
+#!/bin/sh
+
+chromium "$1" &
+
+sleep 1
