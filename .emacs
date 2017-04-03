@@ -28,7 +28,7 @@
     (set-default-font
      (if (> (x-display-pixel-width) 2000)
          "Roboto Mono Light 9" ;; Cinema Display
-       "Fira Code R")))
+       "Roboto Mono Light 11")))
 
 ; (mac-auto-operator-composition-mode)
 
@@ -85,7 +85,7 @@
 (setq org-agenda-files '("~/Sync/org"))
 (setq org-log-done t)
 
-(load-theme 'base16-tomorrow-night t)
+(load-theme 'base16-tomorrow t)
 
 (add-to-list 'exec-path "/opt/local/bin")
 (add-to-list 'exec-path "/usr/local/bin")
