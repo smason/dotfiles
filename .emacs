@@ -6,16 +6,15 @@
 ;(setq mouse-wheel-progressive-speed nil)
 ;(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil)))
 
-(package-initialize)
-
 (require 'package)
 (setq package-archives
       `(("gnu" . "http://elpa.gnu.org/packages/")
-	("melpa" . "http://melpa.org/packages/")
-	("marmalade" . "https://marmalade-repo.org/packages/")))
+        ("melpa" . "http://melpa.org/packages/")
+        ;; ("marmalade" . "https://marmalade-repo.org/packages/")
+        ))
 
-; (when (memq window-system '(mac ns))
-;   (exec-path-from-shell-initialize))
+(package-initialize)
+(elpy-enable)
 
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq backup-by-copying t)
