@@ -1,4 +1,3 @@
-import sys
 import time
 import argparse
 import subprocess
@@ -45,6 +44,19 @@ def formatVolumeInfo(volumeinfo):
         '{:.2g}'.format(v) for v in volumeinfo.values))
 
 
+def notify_volume_change(old, new):
+    print("volume changed: {old} => {new}".format(
+        old=formatVolumeInfo(old), new=formatVolumeInfo(new)))
+
+    # just generate the mean
+    value = 100 * sum(new.values) / len(new.values)
+    args = [
+        'notify-send', '-h', 'int:value:{}'.format(int(value)), 'Volume'
+    ]
+
+    return subprocess.run(args, check=True)
+
+
 def send_volchange(sink, change):
     if 'bluez.path' in sink.proplist:
         # ask the bluetooth device to change its internal amplifier.
@@ -58,9 +70,8 @@ def send_volchange(sink, change):
     # set the volume
     (old, new) = pulse_send_logchange(sink, change)
 
-    # display something nice
-    print("volume changed: {old} => {new}".format(
-        old=formatVolumeInfo(old), new=formatVolumeInfo(new)))
+    # tell the user something has happened
+    notify_volume_change(old, new)
 
 
 def send_reset(sink):
