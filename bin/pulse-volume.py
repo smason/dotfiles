@@ -8,13 +8,17 @@ import subprocess
 #    pip install -U pulsectl
 from pulsectl import Pulse, PulseVolumeInfo
 
+
 def default_arg_parser():
-    parser = argparse.ArgumentParser(description="Pulse & Bluetooth audio volume control")
-    parser.add_argument('change', help='amount to change volume', type=float, nargs='?')
-    parser.add_argument('--reset', action='store_true',
-                        help="Perform a reset of Bluetooth audio devices")
+    parser = argparse.ArgumentParser(
+        description="Pulse & Bluetooth audio volume control")
+    parser.add_argument('change', type=float, nargs='?', help=(
+        'amount to change volume'))
+    parser.add_argument('--reset', action='store_true', help=(
+        "Perform a reset of Bluetooth audio devices"))
 
     return parser
+
 
 def dbus_send_bluez_message(dest, method):
     args = [
@@ -22,6 +26,7 @@ def dbus_send_bluez_message(dest, method):
         '--dest=org.bluez', dest, method
     ]
     return subprocess.run(args, check=True)
+
 
 def pulse_send_logchange(sink, log_diff):
     old = sink.volume
@@ -32,11 +37,13 @@ def pulse_send_logchange(sink, log_diff):
 
     pulse.volume_set(sink, new)
 
-    return (old,new)
+    return (old, new)
+
 
 def formatVolumeInfo(volumeinfo):
     return "[{}]".format(', '.join(
         '{:.2g}'.format(v) for v in volumeinfo.values))
+
 
 def send_volchange(sink, change):
     if 'bluez.path' in sink.proplist:
@@ -55,6 +62,7 @@ def send_volchange(sink, change):
     print("volume changed: {old} => {new}".format(
         old=formatVolumeInfo(old), new=formatVolumeInfo(new)))
 
+
 def send_reset(sink):
     off = None
     a2dp = None
@@ -68,9 +76,11 @@ def send_reset(sink):
     #   (other card types won't have the profile names)
     if off and a2dp:
         pulse.card_profile_set(card, off)
-        # TODO: why do I need a pause in here, changing too quickly breaks the device!
+        # TODO: why do I need a pause in here, changing too quickly
+        # breaks the device!
         time.sleep(0.05)
         pulse.card_profile_set(card, a2dp)
+
 
 if __name__ == '__main__':
     args = default_arg_parser().parse_args()
