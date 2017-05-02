@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Various jobs that need currently need user interaction to get started!
+
+# kill off any existing SSH agent (good for testing!) and start a new one
+sudo -u backup -i <<EOF
+kill \$SSH_AGENT_PID
+ssh-agent > ~/.agent_info
+EOF
+
+# add our SSH key
+sudo -u backup -i ssh-add ~backup/.ssh/pg_backup
+
+mode_conf="$HOME/work/concon/modeanalytics/conf"
+
+if [ -d "$mode_conf" ]; then
+    # get our mode analytics bridge started up
+    sudo -u docker docker run --rm --detach \
+         --volume="$mode_conf:/opt/mode/bridge/conf" \
+         --hostname=mode --name=modeanalytics modeanalytics
+else
+    echo "Error: mode analytics config directory isn't a directory!"
+    exit 1
+fi

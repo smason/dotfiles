@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 # Python's simple HTTP server
 #  -m SimpleHTTPServer tells python to run that module
@@ -9,4 +9,4 @@
 #  -ss should make it more verbose
 #  -F should stop it being a daemon
 #  -p 8080 tells it to use port 8080
-exec webfsd -ssFp 8088
+exec webfsd -ssFp 8000
