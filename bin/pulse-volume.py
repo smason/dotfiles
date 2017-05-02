@@ -39,39 +39,25 @@ def pulse_send_logchange(sink, log_diff):
     return (old, new)
 
 
-def formatVolumeInfo(volumeinfo):
-    return "[{}]".format(', '.join(
-        '{:.2g}'.format(v) for v in volumeinfo.values))
-
-
-def notify_volume_change(old, new):
-    print("volume changed: {old} => {new}".format(
-        old=formatVolumeInfo(old), new=formatVolumeInfo(new)))
-
-    # just generate the mean
-    value = 100 * sum(new.values) / len(new.values)
-    args = [
-        'notify-send', '-h', 'int:value:{}'.format(int(value)), 'Volume'
-    ]
-
-    return subprocess.run(args, check=True)
-
-
 def send_volchange(sink, change):
     if 'bluez.path' in sink.proplist:
+        msg = 'Down' if change < 0 else 'Up'
         # ask the bluetooth device to change its internal amplifier.
         # doing anything within the local volume seems wrong!
         dbus_send_bluez_message(
             sink.proplist['bluez.path'],
-            'org.bluez.MediaControl1.Volume{}'.format(
-                'Down' if change < 0 else 'Up'))
-        return
+            'org.bluez.MediaControl1.Volume{}'.format(msg))
+
+        return ['Bluetooth Volume {}'.format(msg)]
 
     # set the volume
     (old, new) = pulse_send_logchange(sink, change)
 
-    # tell the user something has happened
-    notify_volume_change(old, new)
+    # use the mean volume across all channels for notification
+    mean = sum(new.values) / len(new.values)
+    return [
+        '-h', 'int:value:{}'.format(int(100 * mean)), 'Volume'
+    ]
 
 
 def send_reset(sink):
@@ -99,7 +85,9 @@ if __name__ == '__main__':
     with Pulse('volume-changer') as pulse:
         if args.change:
             for sink in pulse.sink_list():
-                send_volchange(sink, args.change)
+                notify_args = send_volchange(sink, args.change)
+                subprocess.run(['notify-send']+notify_args+[sink.description],
+                               check=True)
 
         if args.reset:
             for card in pulse.card_list():
