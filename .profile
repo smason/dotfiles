@@ -11,6 +11,12 @@ if [ -d "$HOME/.npm-packages" ]; then
    export PATH="$HOME/.npm-packages/bin:$PATH"
 fi
 
+# Android SDK
+if [ -d "$HOME/lib/android-sdk" ]; then
+    export ANDROID_HOME="$HOME/lib/android-sdk"
+    export PATH="$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
+fi
+
 # final fiddling with path
 if [ -d "$HOME/bin" ]; then
    export PATH="$HOME/bin:$PATH"

@@ -19,6 +19,7 @@
     horizontal_padding = 4
     separator_color = frame
     browser = /usr/bin/chromium
+    icon_position = left
 
 [frame]
     width = 5
