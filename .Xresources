@@ -36,19 +36,35 @@ URxvt.pointerBlank:         true
 *foreground:   #c5c8c6
 *background:   #1d1f21
 *cursorColor:  #aeafad
+
+! Black + DarkGrey
 *color0:       #000000
-*color1:       #912226
-*color2:       #778900
-*color3:       #ae7b00
-*color4:       #1d2594
-*color5:       #682a9b
-*color6:       #2b6651
-*color7:       #929593
 *color8:       #666666
+
+! DarkRed + Red
+*color1:       #912226
 *color9:       #cc6666
+
+! DarkGreen + Green
+*color2:       #778900
 *color10:      #b5bd68
+
+! DarkYellow + Yellow
+*color3:       #ae7b00
 *color11:      #f0c674
+
+! DarkBlue + Blue
+*color4:       #454fd3
 *color12:      #81a2be
+
+! DarkMagenta + Magenta
+*color5:       #682a9b
 *color13:      #b294bb
+
+!DarkCyan + Cyan (both not tango)
+*color6:       #2b6651
 *color14:      #8abeb7
+
+! LightGrey + White
+*color7:       #929593
 *color15:      #ecebec
