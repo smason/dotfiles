@@ -22,3 +22,5 @@ else
     echo "Error: mode analytics config directory isn't a directory!"
     exit 1
 fi
+
+sudo avahi-set-host-name quiet

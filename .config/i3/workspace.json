@@ -18,24 +18,13 @@
         ]
     },
     {
-        "layout": "splitv",
-        "percent": 0.45,
+        "layout": "tabbed",
+        "percent": 0.40,
         "nodes": [{ "name": "Emacs", "swallows": [{ "class": "^Emacs$" }] }]
     },
     {
-        "layout": "splitv",
-        "percent": 0.3,
-        "nodes": [
-            {
-                "layout": "splitv",
-                "percent": 0.75,
-                "nodes": [{ "name": "browser", "swallows": [{ "class": "^Chromium$", "instance": "^chromium$" }] }]
-            },
-            {
-                "layout": "tabbed",
-                "percent": 0.25,
-                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
-            }
-        ]
+        "layout": "tabbed",
+        "percent": 0.35,
+        "nodes": [{ "name": "browser", "swallows": [{ "class": "^Chromium$", "instance": "^chromium$" }] }]
     }
 ]}

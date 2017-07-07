@@ -14,8 +14,8 @@ xkbset nullify lock
 # set screen resolution nicely
 xrandr \
     --dpi 110 \
-    --output HDMI-0 --auto --pos    0x300 \
-    --output DP-0   --auto --pos 1920x0 --primary
+    --output DP-0   --auto --pos    0x0 --primary \
+    --output HDMI-0 --auto --pos 3840x300
 
 compton --config ~/.config/compton/compton.conf -b
 
