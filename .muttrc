@@ -5,13 +5,15 @@ set imap_keepalive = 900
 set folder = 'imaps://imap.gmail.com:993/'
 set smtp_authenticators = 'gssapi:login'
 
+# rebind group-reply to the 'a' key
+bind index a group-reply
+bind index g noop
+
 macro index gc '<sync-mailbox><enter-command>source ~/.mutt/concon<enter><change-folder>!<enter>'
 macro index gm '<sync-mailbox><enter-command>source ~/.mutt/home<enter><change-folder>!<enter>'
 source ~/.mutt/concon
 
 bind index G imap-fetch-mail
-
-bind index a group-reply
 
 bind editor <space> noop
 macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"

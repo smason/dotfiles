@@ -1,30 +1,36 @@
 { "layout": "splith", "nodes": [
-    {
-        "layout": "splitv",
-        "percent": 0.25,
-        "nodes": [
-            {
-                "layout": "tabbed",
-                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
-            },
-            {
-                "layout": "tabbed",
-                "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
-            },
-            {
-                "layout": "tabbed",
-                "nodes": [{ "name": "Mutt",  "swallows": [{ "class": "^URxvt$", "instance": "^email$" }] }]
-            }
-        ]
-    },
-    {
+  {
+    "layout": "splitv",
+    "percent": 0.25,
+    "nodes": [
+      {
         "layout": "tabbed",
-        "percent": 0.40,
-        "nodes": [{ "name": "Emacs", "swallows": [{ "class": "^Emacs$" }] }]
-    },
-    {
+        "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
+      },
+      {
         "layout": "tabbed",
-        "percent": 0.35,
-        "nodes": [{ "name": "browser", "swallows": [{ "class": "^Chromium$", "instance": "^chromium$" }] }]
+        "nodes": [{ "name": "shell", "swallows": [{ "class": "^URxvt$", "instance": "^urxvt$" }] }]
+      },
+      {
+        "layout": "tabbed",
+        "nodes": [{ "name": "Mutt",  "swallows": [{ "class": "^URxvt$", "instance": "^email$" }] }]
+      }
+    ]
+  },
+  {
+    "layout": "splitv",
+    "percent": 0.40,
+    "nodes": {
+      "layout": "tabbed",
+      "nodes": [{ "name": "Emacs", "swallows": [{ "class": "^Emacs$" }] }]
     }
+  },
+  {
+    "layout": "splitv",
+    "percent": 0.35,
+    "nodes": {
+      "layout": "tabbed",
+      "nodes": [{ "name": "browser", "swallows": [{ "class": "^Chromium$", "instance": "^chromium$" }] }]
+    }
+  }
 ]}

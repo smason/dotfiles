@@ -22,3 +22,5 @@ chromium  --profile-directory='Profile 1' &
 slack &
 signal &
 gpmdp &
+# "Trello External Window"
+gtk-launch chrome-gkcknpgdmiigoagkcoglklgaagnpojed-Profile_1.desktop &
