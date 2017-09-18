@@ -26,3 +26,5 @@ end
 # iTerm2 shell integration
 # https://iterm2.com/documentation-shell-integration.html
 source "$HOME/.config/fish/iterm2_startup.fish"
+
+eval (python -m virtualfish auto_activation)
