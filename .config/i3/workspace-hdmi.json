@@ -13,7 +13,6 @@
     "nodes": [
         { "name": "Trello", "swallows": [{ "class": "^Chromium$", "instance": "^crx_gkcknpgdmiigoagkcoglklgaagnpojed$" }] },
         { "name": "Slack",  "swallows": [{ "class": "^Slack$", "instance": "^slack$" }] },
-        { "name": "Music",  "swallows": [{ "class": "^Google Play Music Desktop Player$" }] },
-        { "name": "Signal", "swallows": [{ "class": "^Chromium$", "instance": "^crx_bikioccmkafdpakkkcpdbppfkghcmihk$" }] }
+        { "name": "Music",  "swallows": [{ "class": "^Google Play Music Desktop Player$" }] }
     ]
 }
