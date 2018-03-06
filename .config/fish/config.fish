@@ -1,3 +1,6 @@
+# https://github.com/fish-shell/fish-shell/issues/1301
+if status --is-interactive
+
 set -gx fish_greeting ''
 
 # Python
@@ -28,3 +31,5 @@ end
 source "$HOME/.config/fish/iterm2_startup.fish"
 
 eval (python -m virtualfish auto_activation)
+
+end
