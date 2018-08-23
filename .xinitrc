@@ -12,10 +12,9 @@ setxkbmap -model dell101 \
 xkbset nullify lock
 
 # set screen resolution nicely
-echo xrandr \
-    --dpi 110 \
-    --output DP-0   --auto --pos 1920x0 --primary \
-    --output HDMI-0 --auto --pos    0x100
+xrandr --dpi 110 \
+    --output DP-0   --auto --pos 0x0 --primary \
+    --output HDMI-0 --auto --pos 3840x100
 
 compton --config ~/.config/compton/compton.conf -b
 

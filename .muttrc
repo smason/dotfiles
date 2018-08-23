@@ -26,7 +26,7 @@ set spoolfile = '+INBOX'
 set postponed = '+[Gmail]/Drafts'
 set copy = no
 # set any_label = '+[Gmail]/any_label'
-# set trash     = '+[Gmail]/Trash'
+set trash     = '+[Gmail]/Bin'
 
 # LOCAL FOLDERS FOR CACHED HEADERS AND CERTIFICATES
 set header_cache     = ~/.mutt/cache/headers
