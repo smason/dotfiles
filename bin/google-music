@@ -1,5 +1,5 @@
 #!/bin/sh
 
-export GPMDP_AUTHTOKEN="f19a7086-3692-4462-af15-bb8cc0f2c4fe"
+export GPMDP_AUTHTOKEN="2ff6e85c-f066-406f-97a9-3a28500ff83e"
 
-exec ~/.virtualenvs/py36/bin/python ~/bin/google-music.py "$@"
+exec ~/.virtualenvs/py37/bin/python ~/bin/google-music.py "$@"

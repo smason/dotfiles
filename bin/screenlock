@@ -14,7 +14,7 @@ if [ -z "$(find "$png" -mmin -120 2>/dev/null)" ]; then
         "$orig" -background black \
         -resize 3840x2160 \
         -gravity center -extent 3840x2160 \
-        -gravity east   -extent 5760x2160 \
+        -gravity west   -extent 5760x2160 \
         -quality 1 "$png"
 fi
 

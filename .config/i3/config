@@ -58,9 +58,9 @@ bindsym $mod+Shift+q kill
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id dmenu_run
 bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+i       exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/passmenu.py --no-password
-bindsym $mod+Shift+i exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/passmenu.py --no-username
-bindsym $mod+Shift+u exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/passmenu.py
+bindsym $mod+i       exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/passmenu.py --no-password
+bindsym $mod+Shift+i exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/passmenu.py --no-username
+bindsym $mod+Shift+u exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/passmenu.py
 
 exec --no-startup-id xautolock -time 7 -locker screenlock
 bindsym $mod+Escape exec xautolock -locknow
@@ -74,9 +74,9 @@ for_window [title="Oracle VM VirtualBox( Manager)?$"] floating enable
 for_window [class="^Pinentry-gtk-2$"] border pixel 32, floating enable
 
 # Sound
-bindsym $mod+KP_Subtract exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py -0.1
-bindsym $mod+KP_Add      exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py +0.1
-bindsym $mod+KP_Enter    exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/pulse-volume.py --reset
+bindsym $mod+KP_Subtract exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/pulse-volume.py -0.1
+bindsym $mod+KP_Add      exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/pulse-volume.py +0.1
+bindsym $mod+KP_Enter    exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/pulse-volume.py --reset
 
 bindcode $mod+83  exec --no-startup-id ~/bin/google-music rewind
 bindcode $mod+84  exec --no-startup-id ~/bin/google-music playPause
@@ -96,8 +96,8 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-bindsym $mod+Prior exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch -1
-bindsym $mod+Next  exec --no-startup-id ~/.virtualenvs/py36/bin/python ~/bin/i3_tab_switch +1
+bindsym $mod+Prior exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/i3_tab_switch -1
+bindsym $mod+Next  exec --no-startup-id ~/.virtualenvs/py37/bin/python ~/bin/i3_tab_switch +1
 
 # move focused window
 bindsym $mod+Shift+j move left

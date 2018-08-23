@@ -3,7 +3,9 @@ import sys
 import json
 import argparse
 
+ # from pip install -U websocket-client
 import websocket
+
 
 class Player(websocket.WebSocket):
     def sendMsg(self, **kwargs):
@@ -15,6 +17,7 @@ class Player(websocket.WebSocket):
             method='connect',
             arguments=('Sams Controller',)+args,
         )
+
 
 def default_arg_parser():
     default_url = os.environ.get(
@@ -32,6 +35,7 @@ def default_arg_parser():
                         default=os.environ.get('GPMDP_AUTHTOKEN'))
     return parser
 
+
 if __name__ == '__main__':
     args = default_arg_parser().parse_args()
 
@@ -41,6 +45,9 @@ if __name__ == '__main__':
     auth_token = args.auth
     if not auth_token:
         player.sendConnect()
+
+        # make sure that GPMDP_AUTHTOKEN is unset in the containing shell script
+        print("please enter the pin number and end of file")
         code = sys.stdin.read()
         player.sendConnect(code.strip())
 
