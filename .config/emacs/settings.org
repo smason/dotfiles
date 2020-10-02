@@ -1,0 +1,327 @@
+#+STARTUP: content
+
+* General options
+
+  This config has been copied from https://github.com/pinpox/dotfiles-emacs/
+
+** Default encoding (UTF-8)
+   Use UTF-8 by default. I don't see why utf-8 should not be used everywhere as
+   most systems support it.
+
+   #+BEGIN_SRC emacs-lisp
+   (prefer-coding-system        'utf-8)
+   (set-language-environment    'utf-8)
+   (set-default-coding-systems  'utf-8)
+   (set-terminal-coding-system  'utf-8)
+   (set-selection-coding-system 'utf-8)
+   #+END_SRC
+
+** Package management and use-package
+   #+BEGIN_SRC emacs-lisp
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+
+     (eval-when-compile
+       (require 'use-package))
+
+     (setq use-package-always-ensure t)
+   #+END_SRC
+
+** Memory Management
+   Enforce a sneaky Garbage Collection strategy to minimize GC
+   interference with the activity.
+
+   During normal use a high GC threshold is set. When idling GC is
+   immediately triggered and a low threshold is set.
+
+   #+begin_src emacs-lisp
+     (use-package gcmh
+       :config
+       (gcmh-mode 1))
+   #+end_src
+
+** OTHER behaviour
+
+   Asking for confirmation when closing an unsaved file seems like a good idea.
+   But entering 'y' or 'n' is enough
+
+   #+begin_src emacs-lisp
+   (defalias 'yes-or-no-p 'y-or-n-p)
+   #+end_src
+
+** Backups
+   Backup files are created on save in the same directory as the file and end in
+   ~. They can be numbered which makes most sense combined with a different save
+   location and automatic pruning. Autosave files are created between saves after
+   a sufficient timeout in the current directory for crash detection, they begin
+   and end with #. Let’s change their save location as well.
+   #+begin_src emacs-lisp
+     (setq backup-directory-alist '((".*" . "~/.config/emacs/backup")) ;
+	   version-control t
+	   delete-old-versions t
+	   auto-save-list-file-prefix "~/.config/emacs/autosave/"
+	   auto-save-file-name-transforms '((".*" "~/.config/emacs/autosave/" t)))
+   #+end_src
+
+** Indentation and whitespace
+   To be able to define the indentation-style on per-language basis, here are to
+   interactive functions, which can be called manually or in a hook to set the
+   style for a buffer or a language. The size of tabs is extracted into a
+   variable, so I set it once and use it as needed.
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     ;; Create a variable for our preferred tab width
+     (setq custom-tab-width 4)
+
+     ;; Two callable functions for enabling/disabling tabs in Emacs
+     (defun disable-tabs () (setq indent-tabs-mode nil))
+     (defun enable-tabs  ()
+       ;; (local-set-key (kbd "TAB") 'tab-to-tab-stop)
+       (setq indent-tabs-mode t)
+       (setq tab-width custom-tab-width))
+   #+END_SRC
+
+   I set tabs as default and then revert the setting for those languages on
+   which I want spaces.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'prog-mode-hook 'enable-tabs)
+
+     (add-hook 'lisp-mode-hook 'disable-tabs)
+     (add-hook 'emacs-lisp-mode-hook 'disable-tabs)
+     (add-hook 'org-mode-hook 'disable-tabs)
+     (add-hook 'python-mode-hook 'disable-tabs)
+
+     ;; Language-Specific Tweaks
+     (setq-default python-indent-offset custom-tab-width) ;; Python
+     (setq-default js-indent-level custom-tab-width)      ;; Javascript
+
+     (setq-default
+        c-default-style "python"
+	c-basic-offset custom-tab-width)
+
+     ;; Making electric-indent behave sanely
+     (setq-default electric-indent-inhibit t)
+
+     ;; Make the backspace properly erase the tab instead of
+     ;; removing 1 space at a time.
+     (setq backward-delete-char-untabify-method 'hungry)
+   #+END_SRC
+
+   To display indentation guides I use [[https://github.com/DarthFennec/highlight-indent-guides][highlight-indent-guides]]. It seems to work
+   well with any indentation style and looks fancy with some settings.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package highlight-indent-guides
+       :config
+       (setq highlight-indent-guides-delay 0)
+       (setq highlight-indent-guides-method 'character)
+       ;; (setq highlight-indent-guides-character ?\┆) ;; Indent character samples: | ┆ ┊
+       (setq highlight-indent-guides-responsive 'top)
+       (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+       (add-hook 'org-mode-hook 'highlight-indent-guides-mode))
+   #+END_SRC
+
+   Lastly some sane defaults. Trailing whitespace is deleted on save and I set
+   the fill-collum to 80, which breaks up line while typing after the 80th
+   character. The last line fixes the strange behaviour of the backspace key of
+   deleting tabs only one space at a time. Pressing backspace on a tab should
+   delete it.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq whitespace-style '(face trailing))
+     (global-whitespace-mode)
+     (setq show-trailing-whitespace t
+           sentence-end-double-space nil
+           default-fill-column 80)
+     (add-hook 'before-save-hook 'delete-trailing-whitespace)
+     (setq backward-delete-char-untabify-method 'hungry)
+   #+END_SRC
+
+** Remote editing
+   If TRAMP makes backup files, they should better be kept locally than remote.
+   Also setting the default tramp method to =ssh= has solved some problems for
+   me on specific servers.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq tramp-backup-directory-alist backup-directory-alist)
+     (customize-set-variable 'tramp-default-method "ssh")
+   #+END_SRC
+
+* Language server protocol
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package lsp-mode
+      :ensure t
+      :init (setq lsp-inhibit-message t
+                  lsp-eldoc-render-all nil
+                  lsp-highlight-symbol-at-point nil))
+
+    (use-package lsp-ui
+      :ensure t
+      :config
+      (setq lsp-ui-flycheck-enable t
+            lsp-ui-imenu-enable t
+            lsp-ui-doc-enable nil
+            lsp-ui-sideline-enable nil
+            lsp-ui-sideline-show-symbol t
+            lsp-ui-sideline-show-hover t
+            lsp-ui-sideline-ignore-duplicate t
+            lsp-ui-sideline-show-code-actions t
+            lsp-ui-sideline-update-mode 'point))
+
+    (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+    ;; Enable LSP for some languages
+    (add-hook 'python-mode-hook 'lsp)
+    (add-hook 'c-mode-hook 'lsp)
+    (add-hook 'c++-mode-hook 'lsp)
+
+    (add-hook 'python-mode-hook 'flycheck-mode)
+    (add-hook 'c-mode-hook 'flycheck-mode)
+    (add-hook 'c++-mode-hook 'flycheck-mode)
+  #+END_SRC
+
+* Linting, spellcheck and reformatting
+
+** [[https://github.com/flycheck/flycheck][flycheck]]
+   On the fly syntax checking
+   #+BEGIN_SRC emacs-lisp
+   (use-package flycheck
+     :ensure t
+     :init (global-flycheck-mode))
+   #+END_SRC
+
+* Completion and snippets
+
+** [[https://github.com/company-mode/company-mode][company-mode]]
+   Modular in-buffer completion framework for Emacs
+   #+BEGIN_SRC emacs-lisp
+
+     (use-package company
+       :ensure t
+       :config
+       (progn
+         (setq company-idle-delay 0.2
+               company-selection-wrap-around t
+               company-dabberv-downcase 0
+               company-minimum-prefix-length 1
+               company-show-numbers t
+               company-tooltip-limit 20)
+         (company-tng-configure-default)
+         (define-key company-active-map [tab] nil)
+         (define-key company-active-map (kbd "TAB") nil)
+         )
+
+;;       ;; Facing
+;;       (unless (face-attribute 'company-tooltip :background)
+;;         (set-face-attribute 'company-tooltip nil :background "black" :foreground "gray40")
+;;         (set-face-attribute 'company-tooltip-selection nil :inherit 'company-tooltip :background "gray15")
+;;         (set-face-attribute 'company-preview nil :background "black")
+;;         (set-face-attribute 'company-preview-common nil :inherit 'company-preview :foreground "gray40")
+;;         (set-face-attribute 'company-scrollbar-bg nil :inherit 'company-tooltip :background "gray20")
+;;         (set-face-attribute 'company-scrollbar-fg nil :background "gray40"))
+
+       ;; Activating globally
+       (global-company-mode t)
+
+;;       (use-package company-quickhelp
+;;         :ensure t
+;;         :after company
+;;         :config
+;;         (company-quickhelp-mode 1))
+;;
+       (use-package company-quickhelp          ; Documentation popups for Company
+         :ensure t
+         :defer t
+         :init (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
+         )
+
+
+      (push 'company-capf company-backends)
+   #+END_SRC
+
+* Other tools
+
+** [[https://magit.vc/][magit]]
+   #+BEGIN_SRC emacs-lisp
+   (use-package magit
+     :ensure t
+     :defer t)
+   #+END_SRC
+
+
+* Spellcheck
+  #+BEGIN_SRC emacs-lisp
+
+  (when (executable-find "hunspell")
+    (setq-default ispell-program-name "hunspell")
+    (setq ispell-really-hunspell t))
+
+(eval-after-load "flyspell"
+  '(progn
+     (defun flyspell-goto-next-and-popup ( )
+       "Goto the next spelling error, popup menu, and stop when the end of buffer is reached."
+       (interactive)
+       (while (< (point) (point-max))
+     (flyspell-goto-next-error)
+     (redisplay)
+     (flyspell-correct-word-before-point))
+       (message "No more spelling errors in buffer.")
+       )
+     ))
+     ;; (define-key flyspell-mode-map (kbd "C-<f8>") 'flyspell-goto-next-and-popup)
+  #+END_SRC
+
+* Appearance
+
+  Removes the menu,tool and scrollbars along with the splash-screen.
+  #+BEGIN_SRC emacs-lisp
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (setq inhibit-splash-screen t)
+    ;; (global-hl-line-mode 1)                             ; Highlight current line
+
+    (show-paren-mode 1)                                    ; Show matching parenthesis
+    (setq show-paren-delay 0)                              ; Show it immediately, don't delay
+  #+END_SRC
+
+  #+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(font . "Fira Code-10"))
+  #+end_src
+
+** [[https://github.com/TheBB/spaceline][spaceline]]
+   Show a nicer mode-line
+   #+BEGIN_SRC emacs-lisp
+     (use-package spaceline
+     :ensure t
+     :init
+     (require 'spaceline-config)
+     (setq powerline-default-separator 'slant)
+     ; (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+     ; (setq evil-normal-state-tag "NORMAL")
+     ; (setq evil-insert-state-tag "INSERT")
+     ; (setq evil-visual-state-tag "VISUAL")
+     ; (setq evil-emacs-state-tag "EMACS")
+     :config
+     (progn
+     (spaceline-spacemacs-theme)
+     (spaceline-toggle-minor-modes-on)))
+   #+END_SRC
+
+*** base16-themes
+    #+BEGIN_SRC emacs-lisp
+    (use-package base16-theme :ensure t
+      :config
+      (load-theme 'base16-atelier-dune-light t))
+    #+END_SRC
+
+*** sanityinc-theme
+
+    #+begin_src emacs-lisp
+    ;;(use-package color-theme-sanityinc-tomorrow :ensure t
+    ;;:config
+    ;;(load-theme 'sanityinc-tomorrow-day t))
+    #+end_src

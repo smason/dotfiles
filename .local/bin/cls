@@ -1,0 +1,15 @@
+#!/bin/sh
+
+case "$TERM" in
+    "xterm-256color")
+        # basically just iTerm2
+        echo -ne '\033]50;ClearScrollback\a';;
+    "screen-256color")
+        # ~/.tmux.conf sets it to use this
+        # "tmux" and "tmux-256color" aren't known elsewhere
+        tmux clear && tmux clear-history
+        echo -ne '\033]50;ClearScrollback\a';;
+    *)
+        # assume other terminals follow xterm
+        echo -ne '\033c';;
+esac
