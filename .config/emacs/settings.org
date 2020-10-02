@@ -114,6 +114,7 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package highlight-indent-guides
+       :ensure t
        :config
        (setq highlight-indent-guides-delay 0)
        (setq highlight-indent-guides-method 'character)
