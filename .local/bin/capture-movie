@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -euf -o pipefail
+
+# needs the v4l2loopback kernel module loaded, e.g.:
+#
+#   sudo modprobe v4l2loopback video_nr=7 card_label="gphoto2-loopback" exclusive_caps=1
+#
+# installed via: pacman -Sy v4l2loopback-dkms
+# putting the above in as "options" into a /etc/modprobe.d/ file helps!
+
+# gphoto2 options for Canon 500D
+#   picturestyle 3=neutral 4=faithful
+#   whitebalance 0=auto 1=daylight 2=shadow 4=tungsten
+# for more see: gphoto2 --list-all-config | less
+
+# see
+#  v4l2-ctl --list-devices
+# to make sure it's being written to the right place
+
+# potentially useful:
+#   gphoto2 --get-config batterylevel
+# http://www.gphoto.org/doc/remote/
+
+capture() {
+    # --set-config aperture=4
+
+    gphoto2 \
+        --set-config picturestyle=4 \
+        --set-config whitebalance=0 \
+        --set-config meteringmode=3 \
+        --set-config autoexposuremode=0 \
+        --stdout --capture-movie
+}
+
+convert() {
+    # -vf vflip \
+    ffmpeg \
+         -stats \
+        -c mjpeg -i - \
+        -vcodec rawvideo \
+        -pix_fmt yuv420p \
+        -f v4l2 "$1"
+}
+
+capture | convert "$1"

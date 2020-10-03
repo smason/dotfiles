@@ -1,0 +1,251 @@
+### Variables
+#
+# Mod4 = "Logo" key, Mod1 is Alt
+set $mod Mod4
+
+exec foot --server
+set $term footclient
+set $bin ~/.local/bin
+set $cfgdir ~/.config/sway
+set $python ~/.local/pyvenv/bin/python
+set $menu rofi -location 2 -show run
+
+### Output configuration
+#
+# laptop monitor (names via swaymsg -t get_outputs)
+output eDP-1 position 100 1440
+
+# external screen
+output DP-3 position 0 0
+
+# background
+output * bg "~/.config/sway/bg.jpeg" fill
+
+### Idle configuration
+set $lock 'swaylock -f -F -c 000000'
+exec swayidle -w \
+         timeout 300 $lock \
+         timeout 600 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+         before-sleep $lock \
+         lock $lock
+
+bindsym $mod+Escape exec loginctl lock-session
+
+# bindsym $mod+Shift+s exec sway-screenshot window
+
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+### Input configuration
+#
+# see `swaymsg -t get_inputs` for types/names and `man 5 sway-input` for help
+
+input type:keyboard {
+    # keyboard
+    xkb_layout gb
+
+    # Make caps lock work as control
+    xkb_options ctrl:nocaps
+}
+
+input type:touchpad {
+    # disable-while-typing
+    dwt enabled
+    natural_scroll enabled
+
+    # https://wayland.freedesktop.org/libinput/doc/latest/clickpad-softbuttons.html
+    click_method button_areas
+
+    # middle_emulation disabled
+}
+
+### Key bindings
+#
+# Basics:
+#
+    # start a terminal
+    bindsym $mod+Return exec $term
+    bindsym $mod+Shift+Return exec foot
+
+    # kill focused window
+    bindsym $mod+Shift+q kill
+
+    # start your launcher
+    bindsym $mod+d exec $menu
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+
+    # reload the configuration file
+    bindsym $mod+shift+c reload
+
+    # exit sway (logs you out of your Wayland session)
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+
+    bindsym XF86MonBrightnessDown exec $python $bin/sway-kb display_bl darker
+    bindsym XF86MonBrightnessUp   exec $python $bin/sway-kb display_bl brighter
+
+    bindsym XF86KbdBrightnessDown exec $python $bin/sway-kb kbd_bl darker
+    bindsym XF86KbdBrightnessUp   exec $python $bin/sway-kb kbd_bl brighter
+
+    bindsym XF86AudioMute         exec $python $bin/sway-kb volume mute
+    bindsym XF86AudioLowerVolume  exec $python $bin/sway-kb volume lower
+    bindsym XF86AudioRaiseVolume  exec $python $bin/sway-kb volume raise
+
+#
+# Moving around:
+#
+
+    # or use $mod+[up|down|left|right]
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # _move_ the focused window with the same, but add Shift
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+#
+# Workspaces:  (Note: workspaces don't have to be numbers)
+#
+    # switch to workspace
+    bindsym $mod+1 workspace 1
+    bindsym $mod+2 workspace 2
+    bindsym $mod+3 workspace 3
+    bindsym $mod+4 workspace 4
+    bindsym $mod+5 workspace 5
+    bindsym $mod+6 workspace 6
+    bindsym $mod+7 workspace 7
+    bindsym $mod+8 workspace 8
+    bindsym $mod+9 workspace 9
+    bindsym $mod+0 workspace 10
+    # move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace 1
+    bindsym $mod+Shift+2 move container to workspace 2
+    bindsym $mod+Shift+3 move container to workspace 3
+    bindsym $mod+Shift+4 move container to workspace 4
+    bindsym $mod+Shift+5 move container to workspace 5
+    bindsym $mod+Shift+6 move container to workspace 6
+    bindsym $mod+Shift+7 move container to workspace 7
+    bindsym $mod+Shift+8 move container to workspace 8
+    bindsym $mod+Shift+9 move container to workspace 9
+    bindsym $mod+Shift+0 move container to workspace 10
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+    position top
+
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    status_command $python -u $cfgdir/status.py
+
+    colors {
+        statusline #cccccc
+        background #222222c0
+        focused_workspace #63ace5c0 #63ace5c0 #323232
+        inactive_workspace #222222c0 #222222c0 #888888
+    }
+}
+
+include /etc/sway/config.d/*
+
+
+#
+# theming
+#
+
+font pango:Fira Code 10
+gaps inner 5
+titlebar_padding 3
+
+default_border normal 0
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #63ace5 #63ace5 #ffffff #ff0000   #285577
+client.focused_inactive #666666 #666666 #ffffff #ff0000   #5f676a
+client.unfocused        #222222 #222222 #888888 #ff0000   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.background       #000000
+
+# see https://developer.gnome.org/pango/stable/pango-Markup.html for formatting when using "pango:" prefix on font
+# title_format '<span size="1000">%title</span>'
+
+# defaults for wayland windows
+for_window [app_id=.*] {
+  font pango:Fira Code 0
+  title_format ''
+}
+
+# defaults for x11 windows
+for_window [class=.*] {
+  font pango:Fira Code 0
+  title_format ''
+}

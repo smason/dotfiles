@@ -252,6 +252,12 @@
      :defer t)
    #+END_SRC
 
+** pyvenv
+#+begin_src emacs-lisp
+   (use-package pyvenv
+     :ensure t
+   )
+#+end_src
 
 * Spellcheck
   #+BEGIN_SRC emacs-lisp
