@@ -1,12 +1,12 @@
 from time import time, sleep, strftime
 from math import log
+from pathlib import Path
 
 from alsaaudio import Mixer, PCM_PLAYBACK
 from psutil import cpu_percent, disk_io_counters, net_io_counters
 
 
 DB_SCALE = log(10) / 10
-mixer = Mixer()
 
 
 def si_prefix(n, binary=True):
@@ -44,17 +44,59 @@ def get_cpu():
     return f"CPU {cpu:.0%}"
 
 
-def get_sound():
-    mixer.handleevents()
+def battery_gen():
+    kernel = Path('/sys/class/power_supply/BAT0')
 
-    if not any(mixer.getmute()):
-        [vol] = mixer.getvolume(PCM_PLAYBACK)
+    status = kernel / 'status'
+    capacity = kernel / 'capacity'
 
-        if vol > 0:
-            db = log(vol / 100) / DB_SCALE
-            return f'Vol {db:.1f}dB'
+    while True:
+        stat = status.read_bytes()
 
-    return 'Mute'
+        if stat.startswith(b'Discharging'):
+            cap = int(capacity.read_bytes())
+            yield f'Bat {cap}%'
+        elif stat.startswith(b'Charging'):
+            cap = int(capacity.read_bytes())
+            yield f'AC {cap}%'
+        elif stat.startswith(b'Full'):
+            yield 'AC Full'
+        else:
+            yield 'Bat {stat!r}'
+
+
+def backlight_gen():
+    kernel = Path('/sys/class/backlight/intel_backlight')
+
+    brightness = kernel / 'brightness'
+    limit = int((kernel / 'max_brightness').read_bytes())
+
+    while True:
+        value = int(brightness.read_bytes())
+
+        if value > 0:
+            db = log(value / limit + 0.01) / DB_SCALE
+            yield f'BL {db:.1f}dB'
+        else:
+            yield 'Dark'
+
+
+def sound_gen():
+    mixer = Mixer()
+
+    while True:
+        mixer.handleevents()
+
+        msg = 'Mute'
+
+        if not any(mixer.getmute()):
+            [vol] = mixer.getvolume(PCM_PLAYBACK)
+
+            if vol > 0:
+                db = log(vol / 100) / DB_SCALE
+                msg = f'Vol {db:.1f}dB'
+
+        yield msg
 
 
 def rw_stats_gen(name, fn):
@@ -86,16 +128,21 @@ def net_io_stats():
 
 
 def main():
-    disk_stats = rw_stats_gen('disk', disk_rw_stats)
-    net_stats = rw_stats_gen('net', net_io_counters)
+    disk = rw_stats_gen('disk', disk_rw_stats)
+    net = rw_stats_gen('net', net_io_counters)
+    backlight = backlight_gen()
+    sound = sound_gen()
+    battery = battery_gen()
 
     while True:
         # trying to keep fixed width items on the right
         print(
-            next(net_stats),
-            next(disk_stats),
+            next(net),
+            next(disk),
+            next(battery),
             get_cpu(),
-            get_sound(),
+            next(backlight),
+            next(sound),
             get_datetime(),
             sep=' ][ ')
 

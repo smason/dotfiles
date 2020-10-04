@@ -5,10 +5,12 @@ set $mod Mod4
 
 exec foot --server
 set $term footclient
-set $bin ~/.local/bin
 set $cfgdir ~/.config/sway
-set $python ~/.local/pyvenv/bin/python
+set $bin ~/.local/bin
 set $menu rofi -location 2 -show run
+
+# e.g. set $python and $backlight here
+include $cfgdir/*.conf
 
 ### Output configuration
 #
@@ -86,13 +88,10 @@ input type:touchpad {
     bindsym $mod+shift+c reload
 
     # exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you really want to exit sway?' -b 'Yes' 'swaymsg exit'
 
-    bindsym XF86MonBrightnessDown exec $python $bin/sway-kb display_bl darker
-    bindsym XF86MonBrightnessUp   exec $python $bin/sway-kb display_bl brighter
-
-    bindsym XF86KbdBrightnessDown exec $python $bin/sway-kb kbd_bl darker
-    bindsym XF86KbdBrightnessUp   exec $python $bin/sway-kb kbd_bl brighter
+    bindsym XF86MonBrightnessDown exec $python $cfgdir/backlight.py $backlight darker
+    bindsym XF86MonBrightnessUp   exec $python $cfgdir/backlight.py $backlight brighter
 
     bindsym XF86AudioMute         exec $python $bin/sway-kb volume mute
     bindsym XF86AudioLowerVolume  exec $python $bin/sway-kb volume lower
