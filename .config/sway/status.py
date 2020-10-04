@@ -10,23 +10,27 @@ mixer = Mixer()
 
 
 def si_prefix(n, binary=True):
+    if n == 0:
+        return '0'
+
     if n < 100:
-        return f'{n:.1f}'
+        fix = ""
+    else:
+        kilo = 1024 if binary else 1000
 
-    kilo = 1024 if binary else 1000
-
-    for fix in "kMGTPEZY":
-        n /= kilo
-        if n < 100:
-            break
+        for fix in "kMGTPEZY":
+            n /= kilo
+            if n < 100:
+                break
 
     if binary:
         fix = f'{fix}i'
 
-    if n < 1:
-        return f'{n:.2f}{fix}'
-    else:
+    if n < 10:
+        if n < 1:
+            return f'{n:.2f}{fix}'
         return f'{n:.1f}{fix}'
+    return f'{n:.0f}{fix}'
 
 
 def get_datetime():
@@ -86,13 +90,14 @@ def main():
     net_stats = rw_stats_gen('net', net_io_counters)
 
     while True:
+        # trying to keep fixed width items on the right
         print(
             next(net_stats),
             next(disk_stats),
-            get_sound(),
             get_cpu(),
+            get_sound(),
             get_datetime(),
-            sep=' | ')
+            sep=' ][ ')
 
         sleep(5 - time() % 5)
 
