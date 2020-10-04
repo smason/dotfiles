@@ -74,7 +74,7 @@ def backlight_gen():
     while True:
         value = int(brightness.read_bytes())
 
-        if value > 0:
+        if value > 1:
             db = log(value / limit + 0.01) / DB_SCALE
             yield f'BL {db:.1f}dB'
         else:

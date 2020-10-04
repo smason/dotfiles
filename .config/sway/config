@@ -84,18 +84,17 @@ input type:touchpad {
     # mouse button for dragging.
     floating_modifier $mod normal
 
-    # reload the configuration file
+    # TODO: replace these with dmenu/rofi
     bindsym $mod+shift+c reload
-
-    # exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you really want to exit sway?' -b 'Yes' 'swaymsg exit'
 
     bindsym XF86MonBrightnessDown exec $python $cfgdir/backlight.py $backlight darker
     bindsym XF86MonBrightnessUp   exec $python $cfgdir/backlight.py $backlight brighter
 
-    bindsym XF86AudioMute         exec $python $bin/sway-kb volume mute
-    bindsym XF86AudioLowerVolume  exec $python $bin/sway-kb volume lower
-    bindsym XF86AudioRaiseVolume  exec $python $bin/sway-kb volume raise
+    bindsym XF86AudioMute         exec $python $cfgdir/soundcard.py mute
+    bindsym XF86AudioMicMute      exec $python $cfgdir/soundcard.py micmute
+    bindsym XF86AudioLowerVolume  exec $python $cfgdir/soundcard.py lower
+    bindsym XF86AudioRaiseVolume  exec $python $cfgdir/soundcard.py raise
 
 #
 # Moving around:
