@@ -7,7 +7,7 @@ exec foot --server
 set $term footclient
 set $cfgdir ~/.config/sway
 set $bin ~/.local/bin
-set $menu rofi -location 2 -show run
+set $menu wofi --location 2 --show run
 
 # e.g. set $python and $backlight here
 include $cfgdir/*.conf
@@ -84,9 +84,7 @@ input type:touchpad {
     # mouse button for dragging.
     floating_modifier $mod normal
 
-    # TODO: replace these with dmenu/rofi
-    bindsym $mod+shift+c reload
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you really want to exit sway?' -b 'Yes' 'swaymsg exit'
+    bindsym $mod+Shift+s exec sh $cfgdir/swaymenu.sh
 
     bindsym XF86MonBrightnessDown exec $python $cfgdir/backlight.py $backlight darker
     bindsym XF86MonBrightnessUp   exec $python $cfgdir/backlight.py $backlight brighter

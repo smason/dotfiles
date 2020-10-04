@@ -27,7 +27,7 @@ def main():
     elif args.mode == 'raise':
         m = Mixer('Master')
         [level] = m.getvolume(PCM_PLAYBACK)
-        m.setvolume(int(min(100, level * 1.1 + 0.5)))
+        m.setvolume(min(100, int(level * 1.1 + 0.5)))
     else:
         assert False, args.mode
 
