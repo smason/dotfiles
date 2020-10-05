@@ -136,15 +136,16 @@ def main():
 
     while True:
         # trying to keep fixed width items on the right
-        print(
+        line = ''.join(f'[ {s} ]' for s in (
             next(net),
             next(disk),
             next(battery),
             get_cpu(),
             next(backlight),
             next(sound),
-            get_datetime(),
-            sep=' ][ ')
+        ))
+
+        print(f'{line} {get_datetime()}', flush=True)
 
         sleep(5 - time() % 5)
 
