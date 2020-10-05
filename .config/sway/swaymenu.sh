@@ -5,7 +5,7 @@ process() {
 	exit 0
 }
 
-wofi --show dmenu <<EOF | process
+wofi --location 2 --show dmenu <<EOF | process
 reload
 exit
 EOF
