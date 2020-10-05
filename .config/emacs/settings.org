@@ -1,3 +1,4 @@
+#+AUTHOR: Sam Mason <sam@samason.uk>
 #+STARTUP: content
 
 * General options
@@ -9,11 +10,11 @@
    most systems support it.
 
    #+BEGIN_SRC emacs-lisp
-   (prefer-coding-system        'utf-8)
-   (set-language-environment    'utf-8)
-   (set-default-coding-systems  'utf-8)
-   (set-terminal-coding-system  'utf-8)
-   (set-selection-coding-system 'utf-8)
+     (prefer-coding-system        'utf-8)
+     (set-language-environment    'utf-8)
+     (set-default-coding-systems  'utf-8)
+     (set-terminal-coding-system  'utf-8)
+     (set-selection-coding-system 'utf-8)
    #+END_SRC
 
 ** Package management and use-package
@@ -25,6 +26,7 @@
      (eval-when-compile
        (require 'use-package))
 
+     (require 'use-package-ensure)
      (setq use-package-always-ensure t)
    #+END_SRC
 
@@ -37,8 +39,7 @@
 
    #+begin_src emacs-lisp
      (use-package gcmh
-       :config
-       (gcmh-mode 1))
+       :config (gcmh-mode 1))
    #+end_src
 
 ** OTHER behaviour
@@ -47,7 +48,7 @@
    But entering 'y' or 'n' is enough
 
    #+begin_src emacs-lisp
-   (defalias 'yes-or-no-p 'y-or-n-p)
+     (defalias 'yes-or-no-p 'y-or-n-p)
    #+end_src
 
 ** Backups
@@ -57,7 +58,7 @@
    a sufficient timeout in the current directory for crash detection, they begin
    and end with #. Let’s change their save location as well.
    #+begin_src emacs-lisp
-     (setq backup-directory-alist '((".*" . "~/.config/emacs/backup")) ;
+     (setq backup-directory-alist '((".*" . "~/.config/emacs/backup"))
 	   version-control t
 	   delete-old-versions t
 	   auto-save-list-file-prefix "~/.config/emacs/autosave/"
@@ -70,7 +71,7 @@
    style for a buffer or a language. The size of tabs is extracted into a
    variable, so I set it once and use it as needed.
 
-   #+BEGIN_SRC emacs-lisp :tangle yes
+   #+BEGIN_SRC emacs-lisp
      ;; Create a variable for our preferred tab width
      (setq custom-tab-width 4)
 
@@ -114,7 +115,6 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package highlight-indent-guides
-       :ensure t
        :config
        (setq highlight-indent-guides-delay 0)
        (setq highlight-indent-guides-method 'character)
@@ -154,13 +154,12 @@
 
   #+BEGIN_SRC emacs-lisp
     (use-package lsp-mode
-      :ensure t
-      :init (setq lsp-inhibit-message t
-                  lsp-eldoc-render-all nil
-                  lsp-highlight-symbol-at-point nil))
+      :config
+      (setq lsp-inhibit-message t
+            lsp-eldoc-render-all nil
+            lsp-highlight-symbol-at-point nil))
 
     (use-package lsp-ui
-      :ensure t
       :config
       (setq lsp-ui-flycheck-enable t
             lsp-ui-imenu-enable t
@@ -190,7 +189,6 @@
    On the fly syntax checking
    #+BEGIN_SRC emacs-lisp
    (use-package flycheck
-     :ensure t
      :init (global-flycheck-mode))
    #+END_SRC
 
@@ -201,7 +199,6 @@
    #+BEGIN_SRC emacs-lisp
 
      (use-package company
-       :ensure t
        :config
        (progn
          (setq company-idle-delay 0.2
@@ -215,30 +212,13 @@
          (define-key company-active-map (kbd "TAB") nil)
          )
 
-;;       ;; Facing
-;;       (unless (face-attribute 'company-tooltip :background)
-;;         (set-face-attribute 'company-tooltip nil :background "black" :foreground "gray40")
-;;         (set-face-attribute 'company-tooltip-selection nil :inherit 'company-tooltip :background "gray15")
-;;         (set-face-attribute 'company-preview nil :background "black")
-;;         (set-face-attribute 'company-preview-common nil :inherit 'company-preview :foreground "gray40")
-;;         (set-face-attribute 'company-scrollbar-bg nil :inherit 'company-tooltip :background "gray20")
-;;         (set-face-attribute 'company-scrollbar-fg nil :background "gray40"))
-
        ;; Activating globally
        (global-company-mode t)
 
-;;       (use-package company-quickhelp
-;;         :ensure t
-;;         :after company
-;;         :config
-;;         (company-quickhelp-mode 1))
-;;
-       (use-package company-quickhelp          ; Documentation popups for Company
-         :ensure t
-         :defer t
+       ;; Documentation popups for Company
+       (use-package company-quickhelp :defer t
          :init (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
          )
-
 
       (push 'company-capf company-backends)
    #+END_SRC
@@ -247,16 +227,12 @@
 
 ** [[https://magit.vc/][magit]]
    #+BEGIN_SRC emacs-lisp
-   (use-package magit
-     :ensure t
-     :defer t)
+   (use-package magit :defer t)
    #+END_SRC
 
 ** pyvenv
 #+begin_src emacs-lisp
-   (use-package pyvenv
-     :ensure t
-   )
+   (use-package pyvenv)
 #+end_src
 
 * Spellcheck
@@ -303,7 +279,6 @@
    Show a nicer mode-line
    #+BEGIN_SRC emacs-lisp
      (use-package spaceline
-     :ensure t
      :init
      (require 'spaceline-config)
      (setq powerline-default-separator 'slant)
@@ -320,15 +295,6 @@
 
 *** base16-themes
     #+BEGIN_SRC emacs-lisp
-    (use-package base16-theme :ensure t
-      :config
-      (load-theme 'base16-atelier-dune-light t))
+    (use-package base16-theme
+      :config (load-theme 'base16-atelier-dune-light t))
     #+END_SRC
-
-*** sanityinc-theme
-
-    #+begin_src emacs-lisp
-    ;;(use-package color-theme-sanityinc-tomorrow :ensure t
-    ;;:config
-    ;;(load-theme 'sanityinc-tomorrow-day t))
-    #+end_src

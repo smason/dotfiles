@@ -85,7 +85,7 @@ input type:touchpad {
     # mouse button for dragging.
     floating_modifier $mod normal
 
-    bindsym $mod+Shift+s exec sh $cfgdir/swaymenu.sh
+    bindsym $mod+Shift+e exec sh $cfgdir/swaymenu.sh
 
     bindsym XF86MonBrightnessDown exec $python $cfgdir/backlight.py $backlight darker
     bindsym XF86MonBrightnessUp   exec $python $cfgdir/backlight.py $backlight brighter
