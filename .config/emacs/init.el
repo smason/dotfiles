@@ -3,10 +3,7 @@
 ;;  Emacs Startup File --- initialization for Emacs
 ;;; Code:
 
-;; A big contributor to startup times is garbage collection. We up the gc
-;; threshold to temporarily prevent it from running, then reset it later by
-;; enabling `gcmh-mode'. Not resetting it will cause stuttering/freezes.
-(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-threshold (* 1024 1024))
 
 (require 'package)
 (setq package-archives '(("org" . "http://orgmode.org/elpa/")

@@ -38,8 +38,8 @@
    immediately triggered and a low threshold is set.
 
    #+begin_src emacs-lisp
-     (use-package gcmh
-       :config (gcmh-mode 1))
+   ;  (use-package gcmh
+   ;    :config (gcmh-mode 1))
    #+end_src
 
 ** OTHER behaviour
