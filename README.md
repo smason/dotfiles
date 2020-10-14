@@ -24,10 +24,20 @@ config add -p
 config commit
 ```
 
-# repos
+# branches
 
  * `wayland` is current; Linux with Wayland for graphics
  * `xorg` is my older X11 based setup
  * `osx` has some Apple stuff
 
 [harfangk bare dotfiles]: https://harfangk.github.io/2016/09/18/manage-dotfiles-with-a-git-bare-repository.html
+
+# copying terminfo
+
+I have a habit of using obscure terminals that don't exist on remote
+systems. I also tend to forget how to copy this across to other
+systems, here's what to do:
+
+``` sh
+infocmp | ssh $HOST tic -x -
+```
