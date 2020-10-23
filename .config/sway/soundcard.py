@@ -18,8 +18,8 @@ def main():
         m.setmute(not any(m.getmute()))
     elif args.mode == 'micmute':
         m = Mixer('Capture')
-        cur = any(v > 0 for v in m.getvolume(PCM_CAPTURE))
-        m.setvolume(0 if cur else 70)
+        cur = any(v > 0 for v in m.getrec())
+        m.setrec(not cur)
     elif args.mode == 'lower':
         m = Mixer('Master')
         [level] = m.getvolume(PCM_PLAYBACK)

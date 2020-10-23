@@ -136,9 +136,17 @@
      (setq show-trailing-whitespace t
            sentence-end-double-space nil
            default-fill-column 80)
-     (add-hook 'before-save-hook 'delete-trailing-whitespace)
      (setq backward-delete-char-untabify-method 'hungry)
    #+END_SRC
+
+   https://emacs.stackexchange.com/a/38778/15385 suggests the
+   following to prevent whitespace being highlighted inappropriately
+
+   #+begin_src emacs-lisp
+     (defun prevent-whitespace-mode-for-magit ()
+       (not (derived-mode-p 'magit-mode)))
+     (add-function :before-while whitespace-enable-predicate 'prevent-whitespace-mode-for-magit)
+   #+end_src
 
 ** Remote editing
    If TRAMP makes backup files, they should better be kept locally than remote.
