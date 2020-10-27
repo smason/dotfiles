@@ -3,7 +3,9 @@
 # Mod4 = "Logo" key, Mod1 is Alt
 set $mod Mod4
 
+exec gammastep -v
 exec foot --server
+
 set $term footclient
 set $cfgdir ~/.config/sway
 set $bin ~/.local/bin
@@ -14,12 +16,15 @@ include $cfgdir/*.conf
 
 ### Output configuration
 #
-# laptop monitor (names via swaymsg -t get_outputs)
-output eDP-1 position 100 1440
+# useful commands:
+#   swaymsg -t get_outputs
+#   swaymsg output DP-3 position 0 0
+#   swaymsg workspace dp3 output DP-2
 
+# laptop monitor
+output eDP-1 position 100 1440
 # external screen
-output DP-3 position 0 0
-workspace dp3 output DP-3
+output DP-2 position 0 0
 
 # background
 output * bg "~/.config/sway/bg.jpeg" fill
@@ -114,7 +119,7 @@ input type:touchpad {
 # Workspaces:  (Note: workspaces don't have to be numbers)
 #
     # switch to workspace
-    bindsym $mod+Grave workspace dp3
+    bindsym $mod+Grave workspace e1
     bindsym $mod+1 workspace 1
     bindsym $mod+2 workspace 2
     bindsym $mod+3 workspace 3
@@ -126,7 +131,7 @@ input type:touchpad {
     bindsym $mod+9 workspace 9
     bindsym $mod+0 workspace 10
     # move focused container to workspace
-    bindsym $mod+Shift+Grave move container to workspace dp3
+    bindsym $mod+Shift+Grave move container to workspace e1
     bindsym $mod+Shift+1 move container to workspace 1
     bindsym $mod+Shift+2 move container to workspace 2
     bindsym $mod+Shift+3 move container to workspace 3

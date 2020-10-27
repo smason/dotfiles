@@ -192,7 +192,6 @@
   #+END_SRC
 
 * Linting, spellcheck and reformatting
-
 ** [[https://github.com/flycheck/flycheck][flycheck]]
    On the fly syntax checking
    #+BEGIN_SRC emacs-lisp
@@ -201,7 +200,6 @@
    #+END_SRC
 
 * Completion and snippets
-
 ** [[https://github.com/company-mode/company-mode][company-mode]]
    Modular in-buffer completion framework for Emacs
    #+BEGIN_SRC emacs-lisp
