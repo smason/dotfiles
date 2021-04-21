@@ -17,7 +17,7 @@ end
 set -x PIP_REQUIRE_VIRTUALENV true
 
 # GPG
-if command -s gpg-connect-agent >/dev/null
+if command -q gpg-connect-agent
     set -x GPG_TTY (tty)
     set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
     gpg-connect-agent -q updatestartuptty /bye >/dev/null
