@@ -30,13 +30,7 @@ output DP-2 position 0 0
 output * bg "~/.config/sway/bg.jpeg" fill
 
 ### Idle configuration
-set $lock 'swaylock -f -F -c 000000'
-exec swayidle -w \
-         timeout 300 $lock \
-         timeout 600 'swaymsg "output * dpms off"' \
-              resume 'swaymsg "output * dpms on"' \
-         before-sleep $lock \
-         lock $lock
+exec swayidle.sh
 
 bindsym $mod+Escape exec loginctl lock-session
 
@@ -119,7 +113,6 @@ input type:touchpad {
 # Workspaces:  (Note: workspaces don't have to be numbers)
 #
     # switch to workspace
-    bindsym $mod+Grave workspace e1
     bindsym $mod+1 workspace 1
     bindsym $mod+2 workspace 2
     bindsym $mod+3 workspace 3
@@ -131,7 +124,6 @@ input type:touchpad {
     bindsym $mod+9 workspace 9
     bindsym $mod+0 workspace 10
     # move focused container to workspace
-    bindsym $mod+Shift+Grave move container to workspace e1
     bindsym $mod+Shift+1 move container to workspace 1
     bindsym $mod+Shift+2 move container to workspace 2
     bindsym $mod+Shift+3 move container to workspace 3
