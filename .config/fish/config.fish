@@ -3,7 +3,7 @@ if test -d ~/.cargo/bin
 end
 
 if command -q ruby
-	set -x PATH (ruby -e 'puts Gem.user_dir') $PATH
+	set -x PATH (ruby -e 'puts Gem.user_dir')/bin $PATH
 end
 
 if test -d ~/.local/bin

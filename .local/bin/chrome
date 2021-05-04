@@ -1,0 +1,5 @@
+#!/bin/sh
+
+exec google-chrome-unstable \
+  --enable-features=UseOzonePlatform \
+  --ozone-platform=wayland

@@ -1,3 +1,5 @@
 #!/bin/sh
 
+export XDG_CURRENT_DESKTOP=sway
+
 exec sway > "$HOME/.local/log/sway.log" 2>&1
