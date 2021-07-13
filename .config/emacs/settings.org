@@ -66,14 +66,12 @@
    #+end_src
 
 ** Indentation and whitespace
-   To be able to define the indentation-style on per-language basis, here are to
-   interactive functions, which can be called manually or in a hook to set the
-   style for a buffer or a language. The size of tabs is extracted into a
-   variable, so I set it once and use it as needed.
+   Generally I try and disable tabs as much as is reasonably possible.
 
    #+BEGIN_SRC emacs-lisp
      ;; Create a variable for our preferred tab width
      (setq custom-tab-width 4)
+     (setq-default tab-width custom-tab-width)
 
      ;; Two callable functions for enabling/disabling tabs in Emacs
      (defun disable-tabs () (setq indent-tabs-mode nil))
@@ -81,18 +79,9 @@
        ;; (local-set-key (kbd "TAB") 'tab-to-tab-stop)
        (setq indent-tabs-mode t)
        (setq tab-width custom-tab-width))
-   #+END_SRC
 
-   I set tabs as default and then revert the setting for those languages on
-   which I want spaces.
-
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'prog-mode-hook 'enable-tabs)
-
-     (add-hook 'lisp-mode-hook 'disable-tabs)
-     (add-hook 'emacs-lisp-mode-hook 'disable-tabs)
-     (add-hook 'org-mode-hook 'disable-tabs)
-     (add-hook 'python-mode-hook 'disable-tabs)
+     ;; Disable tabs everywhere, can override by calling one of the above
+     (setq-default indent-tabs-mode nil)
 
      ;; Language-Specific Tweaks
      (setq-default python-indent-offset custom-tab-width) ;; Python
@@ -158,6 +147,15 @@
      (customize-set-variable 'tramp-default-method "ssh")
    #+END_SRC
 
+* Org mode
+  #+begin_src emacs-lisp
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (ipython . t)
+       (python . t)))
+  #+end_src
+
 * Language server protocol
 
   #+BEGIN_SRC emacs-lisp
@@ -165,6 +163,7 @@
       :config
       (setq lsp-inhibit-message t
             lsp-eldoc-render-all nil
+            lsp-enable-on-type-formatting nil
             lsp-highlight-symbol-at-point nil))
 
     (use-package lsp-ui
@@ -187,6 +186,7 @@
     (add-hook 'c++-mode-hook 'lsp)
 
     (add-hook 'python-mode-hook 'flycheck-mode)
+    (add-hook 'rust-mode-hook 'flycheck-rust-setup)
     (add-hook 'c-mode-hook 'flycheck-mode)
     (add-hook 'c++-mode-hook 'flycheck-mode)
   #+END_SRC
@@ -239,6 +239,22 @@
 ** pyvenv
 #+begin_src emacs-lisp
    (use-package pyvenv)
+#+end_src
+
+** impatient mode
+   Mostly for live-preview of Markdown in the browser
+
+   M-x httpd-start
+   M-x impatient-mode
+   M-x imp-set-user-filter markdown-html
+
+#+begin_src emacs-lisp
+  (defun markdown-html (buffer)
+    (princ (with-current-buffer buffer
+      (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
+    (current-buffer)))
+
+  (use-package impatient-mode :defer t)
 #+end_src
 
 * Spellcheck
