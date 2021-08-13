@@ -62,7 +62,7 @@ def battery_gen():
         elif stat.startswith(b'Full'):
             yield 'AC Full'
         else:
-            yield 'Bat {stat!r}'
+            yield f'Bat {stat!r}'
 
 
 def backlight_gen():

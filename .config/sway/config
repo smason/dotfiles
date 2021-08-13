@@ -75,6 +75,7 @@ input type:touchpad {
 
     # start your launcher
     bindsym $mod+d exec $menu
+    bindsym $mod+Shift+d exec sh $cfgdir/swaymenu.sh
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -82,8 +83,6 @@ input type:touchpad {
     # Change normal to inverse to use left mouse button for resizing and right
     # mouse button for dragging.
     floating_modifier $mod normal
-
-    bindsym $mod+Shift+e exec sh $cfgdir/swaymenu.sh
 
     bindsym XF86MonBrightnessDown exec $python $cfgdir/backlight.py $backlight darker
     bindsym XF86MonBrightnessUp   exec $python $cfgdir/backlight.py $backlight brighter
