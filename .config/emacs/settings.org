@@ -152,7 +152,6 @@
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
-       (ipython . t)
        (python . t)))
   #+end_src
 
@@ -186,10 +185,22 @@
     (add-hook 'c++-mode-hook 'lsp)
 
     (add-hook 'python-mode-hook 'flycheck-mode)
-    (add-hook 'rust-mode-hook 'flycheck-rust-setup)
     (add-hook 'c-mode-hook 'flycheck-mode)
     (add-hook 'c++-mode-hook 'flycheck-mode)
   #+END_SRC
+
+* File-types
+#+begin_src emacs-lisp
+  (use-package fish-mode)
+  (use-package rust-mode)
+  (use-package flycheck-rust
+    :init
+    (add-hook 'rust-mode-hook 'flycheck-rust-setup))
+  (use-package meson-mode)
+  (use-package cmake-mode)
+  (use-package dockerfile-mode)
+  (use-package yaml-mode)
+#+end_src
 
 * Linting, spellcheck and reformatting
 ** [[https://github.com/flycheck/flycheck][flycheck]]

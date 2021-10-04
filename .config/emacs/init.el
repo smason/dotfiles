@@ -6,10 +6,10 @@
 (setq gc-cons-threshold (* 1024 1024))
 
 (require 'package)
-(setq package-archives '(("org" . "http://orgmode.org/elpa/")
-                         ("melpa" . "http://melpa.org/packages/")
-                         ;; ("melpa-stable" . "http://stable.melpa.org/packages/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
+(setq package-archives
+      '(("org" . "http://orgmode.org/elpa/")
+        ("melpa" . "http://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")))
 
 (setq package-enable-at-startup nil)
 (package-initialize)
