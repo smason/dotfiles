@@ -10,6 +10,7 @@ set $term footclient
 set $cfgdir ~/.config/sway
 set $bin ~/.local/bin
 set $menu wofi --location 2 --show run
+set $swaymenu sh $cfgdir/swaymenu.sh
 
 # e.g. set $python and $backlight here
 include $cfgdir/*.conf
@@ -74,8 +75,8 @@ input type:touchpad {
     bindsym $mod+Shift+q kill
 
     # start your launcher
-    bindsym $mod+d exec $menu
-    bindsym $mod+Shift+d exec sh $cfgdir/swaymenu.sh
+    bindsym $mod+x exec $menu
+    bindsym $mod+Shift+x exec $swaymenu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
