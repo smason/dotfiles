@@ -180,11 +180,9 @@
     (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
     ;; Enable LSP for some languages
-    (add-hook 'python-mode-hook 'lsp)
     (add-hook 'c-mode-hook 'lsp)
     (add-hook 'c++-mode-hook 'lsp)
 
-    (add-hook 'python-mode-hook 'flycheck-mode)
     (add-hook 'c-mode-hook 'flycheck-mode)
     (add-hook 'c++-mode-hook 'flycheck-mode)
   #+END_SRC
@@ -200,7 +198,11 @@
   (use-package cmake-mode)
   (use-package dockerfile-mode)
   (use-package yaml-mode)
-  (use-package python-mode)
+  (use-package python-mode
+    :init
+    (add-hook 'python-mode-hook 'lsp)
+    (add-hook 'python-mode-hook 'flycheck-mode)
+    )
 #+end_src
 
 * Linting, spellcheck and reformatting
@@ -250,7 +252,11 @@
 
 ** pyvenv
 #+begin_src emacs-lisp
-   (use-package pyvenv)
+  (use-package pyvenv
+    :init
+    (unless (getenv "WORKON_HOME")
+      (setenv "WORKON_HOME" (expand-file-name "~/.local/venvs")))
+  )
 #+end_src
 
 ** impatient mode
