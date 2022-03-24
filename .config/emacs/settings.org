@@ -200,6 +200,7 @@
   (use-package cmake-mode)
   (use-package dockerfile-mode)
   (use-package yaml-mode)
+  (use-package python-mode)
 #+end_src
 
 * Linting, spellcheck and reformatting
