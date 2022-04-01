@@ -14,10 +14,10 @@
 "ui.statusline.inactive" = { fg = "base8", bg = "base8x0c" }
 
 # status bars, panels, modals, autocompletion
-"ui.statusline" = { bg = "base4" }
-"ui.popup" = { bg = "base3" }
-"ui.window" = { bg = "base3" }
-"ui.help" = { bg = "base3" }
+"ui.statusline" = { bg = "base4", fg = "base8"  }
+"ui.popup" = { bg = "base3", fg = "base8"  }
+"ui.window" = { bg = "base3", fg = "base8" }
+"ui.help" = { bg = "base3", fg = "base8" }
 
 # active line, highlighting
 "ui.selection" = { bg = "base4" }
