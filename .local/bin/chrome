@@ -2,4 +2,5 @@
 
 exec google-chrome-stable \
   --enable-features=UseOzonePlatform \
-  --ozone-platform=wayland
+  --ozone-platform=wayland \
+  "$@"

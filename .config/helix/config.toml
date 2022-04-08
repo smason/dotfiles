@@ -2,4 +2,4 @@ theme = "mostly_monokai_pro"
 
 [editor]
 line-number = "relative"
-mouse = false
+mouse = true
