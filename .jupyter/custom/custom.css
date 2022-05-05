@@ -1,0 +1,20 @@
+@media only screen {
+  .container {
+    width: 100%;
+  }
+  #notebook-container {
+    padding: 0px;
+    box-shadow: none;
+  }
+  .end_space {
+    min_height: 1000px;
+  }
+}
+
+.notebook_app > #header {
+  box-shadow: none;
+}
+
+div#notebook {
+  padding-top: 5px;
+}
