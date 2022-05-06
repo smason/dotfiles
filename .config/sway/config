@@ -47,7 +47,7 @@ bindsym $mod+Shift+s exec $cfgdir/screenshot.sh
 
 input type:keyboard {
     # keyboard
-    xkb_layout gb
+    xkb_layout gb_sams
 
     # Make caps lock work as control
     xkb_options ctrl:nocaps
