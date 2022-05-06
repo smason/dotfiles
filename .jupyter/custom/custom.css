@@ -11,10 +11,6 @@
   }
 }
 
-.notebook_app > #header {
-  box-shadow: none;
-}
-
 div#notebook {
   padding-top: 5px;
 }
