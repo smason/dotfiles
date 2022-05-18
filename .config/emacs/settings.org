@@ -163,7 +163,8 @@
       (setq lsp-inhibit-message t
             lsp-eldoc-render-all nil
             lsp-enable-on-type-formatting nil
-            lsp-highlight-symbol-at-point nil))
+            lsp-highlight-symbol-at-point nil
+            read-process-output-max (* 1024 1024)))
 
     (use-package lsp-ui
       :config
