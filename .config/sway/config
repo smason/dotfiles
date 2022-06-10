@@ -35,8 +35,6 @@ exec swayidle.sh
 
 bindsym $mod+Escape exec loginctl lock-session
 
-bindsym $mod+Shift+s exec $cfgdir/screenshot.sh
-
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
