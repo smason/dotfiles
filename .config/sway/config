@@ -22,10 +22,7 @@ include $cfgdir/*.conf
 #   swaymsg output DP-3 position 0 0
 #   swaymsg workspace dp3 output DP-2
 
-# laptop monitor
-output eDP-1 position 100 1440
-# external screen
-output DP-2 position 0 0
+# use e.g. "sway-set_outputs.sh k1-082" to configure monitors
 
 # background
 output * bg "~/.config/sway/bg.jpeg" fill
