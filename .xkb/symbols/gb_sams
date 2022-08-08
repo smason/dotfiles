@@ -1,3 +1,7 @@
+// see: /usr/share/X11/xkb
+// lots of symbols are defined in:
+//   /usr/share/X11/xkb/symbols/latin
+
 default partial alphanumeric_keys
 xkb_symbols "basic" {
   include "gb"
