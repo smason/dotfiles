@@ -1,17 +1,16 @@
-from time import time, sleep, strftime
 from math import log
 from pathlib import Path
+from time import sleep, strftime, time
 
-from alsaaudio import card_indexes, card_name, Mixer, PCM_PLAYBACK
+from alsaaudio import PCM_PLAYBACK, Mixer, card_indexes, card_name
 from psutil import cpu_percent, disk_io_counters, net_io_counters
-
 
 DB_SCALE = log(10) / 10
 
 
 def si_prefix(n, binary=True):
     if n == 0:
-        return '0'
+        return "0"
 
     if n < 100:
         fix = ""
@@ -24,13 +23,13 @@ def si_prefix(n, binary=True):
                 break
 
     if binary:
-        fix = f'{fix}i'
+        fix = f"{fix}i"
 
     if n < 10:
         if n < 1:
-            return f'{n:.2f}{fix}'
-        return f'{n:.1f}{fix}'
-    return f'{n:.0f}{fix}'
+            return f"{n:.2f}{fix}"
+        return f"{n:.1f}{fix}"
+    return f"{n:.0f}{fix}"
 
 
 def get_datetime():
@@ -45,47 +44,47 @@ def get_cpu():
 
 
 def battery_gen():
-    kernel = Path('/sys/class/power_supply/BAT0')
+    kernel = Path("/sys/class/power_supply/BAT0")
 
-    status = kernel / 'status'
-    capacity = kernel / 'capacity'
+    status = kernel / "status"
+    capacity = kernel / "capacity"
 
     while True:
         stat = status.read_bytes()
 
-        if stat.startswith(b'Discharging'):
+        if stat.startswith(b"Discharging"):
             cap = int(capacity.read_bytes())
-            yield f'Bat {cap}%'
-        elif stat.startswith(b'Charging') or stat.startswith(b'Not charging'):
+            yield f"Bat {cap}%"
+        elif stat.startswith(b"Charging") or stat.startswith(b"Not charging"):
             cap = int(capacity.read_bytes())
-            yield f'AC {cap}%'
-        elif stat.startswith(b'Full'):
-            yield 'AC Full'
+            yield f"AC {cap}%"
+        elif stat.startswith(b"Full"):
+            yield "AC Full"
         else:
-            yield f'Bat {stat!r}'
+            yield f"Bat {stat!r}"
 
 
 def backlight_gen():
-    kernel = Path('/sys/class/backlight/intel_backlight')
+    kernel = Path("/sys/class/backlight/intel_backlight")
 
-    brightness = kernel / 'brightness'
-    limit = int((kernel / 'max_brightness').read_bytes())
+    brightness = kernel / "brightness"
+    limit = int((kernel / "max_brightness").read_bytes())
 
     while True:
         value = int(brightness.read_bytes())
 
         if value > 1:
             db = log(value / limit + 0.01) / DB_SCALE
-            yield f'BL {db:.1f}dB'
+            yield f"BL {db:.1f}dB"
         else:
-            yield 'Dark'
+            yield "Dark"
 
 
 def get_mixer():
     for card in card_indexes():
         short_name, _ = card_name(card)
         if short_name == "HDA Intel PCH":
-            return Mixer(control='Master', cardindex=card)
+            return Mixer(control="Master", cardindex=card)
 
 
 def sound_gen():
@@ -94,14 +93,14 @@ def sound_gen():
     while True:
         mixer.handleevents()
 
-        msg = 'Mute'
+        msg = "Mute"
 
         if not any(mixer.getmute()):
             [vol] = mixer.getvolume(PCM_PLAYBACK)
 
             if vol > 0:
                 db = log(vol / 100) / DB_SCALE
-                msg = f'Vol {db:.1f}dB'
+                msg = f"Vol {db:.1f}dB"
 
         yield msg
 
@@ -109,7 +108,7 @@ def sound_gen():
 def rw_stats_gen(name, fn):
     last_time = time()
     last = fn()
-    yield f'{name} i/o'
+    yield f"{name} i/o"
 
     while True:
         cur_time = time()
@@ -119,7 +118,7 @@ def rw_stats_gen(name, fn):
         read = si_prefix((cur[0] - last[0]) / delta)
         write = si_prefix((cur[1] - last[1]) / delta)
 
-        delta = yield f'{name} {read}B/s - {write}B/s'
+        delta = yield f"{name} {read}B/s - {write}B/s"
         last = cur
         last_time = cur_time
 
@@ -135,24 +134,25 @@ def net_io_stats():
 
 
 def main():
-    disk = rw_stats_gen('disk', disk_rw_stats)
-    net = rw_stats_gen('net', net_io_counters)
+    disk = rw_stats_gen("disk", disk_rw_stats)
+    net = rw_stats_gen("net", net_io_counters)
     backlight = backlight_gen()
     sound = sound_gen()
     battery = battery_gen()
 
     while True:
         # trying to keep fixed width items on the right
-        line = ''.join(f'[ {s} ]' for s in (
+        parts = (
             next(net),
             next(disk),
             next(battery),
             get_cpu(),
             next(backlight),
             next(sound),
-        ))
+        )
+        line = "".join(f"[ {s} ]" for s in parts)
 
-        print(f'{line} {get_datetime()}', flush=True)
+        print(f"{line} {get_datetime()}", flush=True)
 
         sleep(5 - time() % 5)
 
