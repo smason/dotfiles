@@ -2,7 +2,7 @@ from time import time, sleep, strftime
 from math import log
 from pathlib import Path
 
-from alsaaudio import Mixer, PCM_PLAYBACK
+from alsaaudio import card_indexes, card_name, Mixer, PCM_PLAYBACK
 from psutil import cpu_percent, disk_io_counters, net_io_counters
 
 
@@ -56,7 +56,7 @@ def battery_gen():
         if stat.startswith(b'Discharging'):
             cap = int(capacity.read_bytes())
             yield f'Bat {cap}%'
-        elif stat.startswith(b'Charging'):
+        elif stat.startswith(b'Charging') or stat.startswith(b'Not charging'):
             cap = int(capacity.read_bytes())
             yield f'AC {cap}%'
         elif stat.startswith(b'Full'):
@@ -81,8 +81,15 @@ def backlight_gen():
             yield 'Dark'
 
 
+def get_mixer():
+    for card in card_indexes():
+        short_name, _ = card_name(card)
+        if short_name == "HDA Intel PCH":
+            return Mixer(control='Master', cardindex=card)
+
+
 def sound_gen():
-    mixer = Mixer()
+    mixer = get_mixer()
 
     while True:
         mixer.handleevents()

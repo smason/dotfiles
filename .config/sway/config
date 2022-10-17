@@ -50,7 +50,8 @@ input type:keyboard {
 
 input type:touchpad {
     # disable-while-typing
-    dwt enabled
+    # dwt enabled
+
     natural_scroll enabled
 
     # https://wayland.freedesktop.org/libinput/doc/latest/clickpad-softbuttons.html
@@ -72,6 +73,8 @@ input type:touchpad {
     # start your launcher
     bindsym $mod+x exec $menu
     bindsym $mod+Shift+x exec $swaymenu
+
+    bindsym $mod+d [app_id="firefox"] focus ; exec "firefox --new-tab https://devdocs.io/"
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
