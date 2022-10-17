@@ -1,5 +1,6 @@
-theme = "mostly_monokai_pro"
+theme = "catppuccin_latte"
 
 [editor]
 line-number = "relative"
 mouse = true
+auto-pairs = false
