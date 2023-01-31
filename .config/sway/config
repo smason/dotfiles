@@ -50,7 +50,9 @@ input type:keyboard {
 
 input type:touchpad {
     # disable-while-typing
-    # dwt enabled
+    dwt disabled
+    tap disabled
+    scroll_method two_finger
 
     natural_scroll enabled
 
@@ -215,31 +217,29 @@ include /etc/sway/config.d/*
 #
 
 font pango:Fira Code 10
-gaps inner 5
-titlebar_padding 3
+default_border pixel 4
+titlebar_padding 7 1
+gaps inner 0
+gaps outer 0
 
-default_border normal 0
+set $hl #63ace5
+set $hi #63e5ac
+set $ht #ffffff
+set $ml #63ace5a0
+set $mi #63e5aca0
+set $mt #63ace5
+set $ll #285577a0
+set $li $ll
+set $lt #63ace5
 
-# class                 border  backgr. text    indicator child_border
-client.focused          #63ace5 #63ace5 #ffffff #ff0000   #285577
-client.focused_inactive #666666 #666666 #ffffff #ff0000   #5f676a
-client.unfocused        #222222 #222222 #888888 #ff0000   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+# class                 border  backgr. text    indictr child_border
+client.focused          $hl     $hl     $ht     $hi     $hl
+client.focused_inactive $ml     $ml     $mt     $mi     $ml
+client.unfocused        $ll     $ll     $lt     $li     $ll
+client.urgent           #ff0000 #000000 #ffffff #ff0000 #ff0000
+client.placeholder      #ff0000 #000000 #ffffff #000000 #ffffff
 
-client.background       #000000
+client.background       #00000000
 
 # see https://developer.gnome.org/pango/stable/pango-Markup.html for formatting when using "pango:" prefix on font
 # title_format '<span size="1000">%title</span>'
-
-# defaults for wayland windows
-for_window [app_id=.*] {
-  font pango:Fira Code 0
-  title_format ''
-}
-
-# defaults for x11 windows
-for_window [class=.*] {
-  font pango:Fira Code 0
-  title_format ''
-}
