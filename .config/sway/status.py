@@ -7,6 +7,21 @@ from psutil import cpu_percent, disk_io_counters, net_io_counters
 
 DB_SCALE = log(10) / 10
 
+EMOJI_DIM_BUTTON = '\U0001F505'
+EMOJI_BRIGHT_BUTTON = '\U0001F506'
+
+EMOJI_MUTED_SPEAKER = '\U0001F507'
+EMOJI_LOW_VOL_SPEAKER = '\U0001F508'
+EMOJI_MED_VOL_SPEAKER = '\U0001F509'
+EMOJI_HIGH_VOL_SPEAKER = '\U0001F50A'
+
+EMOJI_BAT = '\U0001F50B'
+EMOJI_AC = '\U0001F50C'
+EMOJI_LOW_BAT = '\U0001FAAB'
+
+EMOJI_HDD = '\U0001F5B4'
+EMOJI_NET = '\U0001F5A7'
+
 
 def si_prefix(n, binary=True):
     if n == 0:
@@ -54,14 +69,17 @@ def battery_gen():
 
         if stat.startswith(b"Discharging"):
             cap = int(capacity.read_bytes())
-            yield f"Bat {cap}%"
+            if cap < 30:
+                yield f"{EMOJI_LOW_BAT} {cap}%"
+            else:
+                yield f"{EMOJI_BAT} {cap}%"
         elif stat.startswith(b"Charging") or stat.startswith(b"Not charging"):
             cap = int(capacity.read_bytes())
-            yield f"AC {cap}%"
+            yield f"{EMOJI_AC} {cap}%"
         elif stat.startswith(b"Full"):
-            yield "AC Full"
+            yield f"{EMOJI_AC} full"
         else:
-            yield f"Bat {stat!r}"
+            yield f"{EMOJI_BAT} {stat!r}"
 
 
 def backlight_gen():
@@ -75,9 +93,9 @@ def backlight_gen():
 
         if value > 1:
             db = log(value / limit + 0.01) / DB_SCALE
-            yield f"BL {db:.1f}dB"
+            yield f"{EMOJI_BRIGHT_BUTTON} {db:.1f}dB"
         else:
-            yield "Dark"
+            yield EMOJI_DIM_BUTTON
 
 
 def get_mixer():
@@ -93,14 +111,14 @@ def sound_gen():
     while True:
         mixer.handleevents()
 
-        msg = "Mute"
+        msg = EMOJI_MUTED_SPEAKER
 
         if not any(mixer.getmute()):
             [vol] = mixer.getvolume(PCM_PLAYBACK)
 
             if vol > 0:
                 db = log(vol / 100) / DB_SCALE
-                msg = f"Vol {db:.1f}dB"
+                msg = f"{EMOJI_LOW_VOL_SPEAKER} {db:.1f}dB"
 
         yield msg
 
@@ -134,8 +152,8 @@ def net_io_stats():
 
 
 def main():
-    disk = rw_stats_gen("disk", disk_rw_stats)
-    net = rw_stats_gen("net", net_io_counters)
+    disk = rw_stats_gen(EMOJI_HDD, disk_rw_stats)
+    net = rw_stats_gen(EMOJI_NET, net_io_counters)
     backlight = backlight_gen()
     sound = sound_gen()
     battery = battery_gen()
@@ -146,13 +164,13 @@ def main():
             next(net),
             next(disk),
             next(battery),
-            get_cpu(),
+            # get_cpu(),
             next(backlight),
             next(sound),
         )
-        line = "".join(f"[ {s} ]" for s in parts)
+        line = " | ".join(parts)
 
-        print(f"{line} {get_datetime()}", flush=True)
+        print(f"{line} | {get_datetime()}", flush=True)
 
         sleep(5 - time() % 5)
 

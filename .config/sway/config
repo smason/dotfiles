@@ -195,7 +195,7 @@ bindsym $mod+r mode "resize"
 # Read `man 5 sway-bar` for more information about this section.
 bar {
     position top
-    font "Lato 12"
+    font "Cantarell 10"
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
@@ -216,7 +216,7 @@ include /etc/sway/config.d/*
 # theming
 #
 
-font pango:Fira Code 10
+font pango:Cantarell 8
 default_border pixel 4
 titlebar_padding 7 1
 gaps inner 0
