@@ -1,11 +1,10 @@
+from bisect import bisect_left
 from math import log
 from pathlib import Path
 from time import sleep, strftime, time
 
 from alsaaudio import PCM_PLAYBACK, Mixer, card_indexes, card_name
 from psutil import cpu_percent, disk_io_counters, net_io_counters
-
-DB_SCALE = log(10) / 10
 
 EMOJI_DIM_BUTTON = '\U0001F505'
 EMOJI_BRIGHT_BUTTON = '\U0001F506'
@@ -21,6 +20,9 @@ EMOJI_LOW_BAT = '\U0001FAAB'
 
 EMOJI_HDD = '\U0001F5B4'
 EMOJI_NET = '\U0001F5A7'
+
+def linear_to_db(value):
+    return log(value, 10) * 10
 
 
 def si_prefix(n, binary=True):
@@ -70,16 +72,16 @@ def battery_gen():
         if stat.startswith(b"Discharging"):
             cap = int(capacity.read_bytes())
             if cap < 30:
-                yield f"{EMOJI_LOW_BAT} {cap}%"
+                yield f"{cap}% {EMOJI_LOW_BAT}"
             else:
-                yield f"{EMOJI_BAT} {cap}%"
+                yield f"{cap}% {EMOJI_BAT}"
         elif stat.startswith(b"Charging") or stat.startswith(b"Not charging"):
             cap = int(capacity.read_bytes())
-            yield f"{EMOJI_AC} {cap}%"
+            yield f"{cap}% {EMOJI_AC}"
         elif stat.startswith(b"Full"):
-            yield f"{EMOJI_AC} full"
+            yield f"{EMOJI_AC}"
         else:
-            yield f"{EMOJI_BAT} {stat!r}"
+            yield f"{stat!r} {EMOJI_BAT}"
 
 
 def backlight_gen():
@@ -92,8 +94,8 @@ def backlight_gen():
         value = int(brightness.read_bytes())
 
         if value > 1:
-            db = log(value / limit + 0.01) / DB_SCALE
-            yield f"{EMOJI_BRIGHT_BUTTON} {db:.1f}dB"
+            db = linear_to_db(value / limit + 0.01)
+            yield f"{db:.1f}dB {EMOJI_BRIGHT_BUTTON}"
         else:
             yield EMOJI_DIM_BUTTON
 
@@ -108,6 +110,13 @@ def get_mixer():
 def sound_gen():
     mixer = get_mixer()
 
+    vol_lookup = [
+        (0, EMOJI_MUTED_SPEAKER),
+        (30, EMOJI_LOW_VOL_SPEAKER),
+        (60, EMOJI_MED_VOL_SPEAKER),
+        (1000, EMOJI_HIGH_VOL_SPEAKER),
+    ]
+
     while True:
         mixer.handleevents()
 
@@ -117,9 +126,9 @@ def sound_gen():
             [vol] = mixer.getvolume(PCM_PLAYBACK)
 
             if vol > 0:
-                db = log(vol / 100) / DB_SCALE
-                msg = f"{EMOJI_LOW_VOL_SPEAKER} {db:.1f}dB"
-
+                db = linear_to_db(vol / 100)
+                idx = bisect_left(vol_lookup, vol, key=lambda x: x[0])
+                msg = f"{db:.1f}dB {vol_lookup[idx][1]}"
         yield msg
 
 
