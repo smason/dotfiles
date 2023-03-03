@@ -3,6 +3,8 @@
 # Mod4 = "Logo" key, Mod1 is Alt
 set $mod Mod4
 
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec pactl load-module module-switch-on-connect
 exec gammastep -v
 exec foot --server
 
