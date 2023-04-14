@@ -42,6 +42,7 @@ bindsym $mod+Escape exec loginctl lock-session
 #
 # see `swaymsg -t get_inputs` for types/names and `man 5 sway-input` for help
 
+# layouts saved in ~/.xkb/symbols/
 input type:keyboard {
     # keyboard
     xkb_layout gb_sams
