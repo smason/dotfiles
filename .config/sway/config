@@ -27,7 +27,7 @@ include $cfgdir/*.conf
 # use e.g. "sway-set_outputs.sh k1-082" to configure monitors
 
 # background
-output * bg "~/.config/sway/bg.jpeg" fill
+output * bg "~/.config/sway/hat-aperiodic-monotile-hacked.png" fill
 
 ### Idle configuration
 exec swayidle.sh
