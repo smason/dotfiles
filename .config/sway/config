@@ -51,6 +51,10 @@ input type:keyboard {
     xkb_options ctrl:nocaps
 }
 
+input "3141:28694:SONiX_USB_DEVICE" {
+    xkb_layout us
+}
+
 input type:touchpad {
     # disable-while-typing
     dwt disabled
@@ -198,7 +202,7 @@ bindsym $mod+r mode "resize"
 # Read `man 5 sway-bar` for more information about this section.
 bar {
     position top
-    font "Cantarell 10"
+    font "Margarine 10"
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
@@ -218,8 +222,7 @@ include /etc/sway/config.d/*
 #
 # theming
 #
-
-font pango:Cantarell 8
+font pango:Margarine 10
 default_border pixel 4
 titlebar_padding 7 1
 gaps inner 0

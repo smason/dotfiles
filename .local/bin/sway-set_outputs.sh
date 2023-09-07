@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-declare -a extra
+declare -a extra=()
 
 for path in /sys/class/drm/card*/status; do
   dp="$(basename $(dirname $path))"
