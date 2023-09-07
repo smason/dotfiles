@@ -8,7 +8,6 @@ auto-format = false
 
 [[language]]
 name = "markdown"
-language-server = { command = "ltex-ls", args=["--log-file=/tmp"] }
-
-[language.config.ltex]
-language = "en-GB"
+text-width = 72
+soft-wrap.enable = true
+soft-wrap.wrap-at-text-width = true
