@@ -22,3 +22,7 @@ if command -q gpg-connect-agent
     set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
     gpg-connect-agent -q updatestartuptty /bye >/dev/null
 end
+
+if command -q pyenv
+    pyenv init - | source
+end
