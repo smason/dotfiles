@@ -17,6 +17,9 @@ set $swaymenu sh $cfgdir/swaymenu.sh
 # e.g. set $python and $backlight here
 include $cfgdir/*.conf
 
+# disable Escape key in Firefox popout video player
+exec $python "$HOME/self/sway-contrib/firefox-focus-monitor.py"
+
 ### Output configuration
 #
 # useful commands:
