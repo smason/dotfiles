@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export GIT_DIR="$HOME/repos/sysconf"
+export GIT_WORK_TREE=/
+
+exec git "$@"
+
