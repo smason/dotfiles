@@ -44,6 +44,8 @@ context.modules = [{ name = libpipewire-module-filter-chain args={
         ]
         links = [\n$links\
         ]
+        inputs = [ $input ]
+        outputs = [ $output ]
     }
 }}]
 """)
@@ -103,11 +105,14 @@ def main():
             " }\n"
         )
 
+    head, tail = filters[0], filters[-1]
     print(MODULE_DEF.substitute(
         description=json.dumps(args.description),
         name=args.name,
         nodes="".join(nodes),
         links="".join(links),
+        input=json.dumps(f"{head.name}:In"),
+        output=json.dumps(f"{tail.name}:Out"),
     ))
 
 
