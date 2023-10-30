@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+
 import argparse
 import json
 import pathlib
 import re
 import string
+import subprocess
 import urllib.parse
 from dataclasses import dataclass
 from itertools import pairwise
@@ -33,7 +36,7 @@ RE_FILTER = (
 )
 
 MODULE_DEF = string.Template("""\
-context.modules = [{ name = libpipewire-module-filter-chain args={
+{
     node.description = $description
     audio.channels = 2
     audio.position = [ FL FR ]
@@ -47,7 +50,7 @@ context.modules = [{ name = libpipewire-module-filter-chain args={
         inputs = [ $input ]
         outputs = [ $output ]
     }
-}}]
+}
 """)
 
 def parse_file(fd):
@@ -106,14 +109,19 @@ def main():
         )
 
     head, tail = filters[0], filters[-1]
-    print(MODULE_DEF.substitute(
+    args = MODULE_DEF.substitute(
         description=json.dumps(args.description),
         name=args.name,
         nodes="".join(nodes),
         links="".join(links),
         input=json.dumps(f"{head.name}:In"),
         output=json.dumps(f"{tail.name}:Out"),
-    ))
+    )
+
+    try:
+        subprocess.run(["pw-cli", "-m", "load-module", "libpipewire-module-filter-chain", args])
+    except KeyboardInterrupt:
+        pass
 
 
 if __name__ == "__main__":
