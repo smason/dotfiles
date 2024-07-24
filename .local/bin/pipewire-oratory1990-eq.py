@@ -6,6 +6,7 @@ import pathlib
 import re
 import string
 import subprocess
+import sys
 import urllib.parse
 from dataclasses import dataclass
 from itertools import pairwise
@@ -69,11 +70,11 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Translate from AutoEq ParametricEq files to Pipewire config",
     )
-    parser.add_argument("source", help="Text file from AutoEq repo")
+    parser.add_argument("source", type=pathlib.Path, help="Text file from AutoEq repo")
     parser.add_argument("--description", "--desc", "-d", help="Human readable description")
     parser.add_argument("--name", "-c", help="Machine compatible identifier")
     args = parser.parse_args()
-    name = urllib.parse.unquote(pathlib.Path(args.source).name)
+    name = urllib.parse.unquote(args.source.name)
     m = re.match(r"(.*) ParametricEQ.txt", name)
     # try and fill these in if the user didn't supply them
     if not args.description:
@@ -109,7 +110,7 @@ def main():
         )
 
     head, tail = filters[0], filters[-1]
-    args = MODULE_DEF.substitute(
+    filter = MODULE_DEF.substitute(
         description=json.dumps(args.description),
         name=args.name,
         nodes="".join(nodes),
@@ -118,8 +119,10 @@ def main():
         output=json.dumps(f"{tail.name}:Out"),
     )
 
+    print(f"loaded: {args.source.name!r}", file=sys.stderr)
+
     try:
-        subprocess.run(["pw-cli", "-m", "load-module", "libpipewire-module-filter-chain", args])
+        subprocess.run(["pw-cli", "-m", "load-module", "libpipewire-module-filter-chain", filter])
     except KeyboardInterrupt:
         pass
 

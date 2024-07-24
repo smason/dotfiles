@@ -1,0 +1,23 @@
+requests
+#
+# used by WM scripts
+#
+pyalsaaudio
+psutil
+#
+# dev tools
+#
+mypy
+black
+isort
+python-lsp-server
+#
+# scientific python
+#
+ipython
+numpy
+scipy
+matplotlib
+seaborn
+pandas
+h5py

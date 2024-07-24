@@ -1,0 +1,4 @@
+set database sqlite
+
+set statusbar-home-tilde true
+set window-title-home-tilde true
