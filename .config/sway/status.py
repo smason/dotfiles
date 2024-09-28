@@ -65,16 +65,19 @@ def battery_gen():
 
     status = kernel / "status"
     capacity = kernel / "capacity"
+    voltage = kernel / "voltage_now"
+    current = kernel / "current_now"
 
     while True:
         stat = status.read_bytes()
 
         if stat.startswith(b"Discharging"):
             cap = int(capacity.read_bytes())
+            watts = float(voltage.read_bytes()) * float(current.read_bytes()) * 1e-12
             if cap < 30:
-                yield f"{cap}% {EMOJI_LOW_BAT}"
+                yield f"{cap}% {EMOJI_LOW_BAT} @{watts:.1f}W"
             else:
-                yield f"{cap}% {EMOJI_BAT}"
+                yield f"{cap}% {EMOJI_BAT} @{watts:.1f}W"
         elif stat.startswith(b"Charging") or stat.startswith(b"Not charging"):
             cap = int(capacity.read_bytes())
             yield f"{cap}% {EMOJI_AC}"
