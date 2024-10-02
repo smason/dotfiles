@@ -1,6 +1,6 @@
 theme = "catppuccin_latte"
 
 [editor]
-line-number = "relative"
+line-number = "absolute"
 mouse = true
 auto-pairs = false

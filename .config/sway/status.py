@@ -2,6 +2,7 @@ from bisect import bisect_left
 from math import log
 from pathlib import Path
 from time import sleep, strftime, time
+import traceback
 
 from alsaaudio import PCM_PLAYBACK, Mixer, card_indexes, card_name
 from psutil import cpu_percent, disk_io_counters, net_io_counters
@@ -60,31 +61,43 @@ def get_cpu():
     return f"CPU {cpu:.0%}"
 
 
-def battery_gen():
-    kernel = Path("/sys/class/power_supply/BAT0")
+POWER_SUPPLY_CAPACITY = "POWER_SUPPLY_CAPACITY"
+POWER_SUPPLY_CHARGE_NOW = "POWER_SUPPLY_CHARGE_NOW"
+POWER_SUPPLY_CURRENT_NOW = "POWER_SUPPLY_CURRENT_NOW"
+POWER_SUPPLY_STATUS = "POWER_SUPPLY_STATUS"
+POWER_SUPPLY_VOLTAGE_NOW = "POWER_SUPPLY_VOLTAGE_NOW"
 
-    status = kernel / "status"
-    capacity = kernel / "capacity"
-    voltage = kernel / "voltage_now"
-    current = kernel / "current_now"
+def get_battery():
+    try:
+        with open("/sys/class/power_supply/BAT0/uevent") as fd:
+            text = fd.read()
+    except Exception as err:
+        traceback.print_exception(err)
+        return f"error {EMOJI_BAT}"
 
-    while True:
-        stat = status.read_bytes()
+    attrs = dict(line.split('=', 1) for line in text.splitlines())
+    status = attrs.get(POWER_SUPPLY_STATUS, "")
+    capacity = attrs.get(POWER_SUPPLY_CAPACITY, "")
 
-        if stat.startswith(b"Discharging"):
-            cap = int(capacity.read_bytes())
-            watts = float(voltage.read_bytes()) * float(current.read_bytes()) * 1e-12
-            if cap < 30:
-                yield f"{cap}% {EMOJI_LOW_BAT} @{watts:.1f}W"
-            else:
-                yield f"{cap}% {EMOJI_BAT} @{watts:.1f}W"
-        elif stat.startswith(b"Charging") or stat.startswith(b"Not charging"):
-            cap = int(capacity.read_bytes())
-            yield f"{cap}% {EMOJI_AC}"
-        elif stat.startswith(b"Full"):
-            yield f"{EMOJI_AC}"
+    if status.startswith("Discharging"):
+        if capacity and int(capacity) >= 30:
+            symbol = EMOJI_BAT
         else:
-            yield f"{stat!r} {EMOJI_BAT}"
+            symbol = EMOJI_LOW_BAT
+    elif status.startswith("Charging") or status.startswith("Not charging"):
+        symbol = EMOJI_AC
+    elif status.startswith("Full"):
+        return EMOJI_AC
+    else:
+        return f"{status!r} {EMOJI_BAT}"
+
+    voltage = attrs.get(POWER_SUPPLY_VOLTAGE_NOW, "")
+    current = attrs.get(POWER_SUPPLY_CURRENT_NOW, "")
+    if voltage and current:
+        power = float(voltage) * float(current) * 1e-12
+        return f"{capacity}% {symbol} @{power:.1f}W"
+    else:
+        return f"{capacity}% {symbol}"
 
 
 def backlight_gen():
@@ -168,14 +181,13 @@ def main():
     net = rw_stats_gen(EMOJI_NET, net_io_counters)
     backlight = backlight_gen()
     sound = sound_gen()
-    battery = battery_gen()
 
     while True:
         # trying to keep fixed width items on the right
         parts = (
             next(net),
             next(disk),
-            next(battery),
+            get_battery(),
             # get_cpu(),
             next(backlight),
             next(sound),
