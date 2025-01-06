@@ -1,23 +1,35 @@
+# generally useful
 requests
-#
+
+# command line tools
+yt-dlp
+
 # used by WM scripts
-#
 pyalsaaudio
 psutil
-#
+i3ipc
+
 # dev tools
-#
 mypy
-black
-isort
+ruff
 python-lsp-server
-#
+pylsp-rope
+python-lsp-ruff
+
 # scientific python
-#
-ipython
 numpy
 scipy
 matplotlib
 seaborn
 pandas
 h5py
+
+# IPython / Jupyter
+ipython
+notebook
+# https://jupyterlab-lsp.readthedocs.io/en/latest/Installation.html
+jupyter-lsp
+jupyterlab-lsp
+
+# for ~/.local/bin/aria2d.py
+miniupnpc

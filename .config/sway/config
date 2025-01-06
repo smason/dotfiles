@@ -6,9 +6,8 @@ set $mod Mod4
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec pactl load-module module-switch-on-connect
 exec gammastep -v
-exec foot --server
 
-set $term footclient
+set $term ghostty --gtk-single-instance=true
 set $cfgdir ~/.config/sway
 set $bin ~/.local/bin
 set $menu wofi --location 2 --show run
@@ -102,6 +101,9 @@ input type:touchpad {
     bindsym XF86AudioMicMute      exec $python $cfgdir/soundcard.py micmute
     bindsym XF86AudioLowerVolume  exec $python $cfgdir/soundcard.py lower
     bindsym XF86AudioRaiseVolume  exec $python $cfgdir/soundcard.py raise
+
+    bindsym $mod+Prior exec swaymsg -q opacity mul 1.125 || swaymsg -q opacity 1
+    bindsym $mod+Next opacity div 1.125
 
 #
 # Moving around:

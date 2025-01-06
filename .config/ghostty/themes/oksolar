@@ -1,0 +1,44 @@
+# mostly from https://meat.io/oksolar
+
+# palette is
+#  0 = base01  (black)
+#  1 = red     (red)
+#  2 = green   (green)
+#  3 = yellow  (yellow)
+#  4 = blue    (blue)
+#  5 = magenta (magenta)
+#  6 = cyan    (cyan)
+#  7 = base1   (white)
+#  8 = base02
+#  9 = red
+#  10= green
+#  11= yellow
+#  12= blue
+#  13= magenta
+#  14= cyan
+#  15= not in color scheme, wanted something distinct
+
+palette = 0=#5b7279 
+palette = 1=#f23649 
+palette = 2=#819500 
+palette = 3=#ac8300 
+palette = 4=#2a90d8 
+palette = 5=#dd459c 
+palette = 6=#249d94 
+palette = 7=#8faaab 
+palette = 8=#093946 
+palette = 9=#ff7178 
+palette = 10=#b1c74e 
+palette = 11=#deb44d 
+palette = 12=#63c3ff 
+palette = 13=#ff7ace 
+palette = 14=#62cfc5 
+palette = 15=#ffffff 
+
+# background is base3
+# foreground is base03
+# cursor = orange
+
+background = #faf7ee
+foreground = #002d38
+cursor-color = #d56400

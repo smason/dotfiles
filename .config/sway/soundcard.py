@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from alsaaudio import PCM_PLAYBACK, Mixer, card_indexes, card_name
+from alsaaudio import PCM_PLAYBACK, VOLUME_UNITS_RAW, Mixer, card_indexes, card_name
 
 CARDS = {card_name(i)[0]: i for i in card_indexes()}
 
@@ -27,12 +27,18 @@ def main():
         m.setrec(not cur)
     elif args.mode == "lower":
         m = mixer("Master")
-        [level] = m.getvolume(PCM_PLAYBACK)
-        m.setvolume(int(level / 1.1 + 0.5))
+        lo, hi = m.getrange(PCM_PLAYBACK, units=VOLUME_UNITS_RAW)
+        assert lo == 0
+        [level] = m.getvolume(PCM_PLAYBACK, units=VOLUME_UNITS_RAW)
+        level -= max(level // 10, 1)
+        m.setvolume(max(level, 0), PCM_PLAYBACK, units=VOLUME_UNITS_RAW)
     elif args.mode == "raise":
         m = mixer("Master")
-        [level] = m.getvolume(PCM_PLAYBACK)
-        m.setvolume(min(100, int(level * 1.1 + 0.5)))
+        lo, hi = m.getrange(PCM_PLAYBACK, units=VOLUME_UNITS_RAW)
+        assert lo == 0
+        [level] = m.getvolume(PCM_PLAYBACK, units=VOLUME_UNITS_RAW)
+        level += max(level // 10, 1)
+        m.setvolume(min(level, hi), PCM_PLAYBACK, units=VOLUME_UNITS_RAW)
     else:
         assert False, args.mode
 
