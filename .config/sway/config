@@ -17,7 +17,7 @@ set $swaymenu sh $cfgdir/swaymenu.sh
 include $cfgdir/*.conf
 
 # disable Escape key in Firefox popout video player
-exec $python "$HOME/self/sway-contrib/firefox-focus-monitor.py"
+exec $python "/usr/share/sway-contrib/firefox-focus-monitor.py"
 
 ### Output configuration
 #
@@ -26,10 +26,16 @@ exec $python "$HOME/self/sway-contrib/firefox-focus-monitor.py"
 #   swaymsg output DP-3 position 0 0
 #   swaymsg workspace dp3 output DP-2
 
-# use e.g. "sway-set_outputs.sh k1-082" to configure monitors
+output * {
+    adaptive_sync enable
+    background "~/.config/sway/background.png" fill
+    color_profile srgb
+    max_render_time 2
+    subpixel rgb
+}
 
-# background
-output * bg "~/.config/sway/hat-aperiodic-monotile-hacked.png" fill
+# background PNG converted from SVG via:
+#    magick -size 3840x2160 hat-aperiodic-monotile-hacked.svg background.png
 
 ### Idle configuration
 exec swayidle.sh

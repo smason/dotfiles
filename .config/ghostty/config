@@ -1,9 +1,9 @@
-font-family = Victor Mono
-font-family-bold = Victor Mono Bold
-font-family-italic = Victor Mono Italic
-font-family-bold-italic = Victor Mono Bold Italic
+font-family = Iosevka Term Extended
+font-family-bold = Iosevka Term Extended Bold
+font-family-italic = Iosevka Term Extended Italic
+font-family-bold-italic = Iosevka Term Extended Bold Italic
 
-font-size = 8
+font-size = 10
 
 theme = oksolar
 window-decoration = false

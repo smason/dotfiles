@@ -4,7 +4,7 @@ from pathlib import Path
 from time import sleep, strftime, time
 import traceback
 
-from alsaaudio import PCM_PLAYBACK, Mixer, card_indexes, card_name
+from pulsectl import Pulse
 from psutil import cpu_percent, disk_io_counters, net_io_counters
 
 EMOJI_DIM_BUTTON = '\U0001F505'
@@ -71,9 +71,8 @@ def get_battery():
     try:
         with open("/sys/class/power_supply/BAT0/uevent") as fd:
             text = fd.read()
-    except Exception as err:
-        traceback.print_exception(err)
-        return f"error {EMOJI_BAT}"
+    except Exception:
+        return EMOJI_AC
 
     attrs = dict(line.split('=', 1) for line in text.splitlines())
     status = attrs.get(POWER_SUPPLY_STATUS, "")
@@ -116,16 +115,7 @@ def backlight_gen():
             yield EMOJI_DIM_BUTTON
 
 
-def get_mixer():
-    for card in card_indexes():
-        short_name, _ = card_name(card)
-        if short_name == "HDA Intel PCH":
-            return Mixer(control="Master", cardindex=card)
-
-
 def sound_gen():
-    mixer = get_mixer()
-
     vol_lookup = [
         (0, EMOJI_MUTED_SPEAKER),
         (30, EMOJI_LOW_VOL_SPEAKER),
@@ -133,19 +123,17 @@ def sound_gen():
         (1000, EMOJI_HIGH_VOL_SPEAKER),
     ]
 
-    while True:
-        mixer.handleevents()
+    with Pulse() as p:
+        while True:
+            msg = EMOJI_MUTED_SPEAKER
 
-        msg = EMOJI_MUTED_SPEAKER
-
-        if not any(mixer.getmute()):
-            [vol] = mixer.getvolume(PCM_PLAYBACK)
-
-            if vol > 0:
-                db = linear_to_db(vol / 100)
+            info = p.sink_info(0)
+            vol = info.volume.value_flat
+            if vol > 0. and not info.mute:
+                db = linear_to_db(vol)
                 idx = bisect_left(vol_lookup, vol, key=lambda x: x[0])
                 msg = f"{db:.1f}dB {vol_lookup[idx][1]}"
-        yield msg
+            yield msg
 
 
 def rw_stats_gen(name, fn):
@@ -179,7 +167,7 @@ def net_io_stats():
 def main():
     disk = rw_stats_gen(EMOJI_HDD, disk_rw_stats)
     net = rw_stats_gen(EMOJI_NET, net_io_counters)
-    backlight = backlight_gen()
+    #backlight = backlight_gen()
     sound = sound_gen()
 
     while True:
@@ -189,7 +177,7 @@ def main():
             next(disk),
             get_battery(),
             # get_cpu(),
-            next(backlight),
+            #next(backlight),
             next(sound),
         )
         line = " | ".join(parts)
