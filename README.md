@@ -5,7 +5,7 @@ is to clone the appropriate repo into a "bare" repository:
 
 ``` sh
 git clone --bare github.com:smason/dotfiles ~/.dotfiles --branch wayland
-git --dir-dir ~/.dotfiles --work-tree ~ checkout
+git --git-dir ~/.dotfiles --work-tree ~ checkout
 ```
 
 this should include a special script called `config` (in `.local/bin`)
