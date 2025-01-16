@@ -38,7 +38,7 @@ output * {
 #    magick -size 3840x2160 hat-aperiodic-monotile-hacked.svg background.png
 
 ### Idle configuration
-exec swayidle.sh
+exec once swayidle.sh
 
 bindsym $mod+Escape exec loginctl lock-session
 
@@ -100,16 +100,20 @@ input type:touchpad {
     # mouse button for dragging.
     floating_modifier $mod normal
 
-    bindsym XF86MonBrightnessDown exec $python $cfgdir/backlight.py $backlight darker
-    bindsym XF86MonBrightnessUp   exec $python $cfgdir/backlight.py $backlight brighter
-
     bindsym XF86AudioMute         exec $python $cfgdir/soundcard.py mute
     bindsym XF86AudioMicMute      exec $python $cfgdir/soundcard.py micmute
     bindsym XF86AudioLowerVolume  exec $python $cfgdir/soundcard.py lower
     bindsym XF86AudioRaiseVolume  exec $python $cfgdir/soundcard.py raise
 
-    bindsym $mod+Prior exec swaymsg -q opacity mul 1.125 || swaymsg -q opacity 1
-    bindsym $mod+Next opacity div 1.125
+    bindsym $mod+Shift+Prior exec $python $cfgdir/monitor-brightness.py brighter
+    bindsym $mod+Shift+Next  exec $python $cfgdir/monitor-brightness.py darker
+
+    # not sure about these
+    # bindsym $mod+Prior exec playerctl previous
+    # bindsym $mod+Next  exec playerctl next
+
+    # --locked means allow on lockscreen
+    bindsym --locked $mod+Pause exec playerctl play-pause
 
 #
 # Moving around:
