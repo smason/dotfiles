@@ -1,0 +1,10 @@
+# Halloy config.
+#
+# For a complete list of available options,
+# please visit https://halloy.squidowl.org/configuration/index.html
+
+[servers.liberachat]
+nickname = "smason"
+nick_password_file = "/home/smason/.config/halloy/auth/liberachat"
+server = "irc.libera.chat"
+channels = ["#archlinux", "#emersion"]

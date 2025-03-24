@@ -1,0 +1,5 @@
+idlehint 360
+timeout 300 'swaylock.sh slow'
+timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+before-sleep swaylock.sh
+lock 'swaylock.sh fast'

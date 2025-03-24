@@ -1,17 +1,17 @@
-### Variables
-#
-# Mod4 = "Logo" key, Mod1 is Alt
 set $mod Mod4
 
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-exec pactl load-module module-switch-on-connect
-exec gammastep -v
-
-set $term ghostty --gtk-single-instance=true
+set $term ghostty --gtk-single-instance=true >/dev/null 2>&1
 set $cfgdir ~/.config/sway
 set $bin ~/.local/bin
 set $menu wofi --location 2 --show run
 set $swaymenu sh $cfgdir/swaymenu.sh
+
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec pactl load-module module-switch-on-connect
+exec gammastep
+
+exec swayidle -w
+bindsym $mod+Escape exec loginctl lock-session
 
 # e.g. set $python and $backlight here
 include $cfgdir/*.conf
@@ -27,20 +27,16 @@ exec $python "/usr/share/sway-contrib/firefox-focus-monitor.py"
 #   swaymsg workspace dp3 output DP-2
 
 output * {
-    adaptive_sync enable
     background "~/.config/sway/background.png" fill
     color_profile srgb
-    max_render_time 2
     subpixel rgb
+    # these seem to break when switching between resolutions
+    adaptive_sync enable
+    max_render_time 2
 }
 
 # background PNG converted from SVG via:
 #    magick -size 3840x2160 hat-aperiodic-monotile-hacked.svg background.png
-
-### Idle configuration
-exec once swayidle.sh
-
-bindsym $mod+Escape exec loginctl lock-session
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -50,13 +46,13 @@ bindsym $mod+Escape exec loginctl lock-session
 #
 # see `swaymsg -t get_inputs` for types/names and `man 5 sway-input` for help
 
-# layouts saved in ~/.xkb/symbols/
+# layouts saved in ~/.config/xkb/
 input type:keyboard {
     # keyboard
     xkb_layout gb_sams
 
     # Make caps lock work as control
-    xkb_options ctrl:nocaps
+    xkb_options ctrl:nocaps,compose:menu
 }
 
 input "3141:28694:SONiX_USB_DEVICE" {
@@ -105,8 +101,8 @@ input type:touchpad {
     bindsym XF86AudioLowerVolume  exec $python $cfgdir/soundcard.py lower
     bindsym XF86AudioRaiseVolume  exec $python $cfgdir/soundcard.py raise
 
-    bindsym $mod+Shift+Prior exec $python $cfgdir/monitor-brightness.py brighter
-    bindsym $mod+Shift+Next  exec $python $cfgdir/monitor-brightness.py darker
+    bindsym $mod+Shift+Prior exec monitor-brightness brighter
+    bindsym $mod+Shift+Next  exec monitor-brightness darker
 
     # not sure about these
     # bindsym $mod+Prior exec playerctl previous
@@ -215,21 +211,7 @@ bindsym $mod+r mode "resize"
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-bar {
-    position top
-    font "Margarine 10"
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command $python -u $cfgdir/status.py
-
-    colors {
-        statusline #cccccc
-        background #222222c0
-        focused_workspace #63ace5c0 #63ace5c0 #323232
-        inactive_workspace #222222c0 #222222c0 #888888
-    }
-}
+bar swaybar_command waybar
 
 include /etc/sway/config.d/*
 

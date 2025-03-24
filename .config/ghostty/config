@@ -1,9 +1,7 @@
 font-family = Iosevka Term Extended
-font-family-bold = Iosevka Term Bold Extended
-font-family-italic = Iosevka Term Extended Italic
-font-family-bold-italic = Iosevka Term Bold Extended Italic
 
 font-size = 10
-
-theme = oksolar
 window-decoration = false
+
+# theme = iTerm2 Solarized Light
+theme = oksolar

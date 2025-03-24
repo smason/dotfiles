@@ -1,14 +1,10 @@
-if test -d ~/.cargo/bin
-    set -x PATH ~/.cargo/bin $PATH
-end
+# use fish_add_path to add paths universally, i.e. shared across shells
+#   fish_add_path ~/.local/bin
+# should be enough to do this once
 
-if command -q ruby
-	set -x PATH (ruby -e 'puts Gem.user_dir')/bin $PATH
-end
-
-if test -d ~/.local/bin
-    set -x PATH ~/.local/bin $PATH
-end
+#if command -q ruby
+#	set -x PATH (ruby -e 'puts Gem.user_dir')/bin $PATH
+#end
 
 # nice, but too slow on large repos!
 # set __fish_git_prompt_showdirtystate yes

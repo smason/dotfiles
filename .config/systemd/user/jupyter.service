@@ -1,0 +1,8 @@
+[Unit]
+Description=Jupyter Notebook
+
+[Service]
+ExecStart=/home/smason/.venv/bin/jupyter notebook --no-browser
+
+[Install]
+WantedBy=default.target
