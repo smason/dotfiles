@@ -89,6 +89,9 @@ input type:touchpad {
 
     bindsym $mod+d [app_id="firefox"] focus ; exec "firefox --new-tab https://devdocs.io/"
 
+    bindsym $mod+Shift+Grave mark browser
+    bindsym $mod+Grave [con_mark=browser] focus
+
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
@@ -105,8 +108,8 @@ input type:touchpad {
     bindsym $mod+Shift+Next  exec monitor-brightness darker
 
     # not sure about these
-    # bindsym $mod+Prior exec playerctl previous
-    # bindsym $mod+Next  exec playerctl next
+    bindsym $mod+Prior exec playerctl previous
+    bindsym $mod+Next  exec playerctl next
 
     # --locked means allow on lockscreen
     bindsym --locked $mod+Pause exec playerctl play-pause
