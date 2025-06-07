@@ -4,7 +4,13 @@
 # please visit https://halloy.squidowl.org/configuration/index.html
 
 [servers.liberachat]
+server = "irc.libera.chat"
 nickname = "smason"
 nick_password_file = "/home/smason/.config/halloy/auth/liberachat"
-server = "irc.libera.chat"
-channels = ["#archlinux", "#emersion"]
+channels = ["#archlinux"] #, "#emersion"]
+
+[servers.oftc]
+server = "irc.oftc.net"
+nickname = "smason"
+nick_password_file = "/home/smason/.config/halloy/auth/oftc"
+channels = ["#pwmt"]
