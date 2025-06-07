@@ -24,10 +24,12 @@ matplotlib
 seaborn
 pandas
 h5py
+sympy
 
 # IPython / Jupyter
 ipython
 notebook
+jupyterlab
 # https://jupyterlab-lsp.readthedocs.io/en/latest/Installation.html
 jupyter-lsp
 jupyterlab-lsp
