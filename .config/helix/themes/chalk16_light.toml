@@ -1,0 +1,94 @@
+# UI based on term16
+#
+# Remainder is trying to get color usage more consistent, as
+# suggested by Niki via his Alabaster theme and explained in
+# https://tonsky.me/blog/syntax-highlighting/
+#
+# Tested on Rust, C, Python, Markdown, and HTML files
+
+"ui.background" = { }
+"ui.background.separator" = "light-gray"
+"ui.cursor" = { fg = "gray", modifiers = ["reversed"] }
+"ui.cursor.match" = { fg = "yellow", modifiers = ["reversed"] }
+"ui.cursor.primary" = { fg = "black", modifiers = ["reversed"] }
+"ui.cursor.secondary" = { fg = "gray", modifiers = ["reversed"] }
+"ui.cursorline.primary" = { bg = "white" }
+"ui.cursorline.secondary" = { bg = "yellow" }
+"ui.cursorcolumn.primary" = { bg = "white" }
+"ui.cursorcolumn.secondary" = { bg = "yellow" }
+"ui.gutter" = { }
+"ui.gutter.selected" = { bg = "white" }
+"ui.linenr" = { fg = "gray", modifiers = ["dim"] }
+"ui.linenr.selected" = { fg = "gray",  modifiers = ["bold"] }
+"ui.menu" = { bg = "light-gray" }
+"ui.menu.selected" = { fg = "white", bg = "gray", modifiers = ["bold"] }
+"ui.menu.scroll" = { fg = "light-blue" }
+"ui.help" = { }
+"ui.text" = { }
+"ui.text.focus" = { }
+"ui.popup" = { bg = "white" }
+"ui.selection" = { bg = "light-gray" }
+"ui.statusline" = { bg = "white" }
+"ui.statusline.inactive" = { fg = "gray", modifiers = ["underlined"] }
+"ui.statusline.insert" = { fg = "white", bg = "blue" }
+"ui.statusline.select" = { fg = "white", bg = "magenta" }
+"ui.virtual" = { fg = "light-gray" }
+"ui.virtual.indent-guide" = { fg = "light-gray", modifiers = ["dim"] }
+"ui.virtual.ruler" = { bg = "white" }
+"ui.virtual.wrap" = { fg = "light-gray" }
+"ui.window" = { fg = "gray", modifiers = ["dim"] }
+
+# Gutter
+"hint" = "cyan"
+"info" = "blue"
+"debug" = "light-yellow"
+"warning" = "yellow"
+"error" = "red"
+
+# Editing area
+"diagnostic.hint" = { underline = { color = "cyan", style = "curl" } }
+"diagnostic.info" = { underline = { color = "blue", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "yellow", style = "curl" } }
+"diagnostic.error" = { underline = { color = "red", style = "curl" } }
+
+# Comments
+"comment" = "magenta"
+"comment.block.documentation" = { fg = "magenta", modifiers = ["dim"] }
+"comment.line.documentation" = { fg = "magenta", modifiers = ["dim"] }
+
+# Syntax
+"keyword" = "green"
+"operator" = { fg = "green", modifiers = ["bold"]}
+"punctuation" = { fg = "green", modifiers = ["dim"]}
+"tag" = "green" # i.e. HTML tags
+
+# Builtins
+"type.builtin" = "black"
+"constant.builtin" = "black"
+"variable.builtin" = "black"
+"function.builtin" = "black"
+"tag.builtin" = "black"
+
+# Constants
+"string" = "yellow"
+"constant" = "yellow"
+
+# Rare things that need calling out
+"keyword.directive" = "red" # C preprocessor directives
+"label" = "red" # CSS .class & #id, Markdown block format
+"special" = "red" # "derive" and formatting placeholders in Rust
+
+"diff.plus" = "light-green"
+"diff.delta" = "light-blue"
+"diff.minus" = "light-red"
+
+"markup.heading" = { fg = "yellow", modifiers = ["bold"] }
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.link.text" = { underline = { color = "blue", style = "line" } }
+"markup.link.url" = { fg = "blue", modifiers = [ "italic" ] }
+"markup.link.label" = { fg = "black" }
+"markup.quote" = { fg = "yellow", modifiers = [ "italic" ] }
+"markup.raw" = { fg = "black" }
+"markup.list" = { modifiers = ["dim"] }

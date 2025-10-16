@@ -1,4 +1,4 @@
-theme = "term16_light"
+theme = "chalk16_light" # previously "term16_light"
 
 [editor]
 line-number = "absolute"
