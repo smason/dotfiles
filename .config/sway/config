@@ -6,7 +6,7 @@ set $bin ~/.local/bin
 set $menu wofi --location 2 --show run
 set $swaymenu sh $cfgdir/swaymenu.sh
 
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+#exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec pactl load-module module-switch-on-connect
 exec gammastep
 
