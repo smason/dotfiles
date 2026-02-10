@@ -99,20 +99,18 @@ input type:touchpad {
     # mouse button for dragging.
     floating_modifier $mod normal
 
-    bindsym XF86AudioMute         exec $python $cfgdir/soundcard.py mute
-    bindsym XF86AudioMicMute      exec $python $cfgdir/soundcard.py micmute
-    bindsym XF86AudioLowerVolume  exec $python $cfgdir/soundcard.py lower
-    bindsym XF86AudioRaiseVolume  exec $python $cfgdir/soundcard.py raise
+    bindsym XF86AudioMute    exec $python $cfgdir/soundcard.py mute
+    bindsym XF86AudioMicMute exec $python $cfgdir/soundcard.py micmute
+    bindsym $mod+Next        exec $python $cfgdir/soundcard.py lower
+    bindsym $mod+Prior       exec $python $cfgdir/soundcard.py raise
+    # not sure about these
+    #bindsym $mod+Prior exec playerctl previous
+    #bindsym $mod+Next  exec playerctl next
+    # --locked means allow on lockscreen
+    bindsym --locked $mod+Pause exec playerctl play-pause
 
     bindsym $mod+Shift+Prior exec monitor-brightness brighter
     bindsym $mod+Shift+Next  exec monitor-brightness darker
-
-    # not sure about these
-    bindsym $mod+Prior exec playerctl previous
-    bindsym $mod+Next  exec playerctl next
-
-    # --locked means allow on lockscreen
-    bindsym --locked $mod+Pause exec playerctl play-pause
 
 #
 # Moving around:

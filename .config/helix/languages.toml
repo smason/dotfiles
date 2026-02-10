@@ -1,8 +1,4 @@
 [[language]]
-name = "python"
-file-types = ["py", "pyx"]
-
-[[language]]
 name = "rust"
 auto-format = false
 
@@ -11,3 +7,17 @@ name = "markdown"
 text-width = 72
 soft-wrap.enable = true
 soft-wrap.wrap-at-text-width = true
+
+[[language]]
+name = "python"
+language-id = "python"
+auto-format = true
+language-servers = ["ty", "ruff"]
+file-types = ["py", "pyx", "ipynb"]
+comment-token = "#"
+shebangs = ["python"]
+roots = ["pyproject.toml", "setup.py", "poetry.lock", ".git", ".jj", ".venv/"]
+
+[language-server.ty]
+command = "ty"
+args = ["server"]

@@ -1,4 +1,6 @@
+# font-family = Iosevka Fixed Extended
 font-family = Iosevka Term Extended
+font-feature = calt off
 
 font-size = 10
 window-decoration = false
