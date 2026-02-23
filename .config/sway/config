@@ -10,6 +10,8 @@ set $swaymenu sh $cfgdir/swaymenu.sh
 exec pactl load-module module-switch-on-connect
 exec gammastep
 
+exec ibus-daemon --xim --daemonize
+
 exec swayidle -w
 bindsym $mod+Escape exec loginctl lock-session
 
@@ -17,7 +19,7 @@ bindsym $mod+Escape exec loginctl lock-session
 include $cfgdir/*.conf
 
 # disable Escape key in Firefox popout video player
-exec $python "/usr/share/sway-contrib/firefox-focus-monitor.py"
+exec $python "$cfgdir/firefox-focus-monitor.py"
 
 ### Output configuration
 #
@@ -27,7 +29,7 @@ exec $python "/usr/share/sway-contrib/firefox-focus-monitor.py"
 #   swaymsg workspace dp3 output DP-2
 
 output * {
-    background "~/.config/sway/background.png" fill
+    background "$cfgdir/background.png" fill
     color_profile srgb
     subpixel rgb
     # these seem to break when switching between resolutions
@@ -170,10 +172,10 @@ input type:touchpad {
     bindsym $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
-
+    bindsym $mod+Shift+backslash floating toggle
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+    bindsym $mod+backslash focus mode_toggle
+    # note that floating commands above by default use space, but IME wants that
 
     # move focus to the parent container
     bindsym $mod+a focus parent
