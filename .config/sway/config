@@ -19,7 +19,7 @@ bindsym $mod+Escape exec loginctl lock-session
 include $cfgdir/*.conf
 
 # disable Escape key in Firefox popout video player
-exec $python "$cfgdir/firefox-focus-monitor.py"
+exec $python $cfgdir/firefox-focus-monitor.py
 
 ### Output configuration
 #
