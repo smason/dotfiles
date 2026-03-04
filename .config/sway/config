@@ -210,6 +210,10 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+for_window {
+    [app_id="firefox" title="Picture-in-Picture"] floating enable
+}
+
 #
 # Status Bar:
 #
@@ -222,9 +226,9 @@ include /etc/sway/config.d/*
 #
 # theming
 #
-font pango:Margarine 10
+font pango:Roboto 11
 default_border pixel 4
-titlebar_padding 7 1
+titlebar_padding 7 2
 gaps inner 0
 gaps outer 0
 

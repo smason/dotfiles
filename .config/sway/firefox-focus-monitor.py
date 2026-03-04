@@ -36,6 +36,9 @@ class Watch:
     container_props: dict[str, str]
     callback: WatchLambda
 
+    def does_match(self, props: dict[str, str]):
+        return all(props.get(k) == v for k, v in self.container_props.items())
+
 
 class Monitor:
     bound: set[str]
@@ -79,20 +82,27 @@ class Monitor:
     def on_window_event(self, ipc: i3ipc.Connection, event: IpcBaseEvent) -> None:
         "respond to window events"
         match event:
-            case i3ipc.WindowEvent(container=i3ipc.Con(focused=True, ipc_data=data)):
+            case i3ipc.WindowEvent(
+                container=i3ipc.Con(focused=bool(focused), ipc_data=dict(data))
+            ):
                 pass
             case _:
                 logging.error("invalid window event %s", event)
+                return
+
+        if not focused:
+            return
 
         prev = self.bound
         bound = set()
         for watch in self.watched:
-            if all(data.get(k) == v for k, v in watch.container_props.items()):
-                for key, resp in watch.callback(data):
-                    logger.debug("binding %r to %r", key, resp)
-                    self.ipc.command(f"bindsym {key} {resp}")
-                    bound.add(key)
-                    prev.discard(key)
+            if not watch.does_match(data):
+                continue
+            for key, resp in watch.callback(data):
+                logger.debug("binding %r to %r", key, resp)
+                self.ipc.command(f"bindsym {key} {resp}")
+                bound.add(key)
+                prev.discard(key)
 
         if bound:
             logger.info("keys bound %s", bound)
