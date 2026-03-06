@@ -1,17 +1,60 @@
 import Quickshell
+import Quickshell.Io
 // import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 import Niri
 
 ShellRoot {
-    property color activeColor: "#7bf"
-    property color backgroundColor: "#333"
+    readonly property color activeColor: "#7bf"
+    readonly property color backgroundColor: "#333"
 
-    property int panelRadius: 12
-    property color panelBorderColor: "#888"
-    property real panelBorderWidth: 2
-    property real panelMargin: -Math.ceil(panelBorderWidth)
+    readonly property int panelRadius: 12
+    readonly property color panelBorderColor: "#888"
+    readonly property real panelBorderWidth: 2
+    readonly property real panelMargin: -Math.ceil(panelBorderWidth)
+
+    Item {
+        id: playerctl
+
+        readonly property string cMEDIA_PLAYING: "▶️"
+        readonly property string cMEDIA_PAUSED: "⏸️"
+        readonly property string cMEDIA_STOPPED: "⏹️"
+
+        property string status: "Stopped"
+        property string status_emoji: cMEDIA_STOPPED;
+        property string metadata: ""
+
+        Process {
+            id: _status
+            command: ["playerctl", "-F", "status"]
+            stdout: SplitParser {}
+        }
+
+        Process {
+            id: _metadata
+            command: ["playerctl", "-F", "metadata", "-f", "{{ artist }} - {{ title }}"]
+            stdout: SplitParser {}
+        }
+
+        Component.onCompleted: {
+            _status.stdout.read.connect(line => {
+                status = line;
+                if (line == "Playing") {
+                    status_emoji = cMEDIA_PLAYING;
+                } else if (line == "Paused") {
+                    status_emoji = cMEDIA_PAUSED;
+                } else if (line == "Stopped") {
+                    status_emoji = cMEDIA_STOPPED;
+                } else {
+                    status_emoji = line;
+                }
+            })
+            _metadata.stdout.read.connect(line => metadata = line)
+            _status.running = true
+            _metadata.running = true
+        }
+    }
 
     Niri {
         id: niri
@@ -116,10 +159,20 @@ ShellRoot {
                 rightPadding: 12
                 spacing: 12
 
-                Text {
-                    text: "fred"
-                    color: activeColor
-                    font.pixelSize: 16
+                Row {
+                    Text {
+                        anchors.baseline: player_text.baseline
+                        text: playerctl.status_emoji
+                        color: activeColor
+                        font.pixelSize: 18
+                        rightPadding: 4
+                    }
+                    Text {
+                        id: player_text
+                        text: playerctl.metadata
+                        color: activeColor
+                        font.pixelSize: 14
+                    }
                 }
 
                 Rectangle {
