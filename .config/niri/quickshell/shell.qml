@@ -1,7 +1,7 @@
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
-// import Quickshell.Wayland
+import Quickshell.Services.Mpris
 import QtQuick
 import QtQuick.Layouts
 import Niri
@@ -28,51 +28,9 @@ ShellRoot {
         }
     }
 
-    Item {
-        id: playerctl
-
-        readonly property string cMEDIA_PLAYING: "▶️"
-        readonly property string cMEDIA_PAUSED: "⏸️"
-        readonly property string cMEDIA_STOPPED: "⏹️"
-
-        property string status: "Stopped"
-        property string status_emoji: cMEDIA_STOPPED;
-        property string metadata: ""
-
-        Process {
-            id: _status
-            command: ["playerctl", "-F", "status"]
-            stdout: SplitParser {}
-        }
-
-        Process {
-            id: _metadata
-            command: ["playerctl", "-F", "metadata", "-f", "{{ artist }} - {{ title }}"]
-            stdout: SplitParser {}
-        }
-
-        function doPlayPause() {
-            scriptrunner.exec(["playerctl", "play-pause"])
-        }
-
-        Component.onCompleted: {
-            _status.stdout.read.connect(line => {
-                status = line;
-                if (line == "Playing") {
-                    status_emoji = cMEDIA_PLAYING;
-                } else if (line == "Paused") {
-                    status_emoji = cMEDIA_PAUSED;
-                } else if (line == "Stopped") {
-                    status_emoji = cMEDIA_STOPPED;
-                } else {
-                    status_emoji = line;
-                }
-            })
-            _metadata.stdout.read.connect(line => metadata = line)
-            _status.running = true
-            _metadata.running = true
-        }
-    }
+    readonly property string cMEDIA_PLAYING: "▶️"
+    readonly property string cMEDIA_PAUSED: "⏸️"
+    readonly property string cMEDIA_STOPPED: "⏹️"
 
     Item {
         id: pipewire
@@ -154,10 +112,10 @@ ShellRoot {
                     model: niri.workspaces
 
                     Text {
-                        text: model.index
+                        text: index
 
                         font.pixelSize: 16
-                        font.weight: model.isActive ? 800 : 300
+                        font.weight: isActive ? 800 : 300
                         color: activeColor
                         leftPadding: 8
                         rightPadding: 8
@@ -165,7 +123,7 @@ ShellRoot {
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: niri.focusWorkspaceById(model.id)
+                            onClicked: niri.focusWorkspaceById(id)
                         }
                     }
                 }
@@ -196,26 +154,53 @@ ShellRoot {
             Row {
                 leftPadding: 12
                 rightPadding: 12
-                spacing: 12
+                spacing: 8
 
-                Row {
-                    Text {
-                        anchors.baseline: player_metadata.baseline
-                        text: playerctl.status_emoji
-                        color: activeColor
-                        font.pixelSize: 18
+                Repeater {
+                    model: Mpris.players.values
 
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: playerctl.doPlayPause()
+                    Row {
+                        spacing: 8
+
+                        Rectangle {
+                            height: parent.height
+                            width: 1
+                            color: "#aaa"
+                            visible: index > 0
                         }
-                    }
-                    Text {
-                        id: player_metadata
-                        text: " " + playerctl.metadata
-                        color: activeColor
-                        font.pixelSize: 16
+
+                        Text {
+                            anchors.baseline: next.baseline
+                            text: {
+                                switch (playbackState) {
+                                    case MprisPlaybackState.Playing:
+                                        return cMEDIA_PLAYING;
+                                    case MprisPlaybackState.Paused:
+                                        return cMEDIA_PAUSED;
+                                    case MprisPlaybackState.Stopped:
+                                        return cMEDIA_STOPPED;
+                                }
+                                return "";
+                            }
+                            color: activeColor
+                            font.pixelSize: 16
+
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: togglePlaying()
+                            }
+                        }
+
+                        Text {
+                            leftPadding: -6
+                            id: next
+                            text: `${trackArtist} - ${trackTitle}`
+                            color: activeColor
+                            font.pixelSize: 16
+                            width: 300
+                            elide: Text.ElideRight
+                        }
                     }
                 }
             }
