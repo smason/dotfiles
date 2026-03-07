@@ -8,7 +8,7 @@ input {
         numlock
     }
 
-    focus-follows-mouse max-scroll-amount="20%"
+    focus-follows-mouse max-scroll-amount="0%"
 }
 
 output "DP-3" {
