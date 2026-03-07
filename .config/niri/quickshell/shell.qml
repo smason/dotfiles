@@ -35,10 +35,10 @@ ShellRoot {
     Item {
         id: pipewire
 
-        readonly property string cSPEAKER_MUTED: "🔇";
-        readonly property string cSPEAKER_LOW: "🔈";
-        readonly property string cSPEAKER_MED: "🔉";
-        readonly property string cSPEAKER_HIGH: "🔊";
+        readonly property string cSPEAKER_MUTED: "🔇"
+        readonly property string cSPEAKER_LOW: "🔈"
+        readonly property string cSPEAKER_MED: "🔉"
+        readonly property string cSPEAKER_HIGH: "🔊"
 
         readonly property PwNode node: Pipewire.defaultAudioSink
 
@@ -198,7 +198,7 @@ ShellRoot {
                             text: `${trackArtist} - ${trackTitle}`
                             color: activeColor
                             font.pixelSize: 16
-                            width: 300
+                            width: 260
                             elide: Text.ElideRight
                         }
                     }
