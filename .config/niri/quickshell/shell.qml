@@ -1,5 +1,6 @@
 import Quickshell
 import Quickshell.Io
+import Quickshell.Services.Pipewire
 // import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
@@ -13,6 +14,19 @@ ShellRoot {
     readonly property color panelBorderColor: "#888"
     readonly property real panelBorderWidth: 2
     readonly property real panelMargin: -Math.ceil(panelBorderWidth)
+
+    Process {
+        id: scriptrunner
+
+        stdout: StdioCollector {}
+        stderr: StdioCollector {
+            onStreamFinished: {
+                if (text !== "") {
+                    console.debug(text.trim());
+                }
+            }
+        }
+    }
 
     Item {
         id: playerctl
@@ -37,6 +51,10 @@ ShellRoot {
             stdout: SplitParser {}
         }
 
+        function doPlayPause() {
+            scriptrunner.exec(["playerctl", "play-pause"])
+        }
+
         Component.onCompleted: {
             _status.stdout.read.connect(line => {
                 status = line;
@@ -53,6 +71,38 @@ ShellRoot {
             _metadata.stdout.read.connect(line => metadata = line)
             _status.running = true
             _metadata.running = true
+        }
+    }
+
+    Item {
+        id: pipewire
+
+        readonly property string cSPEAKER_MUTED: "🔇";
+        readonly property string cSPEAKER_LOW: "🔈";
+        readonly property string cSPEAKER_MED: "🔉";
+        readonly property string cSPEAKER_HIGH: "🔊";
+
+        readonly property PwNode node: Pipewire.defaultAudioSink
+
+        PwObjectTracker {
+            objects: [pipewire.node]
+        }
+
+        property string prettyVolume: {
+            const audio = node?.audio;
+            if (typeof audio !== "object") {
+                return "unknown";
+            }
+            if (audio.muted) {
+                return `${cSPEAKER_MUTED} mute`;
+            }
+            const volume = audio.volume * 100;
+            const voltxt = volume.toFixed(0);
+            if (volume < 1) {
+                return `${cSPEAKER_LOW} ${voltxt}%`;
+            } else {
+                return `${cSPEAKER_HIGH} ${voltxt}%`;
+            }
         }
     }
 
@@ -84,6 +134,7 @@ ShellRoot {
                 color: panelBorderColor
             }
         }
+
         RowLayout {
             id: left_panel
 
@@ -119,19 +170,55 @@ ShellRoot {
                     }
                 }
             }
+        }
 
-            // Rectangle {
-            //     height: parent.height
-            //     width: 1
-            //     color: "#aaa"
-            // }
+        Rectangle {
+            anchors.fill: middle_panel
+            bottomLeftRadius: panelRadius
+            bottomRightRadius: panelRadius
+            color: backgroundColor
+            border {
+                width: panelBorderWidth
+                color: panelBorderColor
+            }
+        }
+        RowLayout {
+            id: middle_panel
 
-            // Text {
-            //     text: niri.focusedWindow?.appId ?? ""
-            //     color: activeColor
-            //     font.pixelSize: 16
-            //     rightPadding: 8
-            // }
+            anchors {
+                top: parent.top
+                horizontalCenter: parent.horizontalCenter
+                bottom: parent.bottom
+                topMargin: panelMargin
+                rightMargin: panelMargin
+            }
+
+            Row {
+                leftPadding: 12
+                rightPadding: 12
+                spacing: 12
+
+                Row {
+                    Text {
+                        anchors.baseline: player_metadata.baseline
+                        text: playerctl.status_emoji
+                        color: activeColor
+                        font.pixelSize: 18
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: playerctl.doPlayPause()
+                        }
+                    }
+                    Text {
+                        id: player_metadata
+                        text: " " + playerctl.metadata
+                        color: activeColor
+                        font.pixelSize: 16
+                    }
+                }
+            }
         }
 
         Rectangle {
@@ -143,6 +230,7 @@ ShellRoot {
                 color: panelBorderColor
             }
         }
+
         RowLayout {
             id: right_panel
 
@@ -159,20 +247,10 @@ ShellRoot {
                 rightPadding: 12
                 spacing: 12
 
-                Row {
-                    Text {
-                        anchors.baseline: player_text.baseline
-                        text: playerctl.status_emoji
-                        color: activeColor
-                        font.pixelSize: 18
-                        rightPadding: 4
-                    }
-                    Text {
-                        id: player_text
-                        text: playerctl.metadata
-                        color: activeColor
-                        font.pixelSize: 14
-                    }
+                Text {
+                    text: pipewire.prettyVolume
+                    color: activeColor
+                    font.pixelSize: 16
                 }
 
                 Rectangle {
@@ -182,6 +260,7 @@ ShellRoot {
                 }
 
                 Text {
+                    id: datetime
                     text: Qt.formatDateTime(clock.date, "hh:mm - ddd, d MMM")
                     color: activeColor
                     font.pixelSize: 16
