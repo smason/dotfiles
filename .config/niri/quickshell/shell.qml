@@ -15,6 +15,15 @@ ShellRoot {
     readonly property real panelBorderWidth: 2
     readonly property real panelMargin: -Math.ceil(panelBorderWidth)
 
+    function debugPrint(obj) {
+        console.log(obj)
+        for (const key in obj) {
+            if (typeof(obj[key]) !== "undefined") {
+                console.log(key)
+            }
+        }
+    }
+
     Process {
         id: scriptrunner
 
@@ -31,6 +40,8 @@ ShellRoot {
     readonly property string cMEDIA_PLAYING: "▶️"
     readonly property string cMEDIA_PAUSED: "⏸️"
     readonly property string cMEDIA_STOPPED: "⏹️"
+    readonly property string cMEDIA_LAST_TRACK: "⏮️"
+    readonly property string cMEDIA_NEXT_TRACK: "⏭️"
 
     Item {
         id: pipewire
@@ -68,17 +79,16 @@ ShellRoot {
         id: niri
         Component.onCompleted: connect()
 
-        onConnected: console.info("Connected to niri")
-        onErrorOccurred: err => console.error("Niri error:", err)
+        onErrorOccurred: err => console.error(err)
     }
 
     SystemClock {
-        id: clock
+        id: sysclock
         precision: SystemClock.Minutes
     }
 
     PanelWindow {
-        id: bar
+        id: toppanel
         anchors { top: true; left: true; right: true; }
         implicitHeight: 30
         color: "transparent"
@@ -132,6 +142,7 @@ ShellRoot {
 
         Rectangle {
             anchors.fill: middle_panel
+            visible: middle_panel.visible
             bottomLeftRadius: panelRadius
             bottomRightRadius: panelRadius
             color: backgroundColor
@@ -142,6 +153,7 @@ ShellRoot {
         }
         RowLayout {
             id: middle_panel
+            visible: Mpris.players.values.length > 0
 
             anchors {
                 top: parent.top
@@ -171,6 +183,22 @@ ShellRoot {
 
                         Text {
                             anchors.baseline: next.baseline
+                            rightPadding: -6
+                            font.pixelSize: 16
+                            color: activeColor
+                            text: canGoPrevious ? cMEDIA_LAST_TRACK : "\u23ee"
+                            MouseArea {
+                                visible: canGoPrevious
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: modelData.previous()
+                            }
+                        }
+                        Text {
+                            anchors.baseline: next.baseline
+                            rightPadding: -6
+                            font.pixelSize: 16
+                            color: activeColor
                             text: {
                                 switch (playbackState) {
                                     case MprisPlaybackState.Playing:
@@ -182,18 +210,28 @@ ShellRoot {
                                 }
                                 return "";
                             }
-                            color: activeColor
-                            font.pixelSize: 16
 
                             MouseArea {
                                 anchors.fill: parent
                                 cursorShape: Qt.PointingHandCursor
-                                onClicked: togglePlaying()
+                                onClicked: modelData.togglePlaying()
+                            }
+                        }
+                        Text {
+                            anchors.baseline: next.baseline
+                            font.pixelSize: 16
+                            color: activeColor
+                            text: canGoNext ? cMEDIA_NEXT_TRACK : "\u23ed"
+                            MouseArea {
+                                visible: canGoNext
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: modelData.next()
                             }
                         }
 
                         Text {
-                            leftPadding: -6
+                            leftPadding: -4
                             id: next
                             text: `${trackArtist} - ${trackTitle}`
                             color: activeColor
@@ -246,7 +284,7 @@ ShellRoot {
 
                 Text {
                     id: datetime
-                    text: Qt.formatDateTime(clock.date, "hh:mm - ddd, d MMM")
+                    text: Qt.formatDateTime(sysclock.date, "hh:mm - ddd, d MMM")
                     color: activeColor
                     font.pixelSize: 16
                 }
