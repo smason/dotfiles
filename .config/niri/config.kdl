@@ -56,8 +56,8 @@ window-rule {
     clip-to-geometry true
 }
 
-spawn-at-startup "waybar"
 spawn-at-startup "gammastep"
+spawn-sh-at-startup "qs -c ~/.config/niri/quickshell"
 spawn-sh-at-startup "swaybg -i ~/.config/sway/background.png"
 spawn-sh-at-startup "hypridle -c ~/.config/niri/hypridle.conf"
 
@@ -234,8 +234,8 @@ binds {
     Mod+Ctrl+R { reset-window-height; }
 
     // Move the focused window between the floating and the tiling layout.
-    Mod+Backslash       { toggle-window-floating; }
-    Mod+Shift+Backslash { switch-focus-between-floating-and-tiling; }
+    Mod+Backslash       { switch-focus-between-floating-and-tiling; }
+    Mod+Shift+Backslash { toggle-window-floating; }
 
     Mod+W { toggle-column-tabbed-display; }
 
