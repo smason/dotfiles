@@ -1,16 +1,18 @@
+pragma ComponentBehavior: Bound
+
+// https://develop.kde.org/frameworks/breeze-icons/
 //@ pragma IconTheme breeze-dark
 
+import QtQuick
 import Quickshell
 import Quickshell.Services.Pipewire
 import Quickshell.Services.Mpris
-import QtQuick
-import QtQuick.Layouts
 import Quickshell.Widgets
 import Niri
 
-// https://develop.kde.org/frameworks/breeze-icons/
-
 ShellRoot {
+    id: root
+
     readonly property color activeColor: "#7bf"
     readonly property color backgroundColor: "#333"
 
@@ -46,17 +48,17 @@ ShellRoot {
 
     component RoundedRect : Rectangle {
         anchors {
-            topMargin: panelMargin
-            leftMargin: panelMargin
-            rightMargin: panelMargin
-            bottomMargin: panelMargin
+            topMargin: root.panelMargin
+            leftMargin: root.panelMargin
+            rightMargin: root.panelMargin
+            bottomMargin: root.panelMargin
         }
-        bottomLeftRadius: panelRadius
-        bottomRightRadius: panelRadius
-        color: backgroundColor
+        bottomLeftRadius: root.panelRadius
+        bottomRightRadius: root.panelRadius
+        color: root.backgroundColor
         border {
-            width: panelBorderWidth
-            color: panelBorderColor
+            width: root.panelBorderWidth
+            color: root.panelBorderColor
         }
     }
 
@@ -65,20 +67,25 @@ ShellRoot {
 
         readonly property PwNode node: Pipewire.defaultAudioSink
 
-        property bool is_mute
-        property string volume
-
         PwObjectTracker {
             objects: [pipewire.node]
         }
 
-        property string prettyVolume: {
+        function toggleMute() {
             const audio = node?.audio;
-            if (typeof audio !== "object") {
-                return "unknown";
+            if (typeof audio === "object") {
+                audio.muted = !audio.muted;
             }
-            is_mute = audio.muted;
-            volume = (audio.volume * 100).toFixed(0);
+        }
+
+        property bool is_mute
+        property string volume: {
+            const audio = node?.audio;
+            if (typeof audio === "object") {
+                is_mute = audio.muted;
+                return (audio.volume * 100).toFixed(0);
+            }
+            return "unk";
         }
     }
 
@@ -94,7 +101,7 @@ ShellRoot {
         precision: SystemClock.Minutes
     }
 
-    PanelWindow {
+    component ScreenTop : PanelWindow {
         id: toppanel
         anchors { top: true; left: true; right: true; }
         color: "transparent"
@@ -118,18 +125,23 @@ ShellRoot {
                 model: niri.workspaces
 
                 Text {
+                    required property int index
+                    required property var modelData
+                    required property bool isActive
+                    readonly property int workspaceId: modelData.id
+
                     text: index
 
                     font.pixelSize: 16
                     font.weight: isActive ? 800 : 300
-                    color: activeColor
+                    color: root.activeColor
                     leftPadding: 8
                     rightPadding: 8
 
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: niri.focusWorkspaceById(id)
+                        onClicked: niri.focusWorkspaceById(parent.workspaceId)
                     }
                 }
             }
@@ -155,6 +167,9 @@ ShellRoot {
                 model: Mpris.players.values
 
                 Row {
+                    required property int index
+                    required property MprisPlayer modelData
+
                     leftPadding: 4
                     rightPadding: 4
 
@@ -170,7 +185,7 @@ ShellRoot {
 						implicitSize: 18
 						source: Quickshell.iconPath("media-seek-backward")
                         MouseArea {
-                            visible: canGoPrevious
+                            visible: modelData.canGoPrevious
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             onClicked: modelData.previous()
@@ -178,17 +193,16 @@ ShellRoot {
 					}
 
                     IconImage {
-                        implicitSize: 18
-                        source: {
-                            switch (playbackState) {
-                                case MprisPlaybackState.Playing:
-                                    return Quickshell.iconPath("media-playback-playing");
-                                case MprisPlaybackState.Paused:
-                                    return Quickshell.iconPath("media-playback-paused");
-                                case MprisPlaybackState.Stopped:
-                                    return Quickshell.iconPath("media-playback-stopped");
-                            }
+                        readonly property var stateIcon: {
+                            const m = new Map();
+                            m.set(MprisPlaybackState.Playing, Quickshell.iconPath("media-playback-playing"));
+                            m.set(MprisPlaybackState.Paused, Quickshell.iconPath("media-playback-paused"));
+                            m.set(MprisPlaybackState.Stopped, Quickshell.iconPath("media-playback-stopped"));
+                            return m;
                         }
+
+                        implicitSize: 18
+                        source: stateIcon.get(modelData.playbackState);
 
                         MouseArea {
                             anchors.fill: parent
@@ -201,7 +215,7 @@ ShellRoot {
 						implicitSize: 18
 						source: Quickshell.iconPath("media-seek-forward")
                         MouseArea {
-                            visible: canGoNext
+                            visible: modelData.canGoNext
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             onClicked: modelData.next()
@@ -211,8 +225,8 @@ ShellRoot {
                     Text {
                         topPadding: -2
                         leftPadding: 4
-                        text: `${trackArtist} - ${trackTitle}`
-                        color: activeColor
+                        text: `${modelData.trackArtist} - ${modelData.trackTitle}`
+                        color: root.activeColor
                         font.pixelSize: 16
                         width: 260
                         elide: Text.ElideRight
@@ -242,27 +256,43 @@ ShellRoot {
                 Row {
                     spacing: 2
 
-					IconImage {
-						implicitSize: 22
-						source: pipewire.is_mute ? Quickshell.iconPath("player-volume-muted") : Quickshell.iconPath("player-volume")
-					}
-
                     Text {
                         visible: !pipewire.is_mute
-                        text: pipewire.prettyVolume
-                        color: activeColor
+                        text: pipewire.volume
+                        color: root.activeColor
                         font.pixelSize: 16
                     }
+
+					IconImage {
+						implicitSize: 22
+						source: {
+						    if (pipewire.is_mute) {
+						        return Quickshell.iconPath("player-volume-muted");
+						    } else {
+						        return Quickshell.iconPath("player-volume");
+						    }
+						}
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: pipewire.toggleMute();
+                        }
+					}
                 }
 
                 VBar { }
 
                 Text {
                     text: Qt.formatDateTime(sysclock.date, "hh:mm - ddd, d MMM")
-                    color: activeColor
+                    color: root.activeColor
                     font.pixelSize: 16
                 }
             }
         }
+    }
+
+    Variants {
+        model: Quickshell.screens
+        ScreenTop { }
     }
 }
