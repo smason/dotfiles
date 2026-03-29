@@ -13,14 +13,6 @@ import Niri
 ShellRoot {
     id: root
 
-    readonly property color activeColor: "#7bf"
-    readonly property color backgroundColor: "#333"
-
-    readonly property int panelRadius: 12
-    readonly property color panelBorderColor: "#888"
-    readonly property real panelBorderWidth: 2
-    readonly property real panelMargin: -Math.ceil(panelBorderWidth)
-
     function debugPrint(obj) {
         console.log(obj)
         for (const key in obj) {
@@ -36,29 +28,21 @@ ShellRoot {
         color: "#aaa"
     }
 
-    component DebugRect : Rectangle {
-        anchors.fill: parent
-        z: 200
-        color: 'transparent'
-        border {
-            width: 1
-            color: "yellow"
-        }
-    }
-
     component RoundedRect : Rectangle {
+        readonly property real panelMargin: -Math.ceil(AppGlobals.panelBorderWidth)
+
         anchors {
-            topMargin: root.panelMargin
-            leftMargin: root.panelMargin
-            rightMargin: root.panelMargin
-            bottomMargin: root.panelMargin
+            topMargin: panelMargin
+            leftMargin: panelMargin
+            rightMargin: panelMargin
+            bottomMargin: panelMargin
         }
-        bottomLeftRadius: root.panelRadius
-        bottomRightRadius: root.panelRadius
-        color: root.backgroundColor
+        bottomLeftRadius: AppGlobals.panelRadius
+        bottomRightRadius: AppGlobals.panelRadius
+        color: AppGlobals.backgroundColor
         border {
-            width: root.panelBorderWidth
-            color: root.panelBorderColor
+            width: AppGlobals.panelBorderWidth
+            color: AppGlobals.panelBorderColor
         }
     }
 
@@ -132,7 +116,7 @@ ShellRoot {
 
                     font.pixelSize: 16
                     font.weight: isActive ? 800 : 300
-                    color: root.activeColor
+                    color: AppGlobals.activeColor
                     leftPadding: 8
                     rightPadding: 8
 
@@ -182,7 +166,7 @@ ShellRoot {
 
                     MediaPlayerState {
                         player: parent.modelData
-                        textColor: root.activeColor
+                        textColor: AppGlobals.activeColor
                         // make them a bit smaller as we get more
                         textWidth: 100 + (300 / players.count)
                     }
@@ -215,11 +199,12 @@ ShellRoot {
                     Text {
                         visible: !pipewire.is_mute
                         text: pipewire.volume
-                        color: root.activeColor
+                        color: AppGlobals.activeColor
                         font.pixelSize: 16
                     }
 
 					IconImage {
+					    height: parent.height
 						implicitSize: 22
 						source: {
 						    if (pipewire.is_mute) {
@@ -240,7 +225,7 @@ ShellRoot {
 
                 Text {
                     text: Qt.formatDateTime(sysclock.date, "hh:mm - ddd, d MMM")
-                    color: root.activeColor
+                    color: AppGlobals.activeColor
                     font.pixelSize: 16
                 }
             }

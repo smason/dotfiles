@@ -1,6 +1,5 @@
 import QtQuick
-import QtQuick.Controls
-import Quickshell
+import QtQuick.Layouts
 import Quickshell.Widgets
 import Quickshell.Services.Mpris
 
@@ -12,8 +11,9 @@ Row {
     property real textWidth: 100
 
     IconImage {
+        height: parent.height
     	implicitSize: 18
-    	source: Quickshell.iconPath("media-seek-backward")
+        source: AppGlobals.playbackIconBackward
         MouseArea {
             visible: self.player?.canGoPrevious ?? false
             anchors.fill: parent
@@ -23,16 +23,9 @@ Row {
     }
 
     IconImage {
-        readonly property var stateIcon: {
-            const m = new Map();
-            m.set(MprisPlaybackState.Playing, Quickshell.iconPath("media-playback-playing"));
-            m.set(MprisPlaybackState.Paused, Quickshell.iconPath("media-playback-paused"));
-            m.set(MprisPlaybackState.Stopped, Quickshell.iconPath("media-playback-stopped"));
-            return m;
-        }
-
+        height: parent.height
         implicitSize: 18
-        source: stateIcon.get(self.player?.playbackState ?? MprisPlaybackState.Stopped);
+        source: AppGlobals.getPlaybackIcon(self.player);
 
         MouseArea {
             visible: self.player?.canTogglePlaying ?? false
@@ -43,8 +36,9 @@ Row {
     }
 
 	IconImage {
+        height: parent.height
 		implicitSize: 18
-		source: Quickshell.iconPath("media-seek-forward")
+		source: AppGlobals.playbackIconForward
         MouseArea {
             visible: self.player?.canGoNext ?? false
             anchors.fill: parent
@@ -54,7 +48,6 @@ Row {
 	}
 
     Text {
-        topPadding: -2
         leftPadding: 4
         text: {
             const player = self.player;
