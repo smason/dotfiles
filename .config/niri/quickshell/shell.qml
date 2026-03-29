@@ -62,14 +62,12 @@ ShellRoot {
         }
     }
 
-    Item {
+    PwObjectTracker {
         id: pipewire
 
         readonly property PwNode node: Pipewire.defaultAudioSink
 
-        PwObjectTracker {
-            objects: [pipewire.node]
-        }
+        objects: [node]
 
         function toggleMute() {
             const audio = node?.audio;
@@ -81,11 +79,11 @@ ShellRoot {
         property bool is_mute
         property string volume: {
             const audio = node?.audio;
-            if (typeof audio === "object") {
-                is_mute = audio.muted;
-                return (audio.volume * 100).toFixed(0);
+            if (typeof audio !== "object") {
+                return "unk";
             }
-            return "unk";
+            this.is_mute = audio.muted;
+            return (audio.volume * 100).toFixed(0);
         }
     }
 
@@ -101,7 +99,7 @@ ShellRoot {
         precision: SystemClock.Minutes
     }
 
-    component ScreenTop : PanelWindow {
+    component ScreenPanel : PanelWindow {
         id: toppanel
         anchors { top: true; left: true; right: true; }
         color: "transparent"
@@ -164,6 +162,7 @@ ShellRoot {
             bottomPadding: 4
 
             Repeater {
+                id: players
                 model: Mpris.players.values
 
                 Row {
@@ -174,62 +173,18 @@ ShellRoot {
                     rightPadding: 4
 
                     Row {
-                        visible: index > 0
+                        visible: parent.index > 0
                         height: parent.height
                         rightPadding: 8
 
                         VBar { }
                     }
 
-					IconImage {
-						implicitSize: 18
-						source: Quickshell.iconPath("media-seek-backward")
-                        MouseArea {
-                            visible: modelData.canGoPrevious
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: modelData.previous()
-                        }
-					}
-
-                    IconImage {
-                        readonly property var stateIcon: {
-                            const m = new Map();
-                            m.set(MprisPlaybackState.Playing, Quickshell.iconPath("media-playback-playing"));
-                            m.set(MprisPlaybackState.Paused, Quickshell.iconPath("media-playback-paused"));
-                            m.set(MprisPlaybackState.Stopped, Quickshell.iconPath("media-playback-stopped"));
-                            return m;
-                        }
-
-                        implicitSize: 18
-                        source: stateIcon.get(modelData.playbackState);
-
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: modelData.togglePlaying()
-                        }
-                    }
-
-					IconImage {
-						implicitSize: 18
-						source: Quickshell.iconPath("media-seek-forward")
-                        MouseArea {
-                            visible: modelData.canGoNext
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: modelData.next()
-                        }
-					}
-
-                    Text {
-                        topPadding: -2
-                        leftPadding: 4
-                        text: `${modelData.trackArtist} - ${modelData.trackTitle}`
-                        color: root.activeColor
-                        font.pixelSize: 16
-                        width: 260
-                        elide: Text.ElideRight
+                    MediaPlayerState {
+                        player: parent.modelData
+                        textColor: root.activeColor
+                        // make them a bit smaller as we get more
+                        textWidth: 100 + (300 / players.count)
                     }
                 }
             }
@@ -256,6 +211,7 @@ ShellRoot {
                 Row {
                     spacing: 2
 
+                    // text on the left so the icon doesn't move when clicked
                     Text {
                         visible: !pipewire.is_mute
                         text: pipewire.volume
@@ -293,6 +249,8 @@ ShellRoot {
 
     Variants {
         model: Quickshell.screens
-        ScreenTop { }
+        ScreenPanel {
+            required property var modelData
+        }
     }
 }

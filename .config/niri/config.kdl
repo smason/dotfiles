@@ -80,6 +80,17 @@ animations {
     //slowdown 1
 }
 
+// draw shadows behind floating windows
+window-rule {
+    match is-floating=true
+
+    shadow {
+        on
+        draw-behind-window true
+        offset x=0 y=0
+    }
+}
+
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
@@ -247,9 +258,9 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    Print hotkey-overlay-title="Screenshot (area)" { screenshot; }
+    Ctrl+Print hotkey-overlay-title="Screenshot (screen)" { screenshot-screen; }
+    Alt+Print hotkey-overlay-title="Screenshot (window)" { screenshot-window; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
