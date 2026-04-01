@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell.Widgets
 import Quickshell.Services.Mpris
 
@@ -48,7 +47,7 @@ Row {
 	}
 
     Text {
-        leftPadding: 4
+        leftPadding: 6
         text: {
             const player = self.player;
             if (!player) {

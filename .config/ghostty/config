@@ -2,6 +2,8 @@
 font-family = Iosevka Term Extended
 font-feature = calt off
 
+gtk-single-instance = true
+
 font-size = 10
 window-decoration = false
 

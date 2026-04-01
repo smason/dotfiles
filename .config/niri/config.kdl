@@ -83,6 +83,7 @@ animations {
 // draw shadows behind floating windows
 window-rule {
     match is-floating=true
+    geometry-corner-radius 24
 
     shadow {
         on

@@ -153,6 +153,8 @@ ShellRoot {
                     required property int index
                     required property MprisPlayer modelData
 
+                    anchors.verticalCenter: parent.verticalCenter
+
                     leftPadding: 4
                     rightPadding: 4
 
@@ -224,7 +226,7 @@ ShellRoot {
                 VBar { }
 
                 Text {
-                    text: Qt.formatDateTime(sysclock.date, "hh:mm - ddd, d MMM")
+                    text: Qt.formatDateTime(sysclock.date, "hh:mm, ddd d MMM")
                     color: AppGlobals.activeColor
                     font.pixelSize: 16
                 }
