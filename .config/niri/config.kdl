@@ -19,7 +19,6 @@ output "DP-3" {
 
 layout {
     gaps 8
-
     preset-column-widths {
         proportion 0.25
         proportion 0.33
@@ -34,26 +33,25 @@ layout {
 
     focus-ring {
         width 4
-        active-color "#7bf"
+        active-color "#fb7"
         inactive-color "#555"
     }
 
     tab-indicator {
-        on
-        place-within-column
-        gap 8
+        on; place-within-column
+        position "right"
+        length total-proportion=0.75
+        gap 6
         width 8
-        position "top"
-        length total-proportion=0.95
-        corner-radius 3
+        corner-radius 4
         active-color "#b7f"
         inactive-color "#5555"
     }
 }
 
 window-rule {
-    geometry-corner-radius 4
-    clip-to-geometry true
+    geometry-corner-radius 2
+    // clip-to-geometry true
 }
 
 spawn-at-startup "gammastep"
@@ -77,13 +75,15 @@ screenshot-path "~/Downloads/screenshot-%Y-%m-%d-%H-%M-%S.png"
 // https://niri-wm.github.io/niri/Configuration:-Animations
 animations {
     //off
-    //slowdown 1
+    //slowdown 2
 }
 
 // draw shadows behind floating windows
 window-rule {
     match is-floating=true
-    geometry-corner-radius 24
+
+    geometry-corner-radius 16
+    clip-to-geometry true
 
     shadow {
         on
