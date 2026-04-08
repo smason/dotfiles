@@ -56,8 +56,10 @@ window-rule {
 
 spawn-at-startup "gammastep"
 spawn-sh-at-startup "qs -c ~/.config/niri/quickshell"
-spawn-sh-at-startup "swaybg -i ~/.config/sway/background.png"
 spawn-sh-at-startup "hypridle -c ~/.config/niri/hypridle.conf"
+
+// https://images.nasa.gov/details/art002e009289
+spawn-sh-at-startup "swaybg -i ~/.config/moon-earth.jpeg"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -118,6 +120,9 @@ binds {
     Mod+Page_Up   allow-when-locked=true hotkey-overlay-title="Increase Volume" { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+ -l 1.0"; }
     Mod+Page_Down allow-when-locked=true hotkey-overlay-title="Decrease Volume" { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"; }
     Mod+Pause     allow-when-locked=true hotkey-overlay-title="Play/Pause"      { spawn-sh "playerctl play-pause"; }
+
+    Mod+Shift+Page_Up   allow-when-locked=true hotkey-overlay-title="Increase Monitor Brightness" { spawn-sh "monitor-brightness brighter"; }
+    Mod+Shift+Page_Down allow-when-locked=true hotkey-overlay-title="Decrease Monitor Brightness" { spawn-sh "monitor-brightness darker"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+ -l 1.0"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"; }
