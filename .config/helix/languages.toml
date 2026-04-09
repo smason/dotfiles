@@ -21,3 +21,19 @@ roots = ["pyproject.toml", "setup.py", "poetry.lock", ".git", ".jj", ".venv/"]
 [language-server.ty]
 command = "ty"
 args = ["server"]
+
+[[language]]
+name="qml"
+
+[language-server.qmlls]
+command = "qmlls6"
+args = ["-E"]
+
+# Helix pulls in tinymist by default
+# [[language]]
+# name = "typst"
+# language-servers = ["tinymist"]
+
+[language-server.tinymist.config.preview.background]
+enabled = true
+args = ["--data-plane-host=127.0.0.1:0", "--invert-colors=never", "--open"]
