@@ -8,4 +8,5 @@ font-size = 10
 window-decoration = false
 
 # theme = iTerm2 Solarized Light
+# theme = baskerville-ivorylight
 theme = oksolar

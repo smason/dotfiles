@@ -1,12 +1,22 @@
-[[language]]
-name = "rust"
-auto-format = false
+[language-server.ty]
+command = "ty"
+args = ["server"]
 
-[[language]]
-name = "markdown"
-text-width = 72
-soft-wrap.enable = true
-soft-wrap.wrap-at-text-width = true
+[language-server.qmlls]
+command = "qmlls6"
+args = ["-E"]
+
+[language-server.harper-ls]
+command = "harper-ls"
+args = ["--stdio"]
+
+[language-server.harper-ls.config.harper-ls]
+dialect = "British"
+linters = { UseTitleCase = false, SentenceCapitalization = false }
+
+[language-server.tinymist.config.preview.background]
+enabled = true
+args = ["--data-plane-host=127.0.0.1:0", "--invert-colors=never", "--open"]
 
 [[language]]
 name = "python"
@@ -16,24 +26,29 @@ language-servers = ["ty", "ruff"]
 file-types = ["py", "pyx", "ipynb"]
 comment-token = "#"
 shebangs = ["python"]
-roots = ["pyproject.toml", "setup.py", "poetry.lock", ".git", ".jj", ".venv/"]
-
-[language-server.ty]
-command = "ty"
-args = ["server"]
+roots = ["pyproject.toml", "setup.py", "poetry.lock", ".venv", ".git", ".jj"]
 
 [[language]]
-name="qml"
+name = "rust"
+auto-format = false
 
-[language-server.qmlls]
-command = "qmlls6"
-args = ["-E"]
+[[language]]
+name = "markdown"
+rulers = [72]
+soft-wrap.enable = true
+soft-wrap.wrap-at-text-width = true
+language-servers = ["default-servers", "harper-ls"]
 
-# Helix pulls in tinymist by default
-# [[language]]
-# name = "typst"
-# language-servers = ["tinymist"]
+[[language]]
+name = "plaintext"
+scope = "text.txt"
+rulers = [72, 80]
+soft-wrap.enable = true
+soft-wrap.wrap-at-text-width = true
+language-servers = ["default-servers", "harper-ls"]
+# enable for *.txt, if you don't want this run ":lang text"
+file-types = ["txt"]
 
-[language-server.tinymist.config.preview.background]
-enabled = true
-args = ["--data-plane-host=127.0.0.1:0", "--invert-colors=never", "--open"]
+[[language]]
+name = "git-commit"
+language-servers = ["harper-ls"]
