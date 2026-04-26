@@ -37,7 +37,7 @@ name = "markdown"
 rulers = [72]
 soft-wrap.enable = true
 soft-wrap.wrap-at-text-width = true
-language-servers = ["default-servers", "harper-ls"]
+language-servers = ["marksman", "markdown-oxide", "harper-ls"]
 
 [[language]]
 name = "plaintext"

@@ -1,26 +1,22 @@
-{ config, pkgs, ... }:
 
+# useful commands to remember:
+#   nix-channel --update
+#   home-manager switch
+#   nix-store --gc
+
+{ config, pkgs, ... }:
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "smason";
   home.homeDirectory = "/home/smason";
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "25.11"; # Please read the comment before changing.
+  home.stateVersion = "26.05"; # NOTE: Check release notes before changing!!!
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
   home.packages = [
+    # GUI programs
     pkgs.ghostty
-    pkgs.harper
-    pkgs.helix
+
+    # Python
+    pkgs.uv
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -28,13 +24,33 @@
     # # fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+    (pkgs.writeShellScriptBin "helix" ''exec hx "$@"'')
   ];
+
+  programs.helix = {
+    enable = true;
+    defaultEditor = true;
+
+    extraPackages = [
+      # text editing
+      pkgs.harper
+      pkgs.marksman
+      pkgs.markdown-oxide
+
+      # Python stuff
+      pkgs.ty
+      pkgs.ruff
+    ];
+  };
+
+  programs.mpv = {
+    enable = true;
+
+    scripts = [
+      pkgs.mpvScripts.builtins.autocrop
+      pkgs.mpvScripts.mpris
+    ];
+  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -68,7 +84,7 @@
   #  /etc/profiles/per-user/smason/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "hx";
   };
 
   # Let Home Manager install and manage itself.
