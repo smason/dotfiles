@@ -8,7 +8,7 @@ input {
         numlock
     }
 
-    focus-follows-mouse max-scroll-amount="0%"
+    focus-follows-mouse // max-scroll-amount="0%"
 }
 
 output "DP-3" {
@@ -75,10 +75,12 @@ screenshot-path "~/Downloads/screenshot-%Y-%m-%d-%H-%M-%S.png"
 // Animation settings.
 // The wiki explains how to configure individual animations:
 // https://niri-wm.github.io/niri/Configuration:-Animations
-animations {
+// animations {
     //off
     //slowdown 2
-}
+// }
+
+include "smoke-animations.kdl"
 
 // draw shadows behind floating windows
 window-rule {
@@ -248,12 +250,12 @@ binds {
     Mod+BracketLeft  { consume-window-into-column; }
     Mod+BracketRight { expel-window-from-column; }
 
-    Mod+R { switch-preset-column-width; }
-    Mod+F { expand-column-to-available-width; }
-    Mod+Shift+F { fullscreen-window; }
+    Mod+R hotkey-overlay-title="Preset window width" { switch-preset-column-width; }
+    Mod+F hotkey-overlay-title="Expand to available width" { expand-column-to-available-width; }
+    Mod+Shift+F hotkey-overlay-title="Fullscreen window" { fullscreen-window; }
 
-    Mod+Shift+R { switch-preset-window-height; }
-    Mod+Ctrl+R { reset-window-height; }
+    Mod+Shift+R hotkey-overlay-title="Preset window height" { switch-preset-window-height; }
+    Mod+Ctrl+R hotkey-overlay-title="Reset window height" { reset-window-height; }
 
     // Move the focused window between the floating and the tiling layout.
     Mod+Backslash       { switch-focus-between-floating-and-tiling; }

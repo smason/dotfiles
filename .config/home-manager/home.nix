@@ -14,9 +14,45 @@
   home.packages = [
     # GUI programs
     pkgs.ghostty
+    pkgs.rio
+    pkgs.keepassxc
+    pkgs.waypipe
 
-    # Python
+    # can't install lact because it has a root service
+    pkgs.vkmark
+    pkgs.vulkan-tools
+
+    # Using Niri seems awkward due to qml-niri
+
+    # python
     pkgs.uv
+
+    # utilities
+    pkgs.rink
+    pkgs.tmux
+    pkgs.aria2
+    pkgs.imv
+    pkgs.wev
+    pkgs.ripgrep
+    pkgs.tio
+    pkgs.webfs # simple http server
+
+    # system tools
+    pkgs.perf
+    pkgs.strace
+    pkgs.sysstat
+    pkgs.nvtopPackages.amd
+    pkgs.linuxKernel.packages.linux_7_0.turbostat
+    pkgs.netcat-openbsd
+    pkgs.nmap
+
+    # archives
+    pkgs.p7zip
+    # not much point getting these via Nix, lots of Arch packages need them so
+    # they'll already be on the system
+    pkgs.xz
+    pkgs.zstd
+    pkgs.gzip
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -25,7 +61,48 @@
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
     (pkgs.writeShellScriptBin "helix" ''exec hx "$@"'')
+    (pkgs.writeShellScriptBin "webfs-cwd" ''
+      xdg-open http://localhost:8080/
+      exec webfsd -Fp 8080 -l-'')
   ];
+
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    defaultCacheTtl = 60;
+    pinentry = {
+      package = pkgs.pinentry-qt;
+    };
+  };
+
+  programs.gpg = {
+    enable = true;
+
+    settings = {
+      personal-cipher-preferences = "AES256 AES192 AES";
+      personal-digest-preferences = "SHA512 SHA384 SHA256";
+      personal-compress-preferences = "ZLIB BZIP2 ZIP Uncompressed";
+      default-preference-list = "SHA512 SHA384 SHA256 AES256 AES192 AES ZLIB BZIP2 ZIP Uncompressed";
+      cert-digest-algo = "SHA512";
+      s2k-digest-algo = "SHA512";
+      s2k-cipher-algo = "AES256";
+      charset = "utf-8";
+      fixed-list-mode = "";
+      no-comments = "";
+      no-emit-version = "";
+      no-greeting = "";
+      keyid-format = "0xlong";
+      list-options = "show-uid-validity";
+      verify-options = "show-uid-validity";
+      with-fingerprint = "";
+      require-cross-certification = "";
+      no-symkey-cache = "";
+      throw-keyids = "";
+      use-agent = "";
+
+      keyserver = "hkps://keyserver.ubuntu.com";
+    };
+  };
 
   programs.helix = {
     enable = true;
@@ -36,6 +113,7 @@
       pkgs.harper
       pkgs.marksman
       pkgs.markdown-oxide
+      pkgs.tinymist
 
       # Python stuff
       pkgs.ty
